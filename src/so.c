@@ -70,13 +70,39 @@ void so_push(So *s, char c) {
             memcpy(stack.str, s->ref.str, len);
             s->stack = stack;
         }
+        s->stack.str[len] = c;
         s->stack.len = len + 1;
     } else {
         So_Heap *heap = is_heap ? so_heap_base(*s) : 0;
         heap = so_heap_grow(heap, len + 1);
         if(so_is_stack(*s)) memcpy(heap->str, s->stack.str, len);
         s->ref.str = heap->str;
+        s->ref.str[len] = c;
         s->ref.len = (len + 1) | SO_HEAP_BIT;
+    }
+}
+
+void so_extend(So *s, So b) {
+    size_t len_a = so_len(*s);
+    size_t len_b = so_len(b);
+    bool is_stack = so_is_stack(*s);
+    bool is_heap = so_is_heap(*s);
+    if(len_a + len_b >= SO_STACK_THRESH) exit(1);
+    if(len_a + len_b <= SO_STACK_CAP && !is_heap) {
+        if(!is_stack) {
+            So_Stack stack;
+            memcpy(stack.str, s->ref.str, len_a);
+            s->stack = stack;
+        }
+        memcpy(s->stack.str + len_a, so_it(b, 0), len_b);
+        s->stack.len = len_a + len_b;
+    } else {
+        So_Heap *heap = is_heap ? so_heap_base(*s) : 0;
+        heap = so_heap_grow(heap, len_a + len_b);
+        if(so_is_stack(*s)) memcpy(heap->str, s->stack.str, len_a);
+        s->ref.str = heap->str;
+        memcpy(s->ref.str + len_a, so_it(b, 0), len_b);
+        s->ref.len = (len_a + len_b) | SO_HEAP_BIT;
     }
 }
 

@@ -41,7 +41,23 @@ int main(int argc, char **argv) {
     so_print_debug(s);
 #endif
     so_free(&s);
-    so_print_debug(s);
+
+    So a = so("hello ");
+    So b = so("world ");
+    So c = {0};
+    so_extend(&c, a);
+    so_extend(&c, b);
+    so_print_debug(c);
+
+    so_extend(&c, c);
+    so_print_debug(c);
+    so_clear(&c);
+    so_extend(&c, b);
+    so_extend(&c, a);
+    so_print_debug(c);
+
+    so_free(&c);
+    so_print_debug(c);
     return 0;
 }
 
