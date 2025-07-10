@@ -72,15 +72,13 @@ Detection if we're in stack mode or not is really simple - we set length to any 
 
 ```
     // So_Stack : used as such
-    [120-bits-------------|1-bit |7-bits]
-    [stack buf            |unused|length]
+    [120-bits |1-bit |7-bits]
+    [stack buf|unused|length]
 ```
 
 - If length is >0 we're in stack mode!
 
 #### `is_heap`
-
-Note that we can only be in heap mode if we're NOT in stack mode, so check that first!
 
 Detection happens through setting one bit.
 
