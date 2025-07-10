@@ -31,8 +31,10 @@ int main(int argc, char **argv) {
     so_print_debug(s);
     so_push(&s, 'a');
     so_print_debug(s);
+    printf(" > %u\n", s.stack.len);
     so_push(&s, 'b');
     so_print_debug(s);
+    printf(" > %u\n", s.stack.len);
     so_clear(&s);
     so_print_debug(s);
 #if 1

@@ -5,12 +5,11 @@
 #include <stdlib.h>
 
 bool so_is_stack(So s) {
-    /* return ((s.ref.len & ~SO_HEAP_BIT) >= SO_STACK_THRESH); <- bug-prone! */
     return (s.stack.len & ~SO_STACK_HEAP_BIT);
 }
 
 bool so_is_heap(So s) {
-    return !so_is_stack(s) && (s.ref.len & SO_HEAP_BIT);
+    return (s.ref.len & SO_HEAP_BIT);
 }
 
 void so_print_debug(So s) {
@@ -64,7 +63,7 @@ void so_push(So *s, char c) {
     size_t len = so_len(*s);
     bool is_stack = so_is_stack(*s);
     bool is_heap = so_is_heap(*s);
-    if(len + 1 >= SO_STACK_THRESH) exit(1);
+    if(len + 1 >= SO_HEAP_MAX) exit(1);
     if(len + 1 <= SO_STACK_CAP && !is_heap) {
         if(!is_stack) {
             So_Stack stack;
@@ -88,7 +87,7 @@ void so_extend(So *s, So b) {
     size_t len_b = so_len(b);
     bool is_stack = so_is_stack(*s);
     bool is_heap = so_is_heap(*s);
-    if(len_a + len_b >= SO_STACK_THRESH) exit(1);
+    if(len_a + len_b >= SO_HEAP_MAX) exit(1);
     if(len_a + len_b <= SO_STACK_CAP && !is_heap) {
         if(!is_stack) {
             So_Stack stack;
