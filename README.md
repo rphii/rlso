@@ -40,7 +40,7 @@ This struct is the real heavy-lifter. Without it we could not do much! It's use 
 - Allows detection if in heap-mode
 - Holds potential heap pointer reference
 - Holds program-lifetime / data-segment string
-- Acts as a substring / reference to substring within another string
+- Acts as a substring / reference to substring *(the starting pointer!)* within another string
 - ..and therefore holds a string length
 
 ```
