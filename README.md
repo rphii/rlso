@@ -41,6 +41,7 @@ This struct is the real heavy-lifter. Without it we could not do much! It's use 
 - Holds potential heap pointer reference
 - Holds program-lifetime / data-segment string
 - Acts as a substring / reference to substring within another string
+- ..and therefore holds a string length
 
 ```
     [64-bits|64-bits]
