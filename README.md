@@ -74,8 +74,8 @@ Detection if we're in stack mode or not is really simple - we set length to any 
 
 ```
     // So_Stack : used as such
-    [120-bits |1-bit |7-bits]
-    [stack buf|unused|length]
+    [120-bits |7-bits|1-bit ]
+    [stack buf|length|unused]
 ```
 
 - If length is >0 we're in stack mode!
@@ -86,8 +86,8 @@ Detection happens through setting one bit.
 
 ```
     // So_Ref : used as such
-    [64-bits|56-bits|1-bit  |7-bits]
-    [str ptr|length |is_heap|unused]
+    [64-bits|56-bits|7-bits|1-bit  ]
+    [str ptr|length |unused|is_heap]
 ```
 
 - If that single bit is set, we're in heap mode!
@@ -121,7 +121,7 @@ the length (of up to 2^56-1) !
         +(heap str ptr is returned to So_Ref :
         |  
         |  // So_Ref : used as such
-        |  [64-bits|56-bits|1-bit  |7-bits]
-        \->[str ptr|length |is_heap|unused]
+        |  [64-bits|56-bits|7-bits|1-bit  ]
+        \->[str ptr|length |unused|is_heap]
 ```
 
