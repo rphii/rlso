@@ -11,6 +11,8 @@ int main(int argc, char **argv) {
     printf("LITTLE ENDIAN\n");
 #endif
 
+    printf("sizeof So %zu\n", sizeof(So));
+
     printf("heap max %zu\n", SO_HEAP_MAX);
     printf("heap bit %zu\n", SO_HEAP_BIT);
 
