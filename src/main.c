@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
     printf("LITTLE ENDIAN\n");
 #endif
 
-    printf("stack thresh %zu\n", SO_STACK_THRESH);
+    printf("heap max %zu\n", SO_HEAP_MAX);
     printf("heap bit %zu\n", SO_HEAP_BIT);
 
     printf("is_heap %u\n", so_is_heap(s));
