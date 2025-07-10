@@ -1,6 +1,6 @@
 # So - String Object
 
-String Space Optimization (SSO) in C.
+Small String Optimized and Dynamically Allocatable String in C.
 
 ## Features
 
