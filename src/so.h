@@ -9,6 +9,8 @@
 #define SO_STACK_THRESH (((size_t)1) << ((sizeof(size_t) - 1) * 8))
 #define SO_HEAP_BIT     (((size_t)1) << ((sizeof(size_t)) * 8 - 1))
 
+#define SO_STACK_HEAP_BIT   (((size_t)1) << ((sizeof(unsigned char)) * 8 - 1))
+
 typedef struct So_Heap {
     char *str;
     size_t cap;

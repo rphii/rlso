@@ -5,11 +5,12 @@
 #include <stdlib.h>
 
 bool so_is_stack(So s) {
-    return ((s.ref.len & ~SO_HEAP_BIT) >= SO_STACK_THRESH);
+    /* return ((s.ref.len & ~SO_HEAP_BIT) >= SO_STACK_THRESH); <- bug-prone! */
+    return (s.stack.len & ~SO_STACK_HEAP_BIT);
 }
 
 bool so_is_heap(So s) {
-    return (s.ref.len & SO_HEAP_BIT);
+    return !so_is_stack(s) && (s.ref.len & SO_HEAP_BIT);
 }
 
 void so_print_debug(So s) {
