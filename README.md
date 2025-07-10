@@ -9,7 +9,7 @@ String Space Optimization (SSO) in C.
 1. Any substring has a footprint of 16 bytes
 2. Any program-lifetime / data-segment string has a footprint of 16 bytes
 3. Operations on the stack, if length is < 15 bytes *(operations without dynamically allocating!)*
-4. Dynamically resizable to a heap string, with a maximum length of 2^55-1
+4. Dynamically resizable to a heap string, with a maximum length of 2^56-1
 
 Notes:
 
@@ -72,8 +72,8 @@ Detection if we're in stack mode or not is really simple - we set length to any 
 
 ```
     // So_Stack : used as such
-    [120-bits-------------|8-bits]
-    [stack buf            |length]
+    [120-bits-------------|1-bit |7-bits]
+    [stack buf            |unused|length]
 ```
 
 - If length is >0 we're in stack mode!
@@ -86,8 +86,8 @@ Detection happens through setting one bit.
 
 ```
     // So_Ref : used as such
-    [64-bits|1-bit  |55-bits|8-bits]
-    [str ptr|is_heap|length |unused]
+    [64-bits|56-bits|1-bit  |7-bits]
+    [str ptr|length |is_heap|unused]
 ```
 
 - If that single bit is set, we're in heap mode!
@@ -110,7 +110,7 @@ The heap is yet another struct with 16 bytes!
 
 We don't need the information of the actual heap length within here, BECAUSE
 we're using the `So_Ref` struct as soon as we rely on the heap, where we have
-the length (of up to 2^55-1) !
+the length (of up to 2^56-1) !
 
 ```
     // So_Heap :
@@ -119,9 +119,9 @@ the length (of up to 2^55-1) !
     <---+--->
         | 
         +(heap str ptr is returned to So_Ref :
-        |
-        |  // So_Ref :
-        |  [64-bits|1-bit  |55-bits |8-bits]
-        \->[str ptr|is_heap|heap_len|unused]
+        |  
+        |  // So_Ref : used as such
+        |  [64-bits|56-bits|1-bit  |7-bits]
+        \->[str ptr|length |is_heap|unused]
 ```
 
