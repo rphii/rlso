@@ -36,6 +36,7 @@ typedef union So {
 
 This struct is the real heavy-lifter. Without it we could not do much! It's use cases are:
 
+- Allows detection if in stack-mode
 - Allows detection if in heap-mode
 - Holds potential heap pointer reference
 - Holds program-lifetime / data-segment string
@@ -52,8 +53,9 @@ This struct is the real heavy-lifter. Without it we could not do much! It's use 
 This struct is only used for short modified strings, <15 bytes, that do not yet hold a heap-reference.
 So, modifications of short strings up to 15 bytes are dynamic-allocation-free!
 
-- Modifiable strings of up to 15 characters
 - Allows detection if in stack-mode
+- Allows detection if in heap-mode
+- Holds modifiable strings of up to 15 characters
 
 ```
     [120-bits |8-bits]
