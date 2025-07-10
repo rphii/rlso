@@ -86,8 +86,8 @@ Detection happens through setting one bit.
 
 ```
     // So_Ref : used as such
-    [64-bits|1-bit  |55-bits |8-bits]
-    [str ptr|is_heap|heap_len|unused]
+    [64-bits|1-bit  |55-bits|8-bits]
+    [str ptr|is_heap|length |unused]
 ```
 
 - If that single bit is set, we're in heap mode!
