@@ -8,7 +8,7 @@ Small String Optimized and Dynamically Allocatable String in C.
 
 1. Any substring has a footprint of 16 bytes
 2. Any program-lifetime / data-segment string has a footprint of 16 bytes
-3. Operations on the stack, if length is < 15 bytes *(operations without dynamically allocating!)*
+3. Operations on the stack, if length is <=15 bytes *(operations without dynamically allocating!)*
 4. Dynamically resizable to a heap string, with a maximum length of 2^56-1
 
 Notes:
@@ -50,7 +50,7 @@ This struct is the real heavy-lifter. Without it we could not do much! It's use 
 
 #### `So_Stack`
 
-This struct is only used for short modified strings, <15 bytes, that do not yet hold a heap-reference.
+This struct is only used for short modified strings, <=15 bytes, that do not yet hold a heap-reference.
 So, modifications of short strings up to 15 bytes are dynamic-allocation-free!
 
 - Allows detection if in stack-mode
