@@ -123,11 +123,7 @@ const char *_so_it(const So *s, size_t i) {
 }
 
 void so_clear(So *s) {
-    if(so_is_stack(*s)) {
-        s->stack.len = 0;
-    } else {
-        s->ref.len &= SO_HEAP_BIT;
-    }
+    s->ref.len &= SO_HEAP_BIT;
 }
 
 void so_free(So *s) {

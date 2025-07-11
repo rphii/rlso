@@ -1,9 +1,9 @@
 #ifndef SO_H
 
+#include "endian.h"
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdarg.h>
-#include "endian.h"
 
 #define SO_STACK_CAP    (sizeof(So_Ref) - 1)
 #define SO_HEAP_MAX     (((size_t)1) << ((sizeof(size_t) - 1) * 8))
