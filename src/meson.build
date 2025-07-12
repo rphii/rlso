@@ -3,6 +3,7 @@ sources = [
   'so-find.c',
   'so-heap.c',
   'so-input.c',
+  'so-trim.c',
   'so.c'
   ]
 
@@ -13,6 +14,7 @@ headers = [
   'so-find.h',
   'so-heap.h',
   'so-input.h',
+  'so-trim.h',
   'so.h'
   ]
 

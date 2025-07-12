@@ -45,7 +45,7 @@ Notes:
 | `so-uc.md` | utf8 + unicode conversions | | |
 | `so-fx.md` | formatting (bold, it, ul, rgb) | | |
 | `so-env.md` | environment variables | | |
-| `so-trim.md` | trimming | | |
+| `so-trim.md` | trimming | [so-trim.h](src/so-trim.h) | [so-trim.c](src/so-trim.c) |
 | `so-path.md` | handling as path | | |
 | `so-print.md` | printing | | |
 | [`so-input.md`](md/so-input.md) | user input | [so-input.h](src/so-input.h) | [so-input.c](src/so-input.c) |

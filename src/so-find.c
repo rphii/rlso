@@ -35,7 +35,7 @@ size_t so_find_ws(So so) { /*{{{*/
     for(size_t i = 0; i < len; ++i) {
         if(isspace(s0[i])) return i;
     }
-    return so_len(so);
+    return len;
 } /*}}}*/
 
 size_t so_find_nws(So so) { /*{{{*/
@@ -44,7 +44,7 @@ size_t so_find_nws(So so) { /*{{{*/
     for(size_t i = 0; i < len; ++i) {
         if(!isspace(s0[i])) return i;
     }
-    return so_len(so);
+    return len;
 } /*}}}*/
 
 size_t so_find_any(So so, So any) { /*{{{*/
@@ -99,7 +99,7 @@ size_t so_find_sub(So so, So sub, So_Cmp_Attr attr) { /*{{{*/
         }
     }
     /* restore original */
-    return so_len(so);
+    return len;
 #else
     assert(0);
 #endif
@@ -131,7 +131,7 @@ size_t so_rfind_ch(So so, char c) { /*{{{*/
     for(size_t i = so_len(so); i > 0; --i) {
         if(so.so[i - 1] == c) return i - 1;
     }
-    return so_len(so);
+    return len;
 #endif
 } /*}}}*/
 
