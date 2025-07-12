@@ -29,6 +29,10 @@ int main(int argc, char **argv) {
     printf("is_heap %u\n", so_is_heap(s));
     printf("is_stack %u\n", so_is_stack(s));
 
+    s = so("hello!");
+    so_print_debug(s);
+    so_push(&s, 'a');
+    so_print_debug(s);
     s = so("hello, world!!");
     so_print_debug(s);
     so_push(&s, 'a');
@@ -53,11 +57,16 @@ int main(int argc, char **argv) {
     so_extend(&c, b);
     so_print_debug(c);
 
+    so_print_debug(so_i0(c, 5));
+    so_print_debug(so_iE(c, 5));
+    so_print_debug(so_sub(c, 2, 6));
+
     so_extend(&c, c);
     so_print_debug(c);
     so_clear(&c);
     so_extend(&c, b);
     so_extend(&c, a);
+    so_fmt(&c, "asdf %s", "lol");
     so_print_debug(c);
 
     so_free(&c);

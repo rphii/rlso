@@ -51,14 +51,19 @@ void so_print_debug(So s);
 const So so_l(const char *str);
 const So so_ll(const char *str, size_t len);
 const char so_at(const So s, size_t i);
-#define so_it(s, i)    _so_it(&(s), i)
-const char *_so_it(const So *s, size_t i);
+#define so_it(s, i) _so_it(&(s), i)
+char *_so_it(So *s, size_t i);
+#define so_it0(s) _so_it0(&(s))
+char *_so_it0(So *s);
+So so_i0(So s, size_t i0);
+So so_iE(So s, size_t iE);
+So so_sub(So s, size_t i0, size_t iE);
 void so_push(So *s, char c);
 void so_extend(So *s, So b);
+void so_resize(So *s, size_t len);
 void so_fmt(So *s, const char *fmt, ...);
 void so_fmt_va(So *s, const char *fmt, va_list va);
 size_t so_len(So s);
-So_Heap *so_heap_base(So s);
 void so_clear(So *s);
 void so_free(So *s);
 
