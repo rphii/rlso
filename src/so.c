@@ -1,14 +1,18 @@
 #include "so.h"
+#include "so-heap.h"
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
 #include <stdlib.h>
 
-So_Heap *so_heap_base(So s);
 void so_resize_known(So *s, size_t len_old, size_t len_new);
 
 bool so_is_stack(So s) {
     return (s.stack.len & ~SO_STACK_HEAP_BIT);
+}
+
+bool _so_is_stack(So *s) {
+    return (s->stack.len & ~SO_STACK_HEAP_BIT);
 }
 
 bool so_is_heap(So s) {
@@ -29,6 +33,11 @@ void so_print_debug(So s) {
 size_t so_len(So s) {
     if(so_is_stack(s)) return s.stack.len;
     return s.ref.len & ~SO_HEAP_BIT;
+}
+
+size_t _so_len(So *s) {
+    if(_so_is_stack(s)) return s->stack.len;
+    return s->ref.len & ~SO_HEAP_BIT;
 }
 
 const So so_l(const char *str) {
@@ -53,23 +62,6 @@ const So so_ll(const char *str, size_t len) {
         result.ref.str = (char *)str;
         result.ref.len = len;
     }
-    return result;
-}
-
-So_Heap *so_heap_grow(So_Heap *heap, size_t cap) {
-    size_t cap_old = heap ? heap->cap : 0;
-    size_t cap_new = 2 * sizeof(So_Heap);
-    while(cap_new < cap) cap_new *= 2;
-    if(cap_new <= cap_old) return heap;
-    So_Heap *result = realloc(heap, sizeof(*result) + cap_new);
-    result->str = (char *)result + sizeof(*result);
-    result->cap = cap_new;
-    //memset(result->str + cap_old, 0, cap_new - cap_old);
-    return result;
-}
-
-So_Heap *so_heap_base(So s) {
-    So_Heap *result = (So_Heap *)((char *)s.ref.str - offsetof(So_Heap, str) - sizeof(So_Heap));
     return result;
 }
 

@@ -1,4 +1,5 @@
 #include "so.h"
+#include "so-heap.h"
 #include <stdio.h>
 #include <stdlib.h>
 
