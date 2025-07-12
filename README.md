@@ -1,8 +1,8 @@
-# So - String Object
+# So 🧵 String Object 
 
 Small String Optimized and Dynamically Allocatable String in C.
 
-## Installation
+## 🛠️ Installation
 
 ```sh
 git clone https://github.com/rphii/so && cd so
@@ -14,7 +14,7 @@ Installation features:
 - [man](man) pages *(WIP)*
 - [tests](examples) using meson
 
-## Features
+## ✨ Features
 
 *\*Byte counts are assuming a 64 bit machine/architecture.*
 
@@ -28,8 +28,9 @@ Notes:
 - Endian doesn't matter (we need to know it to compile / set up TWO structs, and after that it doesn't matter)
 - Doesn't matter if machine/architecture is 64 bits or not, it still works (it should! XD)
 - Strings are not 0-terminated. Appropriate functions/macros for printing and other opterations shall be provided
+- Automatically converts any (sub-) string into a dynamic one, if manipulated
 
-## API
+## 🔌 API
 
 *Things that are not linked are planned but not yet implemented.*
 
@@ -48,7 +49,7 @@ Notes:
 | `so-print.md` | printing | | |
 | `so-input.md` | user input | | |
 
-## How does it work?
+## ⚙️ How does it work?
 
 *\*Explanations assuming a 64 bit machine/architecture.*
 
