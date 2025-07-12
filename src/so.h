@@ -35,16 +35,16 @@ typedef struct So {
     };
 } So;
 
-#define SO_F(s)     (int)(so_len(s)), so_it(s, 0)
+#define SO_F(s)     (int)(so_len(s)), so_it0(s)
 
 bool so_is_stack(So s);
 bool so_is_heap(So s);
 void so_print_debug(So s);
 
-#define so(str)     so_ll((str), sizeof(str) - 1)
+#define so(s)           (So){ .ref.str = (s), .ref.len = sizeof((s)) - 1 }
+#define so_l(s)         (So){ .ref.str = (s), .ref.len = (s) ? strlen((s)) : 0 }
+#define so_ll(s, l)     (So){ .ref.str = (s), .ref.len = (l) }
 
-const So so_l(const char *str);
-const So so_ll(const char *str, size_t len);
 const char so_at(So s, size_t i);
 const char _so_at(So *s, size_t i);
 const char so_at0(So s);

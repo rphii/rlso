@@ -55,20 +55,6 @@ So so_clone(So b) {
     return result;
 }
 
-const So so_l(const char *str) {
-    So result;
-    result.ref.str = (char *)str;
-    result.ref.len = strlen(str);
-    return result;
-}
-
-const So so_ll(const char *str, size_t len) {
-    So result;
-    result.ref.str = (char *)str;
-    result.ref.len = len;
-    return result;
-}
-
 void so_push(So *s, char c) {
     size_t len = so_len(*s);
     so_resize_known(s, len, len + 1);

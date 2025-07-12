@@ -1,0 +1,102 @@
+Content-type: text/html
+
+<HTML><HEAD><TITLE>Manpage of so</TITLE>
+</HEAD><BODY>
+<H1>so</H1>
+Section: C Library Functions (3)<BR>Updated: 2025-07-12<BR><A HREF="#index">Index</A>
+<A HREF="http://localhost/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+so - create a new
+<B>So</B>
+
+string at compile-time
+
+<A NAME="lbAC">&nbsp;</A>
+<H2>LIBRARY</H2>
+
+rphii/so
+(<I>librphiicso</I>,~<I>-lrphiicso</I>)
+
+
+<A NAME="lbAD">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<PRE>
+<B>#include &lt;<A HREF="file:/usr/include/rphii/so.h">rphii/so.h</A>&gt;</B>
+
+#define so_l(s)         (So){ .ref.str = (s), .ref.len = (s) ? strlen((s)) : 0 }
+</PRE>
+
+
+<A NAME="lbAE">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+Create an 
+<B>So</B>
+
+string from a c-string at run-time.
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>RETURN VALUE</H2>
+
+Always creates a valid
+<B>So</B>
+
+string.
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>EXAMPLES</H2>
+
+
+Below shows how to create an 
+<B>So</B>
+
+string and print it.
+
+
+<PRE>
+#include &lt;<A HREF="file:/usr/include/stdio.h">stdio.h</A>&gt;
+#include &lt;<A HREF="file:/usr/include/rphii/so.h">rphii/so.h</A>&gt;
+
+int main(void) {
+    char *cstr = &quot;Hello, World!&quot;;
+    So str = so_l(cstr);
+    printf(&quot;%.*s&quot;, SO_F(str));
+    return 0;
+}
+</PRE>
+
+
+<A NAME="lbAH">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="http://localhost/cgi-bin/man/man2html?3+so_l">so_l</A></B>(3),
+
+<B><A HREF="http://localhost/cgi-bin/man/man2html?3+so_ll">so_ll</A></B>(3),
+
+<B><A HREF="http://localhost/cgi-bin/man/man2html?3+SO_F">SO_F</A></B>(3),
+
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">LIBRARY</A><DD>
+<DT><A HREF="#lbAD">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAE">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAF">RETURN VALUE</A><DD>
+<DT><A HREF="#lbAG">EXAMPLES</A><DD>
+<DT><A HREF="#lbAH">SEE ALSO</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="http://localhost/cgi-bin/man/man2html">man2html</A>,
+using the manual pages.<BR>
+Time: 20:35:20 GMT, July 12, 2025
+</BODY>
+</HTML>

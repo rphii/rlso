@@ -1,0 +1,53 @@
+.TH so 3 2025-07-12 "rphii string"
+.SH NAME
+so_l \- create a new
+.BR so_l
+string at compile-time
+\&
+.SH LIBRARY
+rphii/so
+.RI ( librphiicso ,\~ \-lrphiicso )
+\&
+.SH SYNOPSIS
+.nf
+.B #include <rphii/so.h>
+\&
+#define so_l(s)         (So){ .ref.str = (s), .ref.len = (s) ? strlen((s)) : 0 }
+.fi
+\&
+.SH DESCRIPTION
+Create an 
+.BR So
+string from a c-string at run-time.
+\&
+.SH RETURN VALUE
+Always creates a valid
+.BR So
+string.
+\&
+.SH EXAMPLES
+.P
+Below shows how to create an 
+.BR So
+string and print it.
+.P
+\&
+.nf
+.EX
+#include <stdio.h>
+#include <rphii/so.h>
+\&
+int main(void) {
+    char *cstr = "Hello, World!";
+    So str = so_l(cstr);
+    printf("%.*s", SO_F(str));
+    return 0;
+}
+.EE
+.fi
+\&
+.SH SEE ALSO
+.BR so_l (3),
+.BR so_ll (3),
+.BR SO_F (3),
+
