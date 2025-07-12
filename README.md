@@ -9,6 +9,11 @@ git clone https://github.com/rphii/so && cd so
 setup build && meson install -C build
 ```
 
+Installation features:
+- `librphiiso` the `So` library
+- [man](man) pages *(WIP)*
+- [tests](examples) using meson
+
 ## Features
 
 *\*Byte counts are assuming a 64 bit machine/architecture.*
