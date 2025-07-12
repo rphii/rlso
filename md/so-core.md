@@ -21,7 +21,7 @@ char *     _so_it(So *s, size_t i);
 char *     _so_it0(So *s);
 ```
 
-Get `So` at indices
+Get substrings
 
 ```c
 So          so_i0(So s, size_t i0);
