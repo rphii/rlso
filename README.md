@@ -48,7 +48,7 @@ Notes:
 | `so-env.md` | environment variables | | |
 | `so-trim.md` | trimming | [so-trim.h](src/so-trim.h) | [so-trim.c](src/so-trim.c) |
 | `so-path.md` | handling as path | | |
-| `so-print.md` | printing | | |
+| `so-print.md` | printing | [so-print.h](src/so-print.h) | [so-print.c](src/so-print.c) |
 | [`so-input.md`](md/so-input.md) | user input | [so-input.h](src/so-input.h) | [so-input.c](src/so-input.c) |
 
 ## ⚙️ How does it work?
