@@ -31,8 +31,8 @@ Notes:
 
 ## API
 
-### [src/so.h](so/so.h) + [src/so.c](src/so.c) core string functionality
-### [src/so-cmp.h](src/so-cmp.h) + [src/so-cmp.c](src/so-cmp.c) comparison functionality
+- [so.h](src/so.h) + [so.c](src/so.c) core string functionality
+- [so-cmp.h](src/so-cmp.h) + [so-cmp.c](src/so-cmp.c) comparison functionality
 
 ## How does it work?
 
