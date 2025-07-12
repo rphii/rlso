@@ -56,27 +56,16 @@ So so_clone(So b) {
 }
 
 const So so_l(const char *str) {
-    size_t len = strlen(str);
     So result;
-    if(len <= SO_STACK_CAP) {
-        memcpy(result.stack.str, str, len);
-        result.stack.len = len;
-    } else {
-        result.ref.str = (char *)str;
-        result.ref.len = len;
-    }
+    result.ref.str = (char *)str;
+    result.ref.len = strlen(str);
     return result;
 }
 
 const So so_ll(const char *str, size_t len) {
     So result;
-    if(len <= SO_STACK_CAP) {
-        memcpy(result.stack.str, str, len);
-        result.stack.len = len;
-    } else {
-        result.ref.str = (char *)str;
-        result.ref.len = len;
-    }
+    result.ref.str = (char *)str;
+    result.ref.len = len;
     return result;
 }
 
@@ -174,6 +163,22 @@ const char _so_at(So *s, size_t i) {
         return s->stack.str[i];
     } else {
         return s->ref.str[i];
+    }
+}
+
+const char so_at0(So s) {
+    if(so_is_stack(s)) {
+        return s.stack.str[0];
+    } else {
+        return s.ref.str[0];
+    }
+}
+
+const char so_p_at0(So *s) {
+    if(_so_is_stack(s)) {
+        return s->stack.str[0];
+    } else {
+        return s->ref.str[0];
     }
 }
 

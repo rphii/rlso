@@ -42,10 +42,13 @@ bool so_is_heap(So s);
 void so_print_debug(So s);
 
 #define so(str)     so_ll((str), sizeof(str) - 1)
+
 const So so_l(const char *str);
 const So so_ll(const char *str, size_t len);
 const char so_at(So s, size_t i);
 const char _so_at(So *s, size_t i);
+const char so_at0(So s);
+const char _so_at0(So *s);
 #define so_it(s, i) _so_it(&(s), i)
 char *_so_it(So *s, size_t i);
 #define so_it0(s) _so_it0(&(s))
