@@ -29,6 +29,11 @@ Notes:
 - Doesn't matter if machine/architecture is 64 bits or not, it still works (it should! XD)
 - Strings are not 0-terminated. Appropriate functions/macros for printing and other opterations shall be provided
 
+## API
+
+### [src/so.h](so/so.h) + [src/so.c](src/so.c) core string functionality
+### [src/so-cmp.h](src/so-cmp.h) + [src/so-cmp.c](src/so-cmp.c) comparison functionality
+
 ## How does it work?
 
 *\*Explanations assuming a 64 bit machine/architecture.*
