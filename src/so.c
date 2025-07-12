@@ -40,6 +40,15 @@ size_t _so_len(So *s) {
     return s->ref.len & ~SO_HEAP_BIT;
 }
 
+void so_copy(So *s, So b) {
+    so_clear(s);
+    size_t len = so_len(b);
+    so_resize_known(s, 0, len);
+    memcpy(_so_it0(s), so_it0(b), len);
+}
+
+//void so_clone(So *s, So b);
+
 const So so_l(const char *str) {
     size_t len = strlen(str);
     So result;
@@ -93,7 +102,8 @@ void so_resize_known(So *s, size_t len_old, size_t len_new) {
         } else {
             So_Heap *heap = is_heap ? so_heap_base(*s) : 0;
             heap = so_heap_grow(heap, len_new);
-            if(so_is_stack(*s)) memcpy(heap->str, s->stack.str, len_old);
+            if(is_stack) memcpy(heap->str, s->stack.str, len_old);
+            else if(!is_heap) memcpy(heap->str, s->ref.str, len_old);
             s->ref.str = heap->str;
             s->ref.len = len_new | SO_HEAP_BIT;
         }
@@ -145,7 +155,7 @@ void so_fmt_va(So *s, const char *fmt, va_list va) {
 #endif
 }
 
-const char so_at(const So s, size_t i) {
+const char so_at(So s, size_t i) {
     if(so_is_stack(s)) {
         return s.stack.str[i];
     } else {
@@ -153,8 +163,16 @@ const char so_at(const So s, size_t i) {
     }
 }
 
+const char _so_at(So *s, size_t i) {
+    if(_so_is_stack(s)) {
+        return s->stack.str[i];
+    } else {
+        return s->ref.str[i];
+    }
+}
+
 char *_so_it(So *s, size_t i) {
-    if(so_is_stack(*s)) {
+    if(_so_is_stack(s)) {
       return &s->stack.str[i];
     } else {
       return &s->ref.str[i];

@@ -5,14 +5,19 @@
 
 /* internal use {{{ */
 
-int so_cmp_len(char *a, size_t la, char *b, size_t lb) {
+static inline int so_cmp_len(char *a, size_t la, char *b, size_t lb);
+static inline int so_cmp_s_len(char *a, size_t la, char *b, size_t lb);
+static inline int so_cmp_c_len(char *a, size_t la, char *b, size_t lb);
+static inline int so_cmp_cs_len(char *a, size_t la, char *b, size_t lb);
+
+static inline int so_cmp_len(char *a, size_t la, char *b, size_t lb) {
     int result;
     if(la != lb) result = la - lb;
     else result = memcmp(a, b, la);
     return result;
 }
 
-int so_cmp_s_len(char *a, size_t la, char *b, size_t lb) {
+static inline int so_cmp_s_len(char *a, size_t la, char *b, size_t lb) {
     int result;
     if(la != lb) {
         size_t less = la < lb ? la : lb;
@@ -26,7 +31,7 @@ int so_cmp_s_len(char *a, size_t la, char *b, size_t lb) {
     return result;
 }
 
-int so_cmp_c_len(char *a, size_t la, char *b, size_t lb) {
+static inline int so_cmp_c_len(char *a, size_t la, char *b, size_t lb) {
     if(la != lb) return la - lb;
     for(size_t i = 0; i < la; ++i) {
         char ca = a[i];
@@ -36,7 +41,7 @@ int so_cmp_c_len(char *a, size_t la, char *b, size_t lb) {
     return 0;
 }
 
-int so_cmp_cs_len(char *a, size_t la, char *b, size_t lb) {
+static inline int so_cmp_cs_len(char *a, size_t la, char *b, size_t lb) {
     int result;
     size_t less;
     if(la != lb) less = la < lb ? la : lb;

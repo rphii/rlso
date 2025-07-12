@@ -70,6 +70,14 @@ int main(int argc, char **argv) {
     so_fmt(&c, "asdf %s", "lol");
     so_print_debug(c);
 
+#if 0
+    So append = {0};
+    for(size_t i = 0; i < 4096; ++i) {
+        so_push(&append, 'x');
+        so_print_debug(append);
+    }
+#endif
+
     so_free(&c);
     so_print_debug(c);
     return 0;

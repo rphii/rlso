@@ -7,8 +7,7 @@
 
 typedef struct So_Heap {
     char *str;
-    size_t cap : 8 * (sizeof(size_t) - sizeof(unsigned char));
-    unsigned char flags;
+    size_t cap;
 } So_Heap;
 
 struct So;
