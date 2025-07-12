@@ -31,13 +31,10 @@ Notes:
 
 ## API
 
-| part | desc | .h | .c |
+| part | description | .h | .c |
 | --- | --- |--- | ---|
-| [`so`](md/so-core.md) | core string functionality | [so.h](src/so.h)+[so.c](src/so.c) |
-| [`so-cmp`](md/so-cmp.md) | comparison functionality | [so-cmp.h](src/so-cmp.h)+[so-cmp.c](src/so-cmp.c) |
-
-```c
-```
+| [`so`](md/so-core.md) | core string functionality | [so.h](src/so.h) | [so.c](src/so.c) |
+| [`so-cmp`](md/so-cmp.md) | comparison functionality | [so-cmp.h](src/so-cmp.h) | [so-cmp.c](src/so-cmp.c) |
 
 ## How does it work?
 
