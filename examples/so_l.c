@@ -1,5 +1,5 @@
+#include "../src/so.h"
 #include <stdio.h>
-#include <rphii/so.h>
 
 int main(void) {
     char *cstr = "Hello, World!";

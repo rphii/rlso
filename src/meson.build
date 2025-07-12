@@ -1,6 +1,7 @@
 sources = [
   'so-cmp.c',
   'so-heap.c',
+  'so-input.c',
   'so.c'
   ]
 
@@ -8,6 +9,7 @@ headers = [
   'endian.h',
   'so-cmp.h',
   'so-heap.h',
+  'so-input.h',
   'so.h'
   ]
 
@@ -16,5 +18,7 @@ rphiiso = library('rphiiso',
   sources,
   install: true,
   )
+
+
 
 

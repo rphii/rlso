@@ -1,5 +1,5 @@
+#include "../src/so.h"
 #include <stdio.h>
-#include <rphii/so.h>
 
 int main(void) {
     So str = so("Hello, World!");
