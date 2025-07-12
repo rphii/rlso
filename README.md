@@ -1,4 +1,4 @@
-# So 🧵 String Object 
+# 🧵 So - String Object 
 
 Small String Optimized and Dynamically Allocatable String in C.
 
