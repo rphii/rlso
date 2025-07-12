@@ -33,8 +33,8 @@ Notes:
 
 | part | description | .h | .c |
 | --- | --- |--- | ---|
-| [`so`](md/so-core.md) | core string functionality | [so.h](src/so.h) | [so.c](src/so.c) |
-| [`so-cmp`](md/so-cmp.md) | comparison functionality | [so-cmp.h](src/so-cmp.h) | [so-cmp.c](src/so-cmp.c) |
+| [`so-core.md`](md/so-core.md) | core string functionality | [so.h](src/so.h) | [so.c](src/so.c) |
+| [`so-cmp.md`](md/so-cmp.md) | comparison functionality | [so-cmp.h](src/so-cmp.h) | [so-cmp.c](src/so-cmp.c) |
 
 ## How does it work?
 
