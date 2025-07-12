@@ -38,9 +38,10 @@ Notes:
 | --- | --- |--- | ---|
 | [`so-core.md`](md/so-core.md) | core string | [so.h](src/so.h) | [so.c](src/so.c) |
 | [`so-cmp.md`](md/so-cmp.md) | comparison | [so-cmp.h](src/so-cmp.h) | [so-cmp.c](src/so-cmp.c) |
-| `so-find.md` | find within | | |
+| `so-find.md` | find within | [so-find.h](src/so-find.h) | [so-find.c](src/so-find.c) |
 | `so-split.md` | split into parts | | |
 | `so-splice.md` | splice repeatedly | | |
+| `so-as.md` | string to type conversion | | |
 | `so-uc.md` | utf8 + unicode conversions | | |
 | `so-fx.md` | formatting (bold, it, ul, rgb) | | |
 | `so-env.md` | environment variables | | |

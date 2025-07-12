@@ -1,5 +1,6 @@
 sources = [
   'so-cmp.c',
+  'so-find.c',
   'so-heap.c',
   'so-input.c',
   'so.c'
@@ -7,7 +8,9 @@ sources = [
 
 headers = [
   'endian.h',
+  'so-cmp-attr.h',
   'so-cmp.h',
+  'so-find.h',
   'so-heap.h',
   'so-input.h',
   'so.h'

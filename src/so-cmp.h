@@ -1,14 +1,8 @@
 #ifndef SO_CMP_H
 
-typedef struct So So;
+#include "so-cmp-attr.h"
 
-typedef enum {
-    SO_CMP                      = 0x00,
-    SO_CMP_CASE_INSENSITIVE     = 0x01,
-    SO_CMP_SORTABLE             = 0x02,
-    SO_CMP_BEGIN                = 0x04,
-    SO_CMP_END                  = 0x08,
-} So_Cmp_Attr;
+typedef struct So So;
 
 int so_cmp(So a, So b);
 int so_cmp_s(So a, So b);
