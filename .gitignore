@@ -1,3 +1,14 @@
 *.out
 *.o
+*.d
+*.txt
+*.vim
+*.swp
+*.json
+*perf.data*
+*callgrind.out.*
+temp
+build
+*.cache
+*_old
 

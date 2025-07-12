@@ -1,24 +1,24 @@
 .TH so_l 3 2025-07-12 "rphii string"
 .SH NAME
-so \- create a new
+so_l \- create a new
 .BR So
 string at run-time
 \&
 .SH LIBRARY
-rphii/so
-.RI ( librphiicso ,\~ \-lrphiicso )
+rphiiso
+.RI ( librphiiso ,\~ \-lrphiiso )
 \&
 .SH SYNOPSIS
 .nf
 .B #include <rphii/so.h>
 \&
-.BI "#define so_l("s")           (So){ .ref.str = (s), .ref.len = sizeof((s)) - 1 }"
+.BI "#define so_l(" s ")           (So){ .ref.str = (s), .ref.len = sizeof((s)) - 1 }"
 .fi
 \&
 .SH DESCRIPTION
 Create an 
 .BR So
-string from a c-string at compile-time.
+string from a c-string at run-time.
 \&
 .SH RETURN VALUE
 Always creates a valid
@@ -38,8 +38,9 @@ string and print it.
 #include <rphii/so.h>
 \&
 int main(void) {
-    So str = so("Hello, World!");
-    printf("%.*s", SO_F(str));
+    char *cstr = "Hello, World!";
+    So str = so_l(cstr);
+    printf("%.*s\\n", SO_F(str));
     return 0;
 }
 .EE
