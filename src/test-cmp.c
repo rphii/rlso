@@ -72,6 +72,26 @@ void create_data(char ***tmp, int **result, size_t n, size_t len) {
     *result = malloc(bytes);
 }
 
+void run_test_nocopy(char **tmp, int *result, size_t n, size_t len) {
+    struct timespec t0, tE, tD;
+    clock_gettime(CLOCK_REALTIME, &t0);
+    for(size_t i = 0; i < n; ++i) {
+        //printf("%zu:%zu[%.*s %.*s]\n", len, so_len(a), SO_F(a), SO_F(b));
+        So a = so_ll(tmp[i], len);
+        So b = so_ll(tmp[i+n], len);
+        result[i] = so_cmp(a, b);
+    }
+    clock_gettime(CLOCK_REALTIME, &tE);
+    tD = diff_timespec(&tE, &t0);
+    printf("%s %zu.%09zus ", __func__, tD.tv_sec, tD.tv_nsec);
+    printf("%zux%zu", n, len);
+    size_t nzero = 0;
+    for(size_t i = 0; i < n; ++i) {
+        if(!result[i]) ++nzero;
+    }
+    printf(", nzero %zu\n", nzero);
+}
+
 void run_test(char **tmp, int *result, size_t n, size_t len) {
     struct timespec t0, tE, tD;
     So a = {0}, b = {0};
@@ -90,7 +110,7 @@ void run_test(char **tmp, int *result, size_t n, size_t len) {
     so_free(&a);
     so_free(&b);
     tD = diff_timespec(&tE, &t0);
-    printf("%zu.%09zus ", tD.tv_sec, tD.tv_nsec);
+    printf("%s %zu.%09zus ", __func__, tD.tv_sec, tD.tv_nsec);
     printf("%zux%zu", n, len);
     size_t nzero = 0;
     for(size_t i = 0; i < n; ++i) {
@@ -116,7 +136,26 @@ void run_test_eq(char **tmp, int *result, size_t n, size_t len) {
     so_free(&a);
     so_free(&b);
     tD = diff_timespec(&tE, &t0);
-    printf("%zu.%09zus ", tD.tv_sec, tD.tv_nsec);
+    printf("%s %zu.%09zus ", __func__, tD.tv_sec, tD.tv_nsec);
+    printf("%zux%zu", n*2, len);
+    size_t nzero = 0;
+    for(size_t i = 0; i < n*2; ++i) {
+        if(!result[i]) ++nzero;
+    }
+    printf(", nzero %zu\n", nzero);
+}
+
+void run_test_eq_nocopy(char **tmp, int *result, size_t n, size_t len) {
+    struct timespec t0, tE, tD;
+    clock_gettime(CLOCK_REALTIME, &t0);
+    for(size_t i = 0; i < n*2; ++i) {
+        So a = so_ll(tmp[i], len);
+        So b = so_ll(tmp[i], len);
+        result[i] = so_cmp(a, b);
+    }
+    clock_gettime(CLOCK_REALTIME, &tE);
+    tD = diff_timespec(&tE, &t0);
+    printf("%s %zu.%09zus ", __func__, tD.tv_sec, tD.tv_nsec);
     printf("%zux%zu", n*2, len);
     size_t nzero = 0;
     for(size_t i = 0; i < n*2; ++i) {
@@ -201,6 +240,19 @@ int main(void) {
             run_test_eq(tmp, result, i, len - 1);
         }
     }
+
+    for(size_t i = nmin, n = 0; n < ntimes; i *= 10, ++n) {
+        for(size_t len = 2; len <= lentarget; len *= 2) {
+            run_test_nocopy(tmp, result, i, len - 1);
+        }
+    }
+
+    for(size_t i = nmin, n = 0; n < ntimes; i *= 10, ++n) {
+        for(size_t len = 2; len <= lentarget; len *= 2) {
+            run_test_eq_nocopy(tmp, result, i, len - 1);
+        }
+    }
+
     free(tmp);
     free(result);
     return 0;
