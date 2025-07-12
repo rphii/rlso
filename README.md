@@ -2,6 +2,13 @@
 
 Small String Optimized and Dynamically Allocatable String in C.
 
+## Installation
+
+```sh
+git clone https://github.com/rphii/so && cd so
+setup build && meson install -C build
+```
+
 ## Features
 
 *\*Byte counts are assuming a 64 bit machine/architecture.*
@@ -25,7 +32,7 @@ Notes:
 
 Consolidating the `so.h` header, we find the main `So` struct:
 
-```
+```c
 typedef union So {
     So_Stack stack;
     So_Ref ref;
