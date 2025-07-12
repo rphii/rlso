@@ -61,7 +61,7 @@ void so_fmt_va(So *s, const char *fmt, va_list va);
 size_t so_len(So s);
 size_t _so_len(So *s);
 void so_copy(So *s, So b);
-//void so_clone(So *s, So b);
+So so_clone(So b);
 void so_clear(So *s);
 void so_free(So *s);
 

@@ -47,7 +47,13 @@ void so_copy(So *s, So b) {
     memcpy(_so_it0(s), so_it0(b), len);
 }
 
-//void so_clone(So *s, So b);
+So so_clone(So b) {
+    So result = {0};
+    size_t len = so_len(b);
+    so_resize_known(&result, 0, len);
+    memcpy(so_it0(result), so_it0(b), len);
+    return result;
+}
 
 const So so_l(const char *str) {
     size_t len = strlen(str);
