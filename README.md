@@ -31,10 +31,22 @@ Notes:
 
 ## API
 
+*Things that are not linked are planned but not yet implemented.*
+
 | part | description | .h | .c |
 | --- | --- |--- | ---|
-| [`so-core.md`](md/so-core.md) | core string functionality | [so.h](src/so.h) | [so.c](src/so.c) |
-| [`so-cmp.md`](md/so-cmp.md) | comparison functionality | [so-cmp.h](src/so-cmp.h) | [so-cmp.c](src/so-cmp.c) |
+| [`so-core.md`](md/so-core.md) | core string | [so.h](src/so.h) | [so.c](src/so.c) |
+| [`so-cmp.md`](md/so-cmp.md) | comparison | [so-cmp.h](src/so-cmp.h) | [so-cmp.c](src/so-cmp.c) |
+| `so-find.md` | find within | | |
+| `so-split.md` | split into parts | | |
+| `so-splice.md` | splice repeatedly | | |
+| `so-uc.md` | utf8 + unicode conversions | | |
+| `so-fx.md` | formatting (bold, it, ul, rgb) | | |
+| `so-env.md` | environment variables | | |
+| `so-trim.md` | trimming | | |
+| `so-path.md` | handling as path | | |
+| `so-print.md` | printing | | |
+| `so-input.md` | user input | | |
 
 ## How does it work?
 
