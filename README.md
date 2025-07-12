@@ -58,9 +58,11 @@ Notes:
 Consolidating the `so.h` header, we find the main `So` struct:
 
 ```c
-typedef union So {
-    So_Stack stack;
-    So_Ref ref;
+typedef struct So {
+    union {
+        So_Stack stack;
+        So_Ref ref;
+    };
 } So;
 ```
 
