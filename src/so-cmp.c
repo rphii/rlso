@@ -17,6 +17,13 @@ static inline int so_cmp_len(char *a, size_t la, char *b, size_t lb) {
     return result;
 }
 
+static inline int so_cmp_ref(So_Ref a, So_Ref b) {
+    int result;
+    if(a.len != b.len) result = a.len - b.len;
+    else result = memcmp(a.str, b.str, a.len);
+    return result;
+}
+
 static inline int so_cmp_s_len(char *a, size_t la, char *b, size_t lb) {
     int result;
     if(la != lb) {
@@ -59,7 +66,7 @@ static inline int so_cmp_cs_len(char *a, size_t la, char *b, size_t lb) {
 /* compare {{{ */
 
 int so_cmp(So a, So b) {
-    return so_cmp_len(so_it0(a), so_len(a), so_it0(b), so_len(b));
+    return so_cmp_ref(so_ref(a), so_ref(b));
 }
 
 int so_cmp_s(So a, So b) {

@@ -60,6 +60,8 @@ char *     _so_it0(So *s);
 #define    _so_iE(s, iE)        so_ll(_so_it0(s), iE)
 #define     so_sub(s, i0, iE)   so_ll(so_it(s, i0), so_len(s) - (iE - i0))
 #define    _so_sub(s, i0, iE)   so_ll(_so_it(s, i0), _so_len(s) - (iE - i0))
+#define     so_ref(s) _so_ref(&(s))
+So_Ref     _so_ref(So *s);
 void        so_push(So *s, char c);
 void        so_extend(So *s, So b);
 void        so_resize(So *s, size_t len);

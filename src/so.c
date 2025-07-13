@@ -5,7 +5,9 @@
 #include <assert.h>
 #include <stdlib.h>
 
-void so_resize_known(So *s, size_t len_old, size_t len_new);
+static void so_resize_known(So *s, size_t len_old, size_t len_new);
+static size_t _so_len_known(So *s, bool is_stack);
+static char *_so_it0_known(So *s, bool is_stack);
 
 bool so_is_stack(So s) {
     return (s.stack.len & ~SO_STACK_HEAP_BIT);
@@ -28,6 +30,12 @@ size_t _so_len(So *s) {
     if(_so_is_stack(s)) return s->stack.len;
     return s->ref.len & ~SO_HEAP_BIT;
 }
+
+static inline size_t _so_len_known(So *s, bool is_stack) {
+    if(is_stack) return s->stack.len;
+    return s->ref.len & ~SO_HEAP_BIT;
+}
+
 
 void so_copy(So *s, So b) {
     so_clear(s);
@@ -166,29 +174,25 @@ char *_so_it(So *s, size_t i) {
 }
 
 char *_so_it0(So *s) {
-    if(so_is_stack(*s)) {
+    return _so_it0_known(s, so_is_stack(*s));
+}
+
+static inline char *_so_it0_known(So *s, bool is_stack) {
+    if(is_stack) {
       return s->stack.str;
     } else {
       return s->ref.str;
     }
 }
 
-#if 0
-So so_i0(So *s, size_t i0) {
-    So result = so_ll(_so_it(s, i0), _so_len(s) - i0);
+So_Ref _so_ref(So *s) {
+    bool is_stack = _so_is_stack(s);
+    So_Ref result = {
+        .len = _so_len_known(s, is_stack),
+        .str = _so_it0_known(s, is_stack),
+    };
     return result;
 }
-
-So _so_iE(So *s, size_t iE) {
-    So result = so_ll(_so_it0(s), iE);
-    return result;
-}
-
-So _so_sub(So *s, size_t i0, size_t iE) {
-    So result = so_ll(_so_it(s, i0), _so_len(s) - (iE - i0));
-    return result;
-}
-#endif
 
 void so_clear(So *s) {
     s->ref.len &= SO_HEAP_BIT;

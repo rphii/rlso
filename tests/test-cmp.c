@@ -180,9 +180,10 @@ void *filljob(void *void_filljob) {
 }
 
 int main(void) {
-    size_t nmin = 1000;
+    srand(0);
+    size_t nmin = 10000;
     size_t ntimes = 3;
-    size_t lentarget = 4096 * 16;
+    size_t lentarget = 4096 * 1;
 
     printf("setting up..\n");
     size_t imax = 0;
