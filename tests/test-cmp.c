@@ -1,5 +1,5 @@
-#include "so.h"
-#include "so-cmp.h"
+#include "../src/so.h"
+#include "../src/so-cmp.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>

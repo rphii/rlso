@@ -1,5 +1,5 @@
-#include "so.h"
-#include "so-heap.h"
+#include "../src/so.h"
+#include "../src/so-heap.h"
 #include <stdio.h>
 #include <stdlib.h>
 
