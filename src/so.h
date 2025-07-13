@@ -42,16 +42,16 @@ bool so_is_stack(So s);
 bool so_is_heap(So s);
 void so_print_debug(So s);
 
-#define so(s)           (So){ .ref.str = (s), .ref.len = sizeof((s)) - 1 }
-#define so_l(s)         (So){ .ref.str = (s), .ref.len = (s) ? strlen((s)) : 0 }
-#define so_ll(s, l)     (So){ .ref.str = (s), .ref.len = (l) }
+#define     so(s)           (So){ .ref.str = (s), .ref.len = sizeof((s)) - 1 }
+#define     so_l(s)         (So){ .ref.str = (s), .ref.len = (s) ? strlen((s)) : 0 }
+#define     so_ll(s, l)     (So){ .ref.str = (s), .ref.len = (l) }
 
 const char  so_at(So s, size_t i);
 const char _so_at(So *s, size_t i);
 const char  so_at0(So s);
 const char _so_at0(So *s);
 #define     so_it(s, i) _so_it(&(s), i)
-char *      _so_it(So *s, size_t i);
+char *     _so_it(So *s, size_t i);
 #define     so_it0(s) _so_it0(&(s))
 char *     _so_it0(So *s);
 #define     so_i0(s, i0)        so_ll(so_it(s, i0), so_len(s) - i0)

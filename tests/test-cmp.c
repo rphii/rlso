@@ -80,6 +80,7 @@ void run_test_nocopy(char **tmp, int *result, size_t n, size_t len) {
         So a = so_ll(tmp[i], len);
         So b = so_ll(tmp[i+n], len);
         result[i] = so_cmp(a, b);
+        //printf("[%.*s %.*s] %u\n", SO_F(a), SO_F(b), result[i]);
     }
     clock_gettime(CLOCK_REALTIME, &tE);
     tD = diff_timespec(&tE, &t0);
