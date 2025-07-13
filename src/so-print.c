@@ -18,6 +18,12 @@ void so_printdbg(So so) {
         printf("/%zu", so_heap_base(so)->cap);
         printf("<sizeof:%zu+%zu+%zu>", sizeof(So), sizeof(So_Heap), so_heap_base(so)->cap);
     }
+    printf("{");
+    for(size_t i = 0; i < so_len(so); ++i) {
+        if(i) printf(" ");
+        printf("%02x", so_at(so, i));
+    }
+    printf("}");
     printf("\n");
 }
 

@@ -1,5 +1,6 @@
 #include "../src/so.h"
 #include "../src/so-heap.h"
+#include "../src/so-print.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -31,23 +32,23 @@ int main(int argc, char **argv) {
     printf("is_stack %u\n", so_is_stack(s));
 
     s = so("hello!");
-    so_print_debug(s);
+    so_printdbg(s);
     so_push(&s, 'a');
-    so_print_debug(s);
+    so_printdbg(s);
     s = so("hello, world!!");
-    so_print_debug(s);
+    so_printdbg(s);
     so_push(&s, 'a');
-    so_print_debug(s);
+    so_printdbg(s);
     printf(" > %u\n", s.stack.len);
     so_push(&s, 'b');
-    so_print_debug(s);
+    so_printdbg(s);
     printf(" > %u\n", s.stack.len);
     so_clear(&s);
-    so_print_debug(s);
+    so_printdbg(s);
 #if 1
     so_push(&s, 'b');
     //so_free(&s);
-    so_print_debug(s);
+    so_printdbg(s);
 #endif
     so_free(&s);
 
@@ -56,30 +57,30 @@ int main(int argc, char **argv) {
     So c = {0};
     so_extend(&c, a);
     so_extend(&c, b);
-    so_print_debug(c);
+    so_printdbg(c);
 
-    so_print_debug(so_i0(c, 5));
-    so_print_debug(so_iE(c, 5));
-    so_print_debug(so_sub(c, 2, 6));
+    so_printdbg(so_i0(c, 5));
+    so_printdbg(so_iE(c, 5));
+    so_printdbg(so_sub(c, 2, 6));
 
     so_extend(&c, c);
-    so_print_debug(c);
+    so_printdbg(c);
     so_clear(&c);
     so_extend(&c, b);
     so_extend(&c, a);
     so_fmt(&c, "asdf %s", "lol");
-    so_print_debug(c);
+    so_printdbg(c);
 
 #if 0
     So append = {0};
     for(size_t i = 0; i < 4096; ++i) {
         so_push(&append, 'x');
-        so_print_debug(append);
+        so_printdbg(append);
     }
 #endif
 
     so_free(&c);
-    so_print_debug(c);
+    so_printdbg(c);
     return 0;
 }
 

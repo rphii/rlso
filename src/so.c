@@ -19,17 +19,6 @@ bool so_is_heap(So s) {
     return (s.ref.len & SO_HEAP_BIT);
 }
 
-void so_print_debug(So s) {
-    printf("%c[%.*s]%zu", so_is_stack(s) ? 's' : so_is_heap(s) ? 'h' : 'r',
-            SO_F(s), so_len(s));
-    if(so_is_stack(s)) printf("/%zu", SO_STACK_CAP);
-    if(so_is_heap(s)) {
-        printf("/%zu", so_heap_base(s)->cap);
-        printf("<sizeof:%zu+%zu+%zu>", sizeof(So), sizeof(So_Heap), so_heap_base(s)->cap);
-    }
-    printf("\n");
-}
-
 size_t so_len(So s) {
     if(so_is_stack(s)) return s.stack.len;
     return s.ref.len & ~SO_HEAP_BIT;
@@ -184,20 +173,22 @@ char *_so_it0(So *s) {
     }
 }
 
-So so_i0(So s, size_t i0) {
-    So result = so_ll(so_it(s, i0), so_len(s) - i0);
+#if 0
+So so_i0(So *s, size_t i0) {
+    So result = so_ll(_so_it(s, i0), _so_len(s) - i0);
     return result;
 }
 
-So so_iE(So s, size_t iE) {
-    So result = so_ll(so_it0(s), iE);
+So _so_iE(So *s, size_t iE) {
+    So result = so_ll(_so_it0(s), iE);
     return result;
 }
 
-So so_sub(So s, size_t i0, size_t iE) {
-    So result = so_ll(so_it(s, i0), so_len(s) - (iE - i0));
+So _so_sub(So *s, size_t i0, size_t iE) {
+    So result = so_ll(_so_it(s, i0), _so_len(s) - (iE - i0));
     return result;
 }
+#endif
 
 void so_clear(So *s) {
     s->ref.len &= SO_HEAP_BIT;

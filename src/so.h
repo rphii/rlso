@@ -46,28 +46,31 @@ void so_print_debug(So s);
 #define so_l(s)         (So){ .ref.str = (s), .ref.len = (s) ? strlen((s)) : 0 }
 #define so_ll(s, l)     (So){ .ref.str = (s), .ref.len = (l) }
 
-const char so_at(So s, size_t i);
+const char  so_at(So s, size_t i);
 const char _so_at(So *s, size_t i);
-const char so_at0(So s);
+const char  so_at0(So s);
 const char _so_at0(So *s);
-#define so_it(s, i) _so_it(&(s), i)
-char *_so_it(So *s, size_t i);
-#define so_it0(s) _so_it0(&(s))
-char *_so_it0(So *s);
-So so_i0(So s, size_t i0);
-So so_iE(So s, size_t iE);
-So so_sub(So s, size_t i0, size_t iE);
-void so_push(So *s, char c);
-void so_extend(So *s, So b);
-void so_resize(So *s, size_t len);
-void so_fmt(So *s, const char *fmt, ...);
-void so_fmt_va(So *s, const char *fmt, va_list va);
-size_t so_len(So s);
-size_t _so_len(So *s);
-void so_copy(So *s, So b);
-So so_clone(So b);
-void so_clear(So *s);
-void so_free(So *s);
+#define     so_it(s, i) _so_it(&(s), i)
+char *      _so_it(So *s, size_t i);
+#define     so_it0(s) _so_it0(&(s))
+char *     _so_it0(So *s);
+#define     so_i0(s, i0)        so_ll(so_it(s, i0), so_len(s) - i0)
+#define    _so_i0(s, i0)        so_ll(_so_it(s, i0), _so_len(s) - i0)
+#define     so_iE(s, iE)        so_ll(so_it0(s), iE)
+#define    _so_iE(s, iE)        so_ll(_so_it0(s), iE)
+#define     so_sub(s, i0, iE)   so_ll(so_it(s, i0), so_len(s) - (iE - i0))
+#define    _so_sub(s, i0, iE)   so_ll(_so_it(s, i0), _so_len(s) - (iE - i0))
+void        so_push(So *s, char c);
+void        so_extend(So *s, So b);
+void        so_resize(So *s, size_t len);
+void        so_fmt(So *s, const char *fmt, ...);
+void        so_fmt_va(So *s, const char *fmt, va_list va);
+size_t      so_len(So s);
+size_t     _so_len(So *s);
+void        so_copy(So *s, So b);
+So          so_clone(So b);
+void        so_clear(So *s);
+void        so_free(So *s);
 
 #define SO_H
 #endif
