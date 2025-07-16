@@ -6,7 +6,7 @@
 #include <stdarg.h>
 #include <string.h> /* strlen */
 
-#define SO_STACK_CAP    (sizeof(So_Ref) - 1)
+#define SO_STACK_CAP        (sizeof(So_Ref) - 1)
 #define SO_STACK_HEAP_BIT   (((size_t)1) << ((sizeof(unsigned char)) * 8 - 1))
 
 typedef struct So_Ref {
@@ -71,6 +71,7 @@ size_t      so_len(So s);
 size_t     _so_len(So *s);
 void        so_copy(So *s, So b);
 So          so_clone(So b);
+char *      so_dup(So so);
 void        so_clear(So *s);
 void        so_free(So *s);
 

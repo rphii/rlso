@@ -21,6 +21,10 @@ bool so_is_heap(So s) {
     return (s.ref.len & SO_HEAP_BIT);
 }
 
+bool _so_is_heap(So *s) {
+    return (s->ref.len & SO_HEAP_BIT);
+}
+
 size_t so_len(So s) {
     if(so_is_stack(s)) return s.stack.len;
     return s.ref.len & ~SO_HEAP_BIT;
@@ -36,6 +40,27 @@ static inline size_t _so_len_known(So *s, bool is_stack) {
     return s->ref.len & ~SO_HEAP_BIT;
 }
 
+void so_set_len(So *so, size_t len) {
+    if(_so_is_stack(so)) {
+        so->stack.len = len;
+    } else if(_so_is_heap(so)) {
+        so->ref.len = len | SO_HEAP_BIT;
+    } else {
+        so->ref.len = len;
+    }
+}
+
+void so_change_len(So *so, size_t len) {
+    if(_so_is_stack(so)) {
+        so->stack.len += len;
+    } else if(_so_is_heap(so)) {
+        so->ref.len += len;
+        so->ref.len |= SO_HEAP_BIT;
+    } else {
+        so->ref.len += len;
+    }
+}
+
 
 void so_copy(So *s, So b) {
     so_clear(s);
@@ -49,6 +74,14 @@ So so_clone(So b) {
     size_t len = so_len(b);
     so_resize_known(&result, 0, len);
     memcpy(so_it0(result), so_it0(b), len);
+    return result;
+}
+
+char *so_dup(So so) {
+    So_Ref ref = so_ref(so);
+    char *result = malloc(ref.len + 1);
+    memcpy(result, ref.str, ref.len);
+    result[ref.len] = 0;
     return result;
 }
 
