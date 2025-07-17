@@ -15,13 +15,13 @@ void so_printdbg(So so) {
             SO_F(so), so_len(so));
     if(so_is_stack(so)) printf("/%zu", SO_STACK_CAP);
     if(so_is_heap(so)) {
-        printf("/%zu", so_heap_base(so)->cap);
-        printf("<sizeof:%zu+%zu+%zu>", sizeof(So), sizeof(So_Heap), so_heap_base(so)->cap);
+        printf("/%zu", so_heap_base(&so)->cap);
+        printf("<sizeof:%zu+%zu+%zu>", sizeof(So), sizeof(So_Heap), so_heap_base(&so)->cap);
     }
     printf("{");
     for(size_t i = 0; i < so_len(so); ++i) {
         if(i) printf(" ");
-        printf("%02x", so_at(so, i));
+        printf("%02x", (unsigned char)so_at(so, i));
     }
     printf("}");
     printf("\n");
@@ -41,8 +41,8 @@ void so_fprintdbg(FILE *fp, So so) {
             SO_F(so), so_len(so));
     if(so_is_stack(so)) fprintf(fp, "/%zu", SO_STACK_CAP);
     if(so_is_heap(so)) {
-        fprintf(fp, "/%zu", so_heap_base(so)->cap);
-        fprintf(fp, "<sizeof:%zu+%zu+%zu>", sizeof(So), sizeof(So_Heap), so_heap_base(so)->cap);
+        fprintf(fp, "/%zu", so_heap_base(&so)->cap);
+        fprintf(fp, "<sizeof:%zu+%zu+%zu>", sizeof(So), sizeof(So_Heap), so_heap_base(&so)->cap);
     }
     fprintf(fp, "\n");
 }

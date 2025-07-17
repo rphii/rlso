@@ -35,14 +35,18 @@ int main(int argc, char **argv) {
     so_printdbg(s);
     so_push(&s, 'a');
     so_printdbg(s);
-    s = so("hello, world!!");
+    s = so("hello, world!");
+    so_printdbg(s);
+    so_push(&s, '?');
     so_printdbg(s);
     so_push(&s, 'a');
     so_printdbg(s);
-    printf(" > %u\n", s.stack.len);
+    //printf(" > %u\n", s.stack.len);
     so_push(&s, 'b');
     so_printdbg(s);
-    printf(" > %u\n", s.stack.len);
+    //printf(" > %u\n", s.stack.len);
+    so_push(&s, 'c');
+    so_printdbg(s);
     so_clear(&s);
     so_printdbg(s);
 #if 1

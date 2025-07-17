@@ -9,11 +9,69 @@ static void so_resize_known(So *s, size_t len_old, size_t len_new);
 static size_t _so_len_known(So *s, bool is_stack);
 static char *_so_it0_known(So *s, bool is_stack);
 
+static char *so_grow_by_stack(So *so, size_t len_add);
+static char *so_grow_by_heap(So *so, size_t len_add);
+static char *so_grow_by_ref(So *so, size_t len_add);
+static char *so_grow_by(So *so, size_t len_add);
+static bool _so_is_stack(So *s);
+static bool _so_is_heap(So *s);
+
+static char *so_grow_by_stack(So *so, size_t len_add) {
+    size_t len_was = so->stack.len;
+    if(len_was + len_add <= SO_STACK_CAP) {
+        so->stack.len += len_add;
+        return so->stack.str + len_was;
+    } else {
+        So_Heap *heap = so_heap_grow(0, len_was + len_add);
+        memcpy(heap->str, so->stack.str, len_was);
+        so->ref.str = heap->str;
+        so->ref.len = (len_was + len_add) | SO_HEAP_BIT;
+        return so->ref.str + len_was;
+    }
+}
+
+static char *so_grow_by_heap(So *so, size_t len_add) {
+    size_t len_was = so->ref.len & ~SO_HEAP_BIT;
+    So_Heap *heap = so_heap_base(so);
+    if(len_was + len_add >= heap->cap) {
+        heap = so_heap_grow(heap, len_was + len_add);
+        so->ref.str = heap->str;
+    }
+    so->ref.len = (len_was + len_add) | SO_HEAP_BIT;
+    return so->ref.str + len_was;
+}
+
+static char *so_grow_by_ref(So *so, size_t len_add) {
+    size_t len_was = so->ref.len;
+    if(len_was + len_add <= SO_STACK_CAP) {
+        memmove(so->stack.str, so->ref.str, len_was);
+        so->stack.len = len_was + len_add;
+        return so->stack.str + len_was;
+    } else {
+        So_Heap *heap = so_heap_grow(0, len_was + len_add);
+        memcpy(heap->str, so->ref.str, len_was);
+        so->ref.str = heap->str;
+        so->ref.len = (len_was + len_add) | SO_HEAP_BIT;
+        return so->ref.str + len_was;
+    }
+}
+
+static char *so_grow_by(So *so, size_t len_add) {
+    if(_so_is_stack(so)) {
+        return so_grow_by_stack(so, len_add);
+    } else if(_so_is_heap(so)) {
+        return so_grow_by_heap(so, len_add);
+    } else {
+        return so_grow_by_ref(so, len_add);
+    }
+}
+
+
 bool so_is_stack(So s) {
     return (s.stack.len & ~SO_STACK_HEAP_BIT);
 }
 
-bool _so_is_stack(So *s) {
+static bool _so_is_stack(So *s) {
     return (s->stack.len & ~SO_STACK_HEAP_BIT);
 }
 
@@ -21,7 +79,7 @@ bool so_is_heap(So s) {
     return (s.ref.len & SO_HEAP_BIT);
 }
 
-bool _so_is_heap(So *s) {
+static bool _so_is_heap(So *s) {
     return (s->ref.len & SO_HEAP_BIT);
 }
 
@@ -86,16 +144,12 @@ char *so_dup(So so) {
 }
 
 void so_push(So *s, char c) {
-    size_t len = so_len(*s);
-    so_resize_known(s, len, len + 1);
-    *_so_it(s, len) = c;
+    *so_grow_by(s, 1) = c;
 }
 
 void so_extend(So *s, So b) {
-    size_t len_a = so_len(*s);
-    size_t len_b = so_len(b);
-    so_resize_known(s, len_a, len_a + len_b);
-    memcpy(_so_it(s, len_a), so_it(b, 0), len_b);
+    So_Ref ref = so_ref(b);
+    memcpy(so_grow_by(s, ref.len), ref.str, ref.len);
 }
 
 void so_resize_known(So *s, size_t len_old, size_t len_new) {
@@ -111,7 +165,7 @@ void so_resize_known(So *s, size_t len_old, size_t len_new) {
             }
             s->stack.len = len_new;
         } else {
-            So_Heap *heap = is_heap ? so_heap_base(*s) : 0;
+            So_Heap *heap = is_heap ? so_heap_base(s) : 0;
             heap = so_heap_grow(heap, len_new);
             if(is_stack) memcpy(heap->str, s->stack.str, len_old);
             else if(!is_heap) memcpy(heap->str, s->ref.str, len_old);
@@ -232,7 +286,7 @@ void so_clear(So *s) {
 }
 
 void so_free(So *s) {
-    if(so_is_heap(*s)) free(so_heap_base(*s));
+    if(so_is_heap(*s)) free(so_heap_base(s));
     memset(s, 0, sizeof(*s));
 }
 

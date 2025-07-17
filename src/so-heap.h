@@ -13,7 +13,7 @@ typedef struct So_Heap {
 struct So;
 
 So_Heap *so_heap_grow(So_Heap *heap, size_t cap);
-So_Heap *so_heap_base(struct So s);
+So_Heap *so_heap_base(struct So *s);
 
 #define SO_HEAP_H
 #endif

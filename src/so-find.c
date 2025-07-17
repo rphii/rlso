@@ -105,6 +105,10 @@ size_t so_find_sub(So so, So sub, So_Cmp_Attr attr) { /*{{{*/
 #endif
 } /*}}}*/
 
+size_t so_find_nsub(So so, So sub, So_Cmp_Attr attr) { /*{{{*/
+    assert(0);
+} /*}}}*/
+
 size_t so_rfind_f(So so, size_t *out_iE) { /*{{{*/
 #if 0
     size_t i0 = so_rfind_sub(so, so(FS_BEG), false);
@@ -208,6 +212,10 @@ size_t so_rfind_sub(So so, So subso, So_Cmp_Attr attr) { /*{{{*/
 #else
     assert(0);
 #endif
+} /*}}}*/
+
+size_t so_rfind_nsub(So so, So sub, So_Cmp_Attr attr) { /*{{{*/
+    assert(0);
 } /*}}}*/
 
 #if 0
