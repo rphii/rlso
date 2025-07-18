@@ -4,6 +4,7 @@
 #include <string.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <rphii/err.h>
 
 static void so_resize_known(So *s, size_t len_old, size_t len_new);
 static size_t _so_len_known(So *s, bool is_stack);
@@ -66,6 +67,9 @@ static char *so_grow_by(So *so, size_t len_add) {
     }
 }
 
+bool so_is_empty(So s) {
+    return !so_len(s);
+}
 
 bool so_is_stack(So s) {
     return (s.stack.len & ~SO_STACK_HEAP_BIT);

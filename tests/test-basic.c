@@ -1,6 +1,8 @@
 #include "../src/so.h"
 #include "../src/so-heap.h"
 #include "../src/so-print.h"
+#include "../src/so-splice.h"
+#include "../src/so-trim.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -74,6 +76,15 @@ int main(int argc, char **argv) {
     so_extend(&c, a);
     so_fmt(&c, "asdf %s", "lol");
     so_printdbg(c);
+
+    for(So splice = {0}; so_splice(so("a0,   b11,c222  ,,        d4444        , "), &splice, ','); ) {
+        splice = so_trim(splice);
+        if(so_is_empty(splice)) continue;
+        so_println(splice);
+        so_println(so_triml(splice));
+        so_println(so_trimr(splice));
+        so_println(so_trim(splice));
+    }
 
 #if 0
     So append = {0};

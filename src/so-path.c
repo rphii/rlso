@@ -1,8 +1,8 @@
+#include <rphii/platform-detect.h>
+
 #include "so.h"
 #include "so-find.h"
 #include "so-path.h"
-
-#define PLATFORM_CH_SUBDIR  '/'
 
 const So so_get_ext(So str) { /*{{{*/
     //size_t len = so_len_raw(str);

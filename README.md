@@ -4,6 +4,8 @@ Small String Optimized and Dynamically Allocatable String in C.
 
 ## 🛠️ Installation
 
+- Depends on [rphii/metac](https://github.com/rphii/metac)
+
 ```sh
 git clone https://github.com/rphii/so && cd so
 setup build && meson install -C build
@@ -45,7 +47,7 @@ Notes:
 | `so-as.md` | string to type conversions | [so-as.h](src/so-as.h) | [so-as.c](src/so-as.c) |
 | `so-uc.md` | utf8 + unicode conversions | | |
 | `so-fx.md` | formatting (bold, it, ul, rgb) | | |
-| `so-file.md` | read + write files | | |
+| `so-file.md` | read + write files | [so-file.h](src/so-file.h) | [so-file.c](src/so-file.c) |
 | `so-env.md` | environment variables | [so-env.h](src/so-env.h) | [so-env.c](src/so-env.c) |
 | [`so-trim.md`](md/so-trim.md) | trimming | [so-trim.h](src/so-trim.h) | [so-trim.c](src/so-trim.c) |
 | `so-path.md` | handling as path | [so-path.h](src/so-path.h) | [so-path.c](src/so-path.c) |

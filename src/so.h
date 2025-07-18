@@ -1,6 +1,7 @@
 #ifndef SO_H
 
-#include "endian.h"
+#include <rphii/endian-detect.h>
+
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdarg.h>
@@ -38,6 +39,7 @@ typedef struct So {
 
 #define SO_F(s)     (int)(so_len(s)), so_it0(s)
 
+bool so_is_empty(So s);
 bool so_is_stack(So s);
 bool so_is_heap(So s);
 void so_print_debug(So s);

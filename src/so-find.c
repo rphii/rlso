@@ -158,12 +158,11 @@ size_t so_rfind_ws(So so) { /*{{{*/
 } /*}}}*/
 
 size_t so_rfind_nws(So so) { /*{{{*/
-    size_t len = so_len(so);
-    char *s0 = so_it0(so);
-    for(size_t i = len; i > 0; --i) {
-        if(!isspace(s0[i - 1])) return i - 1;
+    So_Ref ref = so_ref(so);
+    for(size_t i = ref.len; i > 0; --i) {
+        if(!isspace(ref.str[i - 1])) return i - 1;
     }
-    return len;
+    return ref.len;
 } /*}}}*/
 
 size_t so_rfind_any(So so, So any) { /*{{{*/
