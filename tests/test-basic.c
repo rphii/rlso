@@ -3,10 +3,12 @@
 #include "../src/so-print.h"
 #include "../src/so-splice.h"
 #include "../src/so-trim.h"
+#include "../src/so-uc.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(int argc, char **argv) {
+    int err = 0;
     So s = {0};
 
 #if defined(ENDIAN_BIG)
@@ -85,6 +87,13 @@ int main(int argc, char **argv) {
         so_println(so_trimr(splice));
         so_println(so_trim(splice));
     }
+
+    So_Uc_Point point = { .val = 0x2235 };
+    So uc = {0};
+    err = so_uc_fmt_point(&uc, &point);
+    so_println(uc);
+    so_uc_point(uc, &point);
+    printf("point %u / %#x, bytes: %u\n", point.val, point.val, point.bytes);
 
 #if 0
     So append = {0};

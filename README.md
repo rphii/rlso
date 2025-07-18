@@ -43,9 +43,9 @@ Notes:
 | `so-find.md` | find within | [so-find.h](src/so-find.h) | [so-find.c](src/so-find.c) |
 | `so-count.md` | count things | [so-count.h](src/so-count.h) | [so-count.c](src/so-count.c) |
 | `so-split.md` | split into parts | [so-split.h](src/so-split.h) | [so-split.c](src/so-split.c) |
-| `so-splice.md` | splice repeatedly | | |
+| `so-splice.md` | splice repeatedly | [so-splice.h](src/so-splice.h) | [so-splice.c](src/so-splice.c) |
 | `so-as.md` | string to type conversions | [so-as.h](src/so-as.h) | [so-as.c](src/so-as.c) |
-| `so-uc.md` | utf8 + unicode conversions | | |
+| `so-uc.md` | utf8 + unicode conversions | [so-uc.h](src/so-uc.h) | [so-uc.c](src/so-uc.c) |
 | `so-fx.md` | formatting (bold, it, ul, rgb) | | |
 | `so-file.md` | read + write files | [so-file.h](src/so-file.h) | [so-file.c](src/so-file.c) |
 | `so-env.md` | environment variables | [so-env.h](src/so-env.h) | [so-env.c](src/so-env.c) |

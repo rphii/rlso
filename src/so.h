@@ -39,10 +39,9 @@ typedef struct So {
 
 #define SO_F(s)     (int)(so_len(s)), so_it0(s)
 
-bool so_is_empty(So s);
-bool so_is_stack(So s);
-bool so_is_heap(So s);
-void so_print_debug(So s);
+bool        so_is_empty(So s);
+bool        so_is_stack(So s);
+bool        so_is_heap(So s);
 
 #define     so(s)           (So){ .ref.str = (s), .ref.len = sizeof((s)) - 1 }
 #define     so_l(s)         (So){ .ref.str = (s), .ref.len = (s) ? strlen((s)) : 0 }
