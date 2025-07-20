@@ -5,7 +5,7 @@ int main(int argc, char **argv) {
     So so = {0};
     So out = {0};
     for(int i = 1; i < argc; ++i) {
-        printf("%u/%u read %.*s\n", i+1, argc, SO_F(so_l(argv[i])));
+        printf("%u/%u read %.*s\n", i, argc-1, SO_F(so_l(argv[i])));
         so_clear(&so);
         if(so_file_read(so_l(argv[i]), &so)) ERR_PRINTF("  failed reading '%.*s'", SO_F(so_l(argv[i])));
         so_extend(&out, so);
