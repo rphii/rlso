@@ -6,11 +6,11 @@ int main(int argc, char **argv) {
     So out = {0};
     for(int i = 1; i < argc; ++i) {
         so_clear(&so);
-        so_file_read(so_l(argv[i]), &so);
+        if(so_file_read(so_l(argv[i]), &so)) THROW_PRINT("failed reading '%.*s'", SO_F(so_l(argv[i])));
         so_extend(&out, so);
         printf("%.*s\n", SO_F(so));
     }
-    so_file_write(so("out.txt"), out);
+    if(so_file_write(so("out.txt"), out)) THROW_PRINT("failed writing file\n");
     so_free(&so);
 }
 
