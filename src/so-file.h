@@ -11,6 +11,7 @@ typedef enum {
     SO_FILE_ERR_DIR,
     SO_FILE_ERR_OPEN,
     SO_FILE_ERR_BYTES,
+    SO_FILE_ERR_INVALID,
 } So_File_Err;
 
 ErrDecl so_file_read(So filename, So *content);

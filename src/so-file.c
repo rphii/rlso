@@ -2,6 +2,7 @@
 #include "so-file.h"
 #include "so-as.h"
 
+#include <stdint.h>
 #include <rphii/err.h>
 #include <rphii/platform-detect.h>
 #include <stdlib.h>
@@ -15,6 +16,8 @@ ErrDecl so_file_read_fp(FILE *file, So *content) {
     fseek(file, 0, SEEK_END);
     size_t bytes_file = (size_t)ftell(file);
     fseek(file, 0, SEEK_SET);
+    if(bytes_file == (SIZE_MAX>>1)) ERR(SO_FILE_ERR_INVALID);
+    if(SIZE_IS_NEG(bytes_file)) ERR(SO_FILE_ERR_INVALID);
     /* allocate memory */
     so_resize(content, bytes_file);
     /* read file */
