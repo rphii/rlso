@@ -1,5 +1,6 @@
 #ifndef SO_COUNT_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
 typedef struct So So;

@@ -7,7 +7,8 @@ sources = [
   'so-input.c',
   'so-print.c',
   'so-trim.c',
-  'so.c'
+  'so.c',
+  'vso.c',
   ]
 
 headers = [
@@ -20,7 +21,8 @@ headers = [
   'so-input.h',
   'so-print.h',
   'so-trim.h',
-  'so.h'
+  'so.h',
+  'vso.h',
   ]
 
 install_headers(headers, subdir: 'rphii')
