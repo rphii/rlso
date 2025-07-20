@@ -26,12 +26,11 @@ clean:
     return err;
 }
 
-int so_file_write_fp(FILE *file, So *content) {
+int so_file_write_fp(FILE *file, So content) {
     ASSERT_ARG(file);
-    ASSERT_ARG(content);
     int err = 0;
     /* write file */
-    So_Ref ref = _so_ref(content);
+    So_Ref ref = so_ref(content);
     size_t bytes_written = fwrite(ref.str, 1, ref.len, file);
     if(bytes_written != ref.len) ERR(SO_FILE_ERR_BYTES);
 clean:
@@ -65,8 +64,7 @@ clean:
     return err;
 }
 
-ErrDecl so_file_write(So filename, So *content) {
-    ASSERT_ARG(content);
+ErrDecl so_file_write(So filename, So content) {
     int err = 0;
     FILE *file = 0;
     /* open the file */

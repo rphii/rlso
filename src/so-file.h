@@ -14,7 +14,7 @@ typedef enum {
 } So_File_Err;
 
 ErrDecl so_file_read(So filename, So *content);
-ErrDecl so_file_write(So filename, So *content);
+ErrDecl so_file_write(So filename, So content);
 
 #define SO_FILE_H
 #endif

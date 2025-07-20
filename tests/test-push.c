@@ -89,10 +89,7 @@ void run_test_ext(size_t n, size_t len) {
     for(size_t i = 0; i < len; ++i) so_push(&b, fast_rand());
     clock_gettime(CLOCK_REALTIME, &t0);
     for(size_t i = 0; i < n; ++i) {
-        so_clear(&a);
-        for(size_t j = 0; j < len; ++j) {
-            so_extend(&a, b);
-        }
+        so_extend(&a, b);
     }
     clock_gettime(CLOCK_REALTIME, &tE);
     so_free(&a);
