@@ -1,4 +1,4 @@
-#include <rphii/platform-detect.h>
+#include <rl/platform-detect.h>
 
 #include "so.h"
 #include "so-find.h"

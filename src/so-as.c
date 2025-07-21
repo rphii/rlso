@@ -1,7 +1,7 @@
 #include "so.h"
 #include "so-as.h"
 #include <stdlib.h>
-#include <rphii/err.h>
+#include <rl/err.h>
 
 void so_as_cstr(So so, char *buf, size_t cap) {
     ASSERT_ARG(buf);

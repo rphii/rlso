@@ -1,7 +1,7 @@
 #include "so.h"
 #include "so-find.h"
 #include "so-splice.h"
-#include <rphii/err.h>
+#include <rl/err.h>
 #include <stdlib.h>
 
 size_t so_splice(So to_splice, So *prev, char sep) { /*{{{*/

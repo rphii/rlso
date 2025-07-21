@@ -4,7 +4,7 @@
 #include <string.h>
 #include <assert.h>
 #include <stdlib.h>
-#include <rphii/err.h>
+#include <rl/err.h>
 
 static void so_resize_known(So *s, size_t len_old, size_t len_new);
 static size_t _so_len_known(So *s, bool is_stack);

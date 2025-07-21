@@ -3,8 +3,8 @@
 #include "so-as.h"
 
 #include <stdint.h>
-#include <rphii/err.h>
-#include <rphii/platform-detect.h>
+#include <rl/err.h>
+#include <rl/platform-detect.h>
 #include <stdlib.h>
 #include <errno.h>
 

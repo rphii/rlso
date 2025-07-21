@@ -1,6 +1,6 @@
 #ifndef SO_H
 
-#include <rphii/endian-detect.h>
+#include <rl/endian-detect.h>
 
 #include <stddef.h>
 #include <stdbool.h>
