@@ -25,9 +25,12 @@ headers = [
   'vso.h',
   ]
 
+dep_rphiic = dependency('rphiic', required: true)
+
 install_headers(headers, subdir: 'rphii')
 rphiiso = library('rphiiso',
   sources,
+  dependencies: [dep_rphiic],
   install: true,
   )
 
