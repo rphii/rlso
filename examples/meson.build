@@ -7,7 +7,7 @@ examples = [
 tests = []
 
 foreach ex : examples
-  tests += executable(ex, ex + '.c', link_with: rphiiso)
+  tests += executable(ex, ex + '.c', link_with: rlso)
 endforeach
 
 foreach ex : tests

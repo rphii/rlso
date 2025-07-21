@@ -53,7 +53,7 @@ const char  so_at0(So s);
 const char _so_at0(So *s);
 #define     so_it(s, i) _so_it(&(s), i)
 char *     _so_it(So *s, size_t i);
-#define     so_it0(s) _so_it0(&(s))
+#define     so_it0(s)           (so_is_stack((s)) ? (s).stack.str : (s).ref.str)    //_so_it0(&(s))
 char *     _so_it0(So *s);
 #define     so_i0(s, i0)        so_ll(so_it(s, i0), so_len(s) - i0)
 #define    _so_i0(s, i0)        so_ll(_so_it(s, i0), _so_len(s) - i0)

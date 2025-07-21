@@ -7,6 +7,7 @@ sources = [
   'so-input.c',
   'so-print.c',
   'so-trim.c',
+  'so-uc.c',
   'so.c',
   'vso.c',
   ]
@@ -21,16 +22,17 @@ headers = [
   'so-input.h',
   'so-print.h',
   'so-trim.h',
+  'so-uc.h',
   'so.h',
   'vso.h',
   ]
 
-dep_rphiic = dependency('rphiic', required: true)
+dep_rlc = dependency('rlc', required: true)
 
-install_headers(headers, subdir: 'rphii')
-rphiiso = library('rphiiso',
+install_headers(headers, subdir: 'rl')
+rlso = library('rlso',
   sources,
-  dependencies: [dep_rphiic],
+  dependencies: [dep_rlc],
   install: true,
   )
 
