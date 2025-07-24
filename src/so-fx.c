@@ -21,14 +21,13 @@ size_t so_len_nfx(So str) { /*{{{*/
         if(!count) {
             if(so_at(snip, 0) == 'm') {
                 count = true;
-                --len_nof;
             }
         } else {
+            ++len_nof;
             if(!so_cmp0(snip, pat)) {
                 count = false;
             }
         }
-        if(count) ++len_nof;
         //printff("SNIP %.*s", SO_F(snip));
         snip = so_i0(snip, 1);
     }
