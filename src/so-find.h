@@ -17,6 +17,7 @@ size_t so_find_sub(So str, So sub, So_Cmp_Attr attr);
 size_t so_find_nsub(So str, So sub, So_Cmp_Attr attr);
 
 size_t so_rfind_f(So str, size_t *out_iE);
+size_t so_rfind_f0(So str, So *fmt);
 size_t so_rfind_ch(So str, char c);
 size_t so_rfind_nch(So str, char c);
 size_t so_rfind_ws(So str);

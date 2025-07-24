@@ -2,8 +2,11 @@
 #include "so.h"
 #include "so-find.h"
 #include "so-cmp.h"
+#include "so-count.h"
+#include "so-cmp-attr.h"
 #include <assert.h>
 #include <ctype.h>
+#include <rl/colorprint.h>
 
 size_t so_find_ch(So so, char c) { /*{{{*/
     size_t len = so_len(so);
@@ -76,52 +79,30 @@ size_t so_find_nany(So so, So any) { /*{{{*/
 } /*}}}*/
 
 size_t so_find_sub(So so, So sub, So_Cmp_Attr attr) { /*{{{*/
-#if 0
-    size_t len = so_len(so);
-    size_t len2 = so_len(sub);
+    So_Ref rso = so_ref(so);
+    So_Ref rsub = so_ref(sub);
     /* basic checks */
-    if(!len2) return 0;
-    if(len2 > len) {
-        return len;
+    if(!rsub.len) return 0;
+    if(rsub.len > rso.len) {
+        return rso.len;
     }
-    /* store original indices */
-    So ref = so;
-    /* check for subsoing */
+    /* check for substring */
     size_t i = 0;
-    while(so_len(sub) <= so_len(ref)) {
-        size_t overlap = so_count_overlap(ref, sub, ignorecase);
-        if(overlap == so_len(sub)) {
+    while(rsub.len <= rso.len) {
+        size_t overlap = so_count_overlap(so_ll(rso.str, rso.len), sub, attr & SO_CMP_CASE_INSENSITIVE);
+        if(overlap == rsub.len) {
             return i;
         } else {
             i += overlap + 1;
-            ref.so += overlap + 1;
-            ref.len -= overlap + 1;
+            rso.str += overlap + 1;
+            rso.len -= overlap + 1;
         }
     }
-    /* restore original */
-    return len;
-#else
-    assert(0);
-#endif
+    return rso.len;
 } /*}}}*/
 
 size_t so_find_nsub(So so, So sub, So_Cmp_Attr attr) { /*{{{*/
     assert(0);
-} /*}}}*/
-
-size_t so_rfind_f(So so, size_t *out_iE) { /*{{{*/
-#if 0
-    size_t i0 = so_rfind_sub(so, so(FS_BEG), false);
-    if(out_iE) {
-        So s = so_i0(so, i0);
-        size_t iE = so_rfind_ch(s, 'm');
-        if(iE < so_len(s)) ++iE;
-        *out_iE = i0 + iE;
-    }
-    return i0;
-#else
-    assert(0);
-#endif
 } /*}}}*/
 
 size_t so_rfind_ch(So so, char c) { /*{{{*/
@@ -193,59 +174,58 @@ size_t so_rfind_nany(So so, So any) { /*{{{*/
     return len;
 } /*}}}*/
 
-size_t so_rfind_sub(So so, So subso, So_Cmp_Attr attr) { /*{{{*/
-#if 0
+size_t so_rfind_sub(So so, So sub, So_Cmp_Attr attr) { /*{{{*/
     /* basic checks */
-    size_t n = so_len(subso);
-    size_t m = so_len(so);
+    So_Ref rso = so_ref(so);
+    So_Ref rsub = so_ref(sub);
+    size_t n = rsub.len;
+    size_t m = rso.len;
     if(!n) return 0;
     if(n > m) {
         return m;
     }
-    const char *s = sub.so;
+    const char *s = rsub.str;
     for(size_t i = m - n + 1; i > 0; --i) {
         const char *t = so_it(so, i - 1);
         if(!memcmp(s, t, n)) return i - 1;
     }
     return m;
-#else
-    assert(0);
-#endif
 } /*}}}*/
 
 size_t so_rfind_nsub(So so, So sub, So_Cmp_Attr attr) { /*{{{*/
     assert(0);
 } /*}}}*/
 
-#if 0
 size_t so_find_f(So so, size_t *out_iE) { /*{{{*/
-#if 0
-    size_t i0 = so_find_subso(so, so(FS_BEG), false);
+    size_t i0 = so_find_sub(so, so(FS_BEG), false);
     if(out_iE) {
         So s = so_i0(so, i0);
-        //printf(" find m: [");
-        //so_printraw(s);
-        //printff("]");
         size_t iE = so_find_ch(s, 'm');
         if(iE < so_len(s)) ++iE;
         *out_iE = i0 + iE;
     }
     return i0;
-#else
-    assert(0);
-#endif
 } /*}}}*/
-size_t so_rfind_f0(So so, SoC *fmt) { /*{{{*/
-    size_t i0 = so_rfind_subso(so, so(FS_BEG), false);
-    So s = so_i0(so, i0);
+
+size_t so_rfind_f0(So str, So *fmt) { /*{{{*/
+    size_t i0 = so_rfind_sub(str, so(FS_BEG), false);
+    So s = so_i0(str, i0);
     size_t iE = so_find_ch(s, 'm');
     if(iE < so_len(s)) ++iE;
     s = so_iE(s, iE);
-    //printf("<FMT:%.*s>",STR_F(s));
     if(!so_cmpE(s, so("[0m"))) so_clear(&s);
     if(fmt) *fmt = s;
     return i0;
 } /*}}}*/
-#endif
 
+size_t so_rfind_f(So so, size_t *out_iE) { /*{{{*/
+    size_t i0 = so_rfind_sub(so, so(FS_BEG), false);
+    if(out_iE) {
+        So s = so_i0(so, i0);
+        size_t iE = so_rfind_ch(s, 'm');
+        if(iE < so_len(s)) ++iE;
+        *out_iE = i0 + iE;
+    }
+    return i0;
+} /*}}}*/
 
