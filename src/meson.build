@@ -1,6 +1,8 @@
 sources = [
   'so-as.c',
   'so-cmp.c',
+  'so-fx.c',
+  'so-align.c',
   'so-file.c',
   'so-find.c',
   'so-heap.c',
@@ -15,6 +17,8 @@ sources = [
 
 headers = [
   'so-as.h',
+  'so-fx.h',
+  'so-align.h',
   'so-cmp-attr.h',
   'so-cmp.h',
   'so-file.h',

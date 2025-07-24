@@ -19,4 +19,9 @@ void vso_free(VSo *v) {
     array_free(*v);
 }
 
+void vso_clear(VSo *v) {
+    ASSERT_ARG(v);
+    array_clear(*v);
+}
+
 
