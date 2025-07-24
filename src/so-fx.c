@@ -28,12 +28,9 @@ size_t so_len_nfx(So str) { /*{{{*/
                 count = false;
             }
         }
-        //printff("SNIP %.*s", SO_F(snip));
         snip = so_i0(snip, 1);
     }
     return len_nof;
-    printff(" LEN IS %zu",len);
-    return len;
 } /*}}}*/
 
 
