@@ -55,12 +55,12 @@ const char _so_at0(So *s);
 char *     _so_it(So *s, size_t i);
 #define     so_it0(s)           (so_is_stack((s)) ? (s).stack.str : (s).ref.str)    //_so_it0(&(s))
 char *     _so_it0(So *s);
-#define     so_i0(s, i0)        so_ll(so_it(s, i0), so_len(s) - i0)
-#define    _so_i0(s, i0)        so_ll(_so_it(s, i0), _so_len(s) - i0)
-#define     so_iE(s, iE)        so_ll(so_it0(s), iE)
-#define    _so_iE(s, iE)        so_ll(_so_it0(s), iE)
-#define     so_sub(s, i0, iE)   so_ll(so_it(s, i0), so_len(s) - (iE - i0))
-#define    _so_sub(s, i0, iE)   so_ll(_so_it(s, i0), _so_len(s) - (iE - i0))
+#define     so_i0(s, i0)        so_ll(so_it((s), i0), so_len((s)) - i0)
+#define    _so_i0(s, i0)        so_ll(_so_it((s), i0), _so_len((s)) - i0)
+#define     so_iE(s, iE)        so_ll(so_it0((s)), iE)
+#define    _so_iE(s, iE)        so_ll(_so_it0((s)), iE)
+#define     so_sub(s, i0, iE)   so_ll(so_it(s, i0), so_len((s)) - (iE - i0))
+#define    _so_sub(s, i0, iE)   so_ll(_so_it(s, i0), _so_len((s)) - (iE - i0))
 #define     so_ref(s) _so_ref(&(s))
 So_Ref     _so_ref(So *s);
 void        so_push(So *s, char c);
@@ -75,6 +75,8 @@ So          so_clone(So b);
 char *      so_dup(So so);
 void        so_clear(So *s);
 void        so_free(So *s);
+void        so_1buf_old(So *so, size_t *index);
+void        so_1buf_new(So *so, size_t *index);
 
 #define SO_H
 #endif

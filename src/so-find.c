@@ -8,13 +8,13 @@
 #include <ctype.h>
 #include <rl/colorprint.h>
 
+#include <rl/err.h>
 size_t so_find_ch(So so, char c) { /*{{{*/
-    size_t len = so_len(so);
-    char *s0 = so_it0(so);
+    So_Ref ref = so_ref(so);
 #if 1
-    char *s = memchr(s0, c, len);
-    if(!s) return len;
-    return s - s0;
+    char *s = memchr(ref.str, c, ref.len);
+    if(!s) return ref.len;
+    return s - ref.str;
 #else
     for(size_t i = 0; i < len; ++i) {
         if(s0[i] == c) return i;
@@ -196,6 +196,7 @@ size_t so_rfind_nsub(So so, So sub, So_Cmp_Attr attr) { /*{{{*/
     assert(0);
 } /*}}}*/
 
+#include <rl/err.h>
 size_t so_find_f(So so, size_t *out_iE) { /*{{{*/
     size_t i0 = so_find_sub(so, so(FS_BEG), false);
     if(out_iE) {

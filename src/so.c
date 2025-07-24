@@ -169,12 +169,7 @@ void so_resize_known(So *s, size_t len_old, size_t len_new) {
             }
             s->stack.len = len_new;
         } else {
-            So_Heap *heap = is_heap ? so_heap_base(s) : 0;
-            heap = so_heap_grow(heap, len_new);
-            if(is_stack) memcpy(heap->str, s->stack.str, len_old);
-            else if(!is_heap) memcpy(heap->str, s->ref.str, len_old);
-            s->ref.str = heap->str;
-            s->ref.len = len_new | SO_HEAP_BIT;
+            so_grow_by(s, len_new - len_old);
         }
     } else if(len_new < len_old) {
         if(is_stack) s->stack.len = len_new;
@@ -183,8 +178,6 @@ void so_resize_known(So *s, size_t len_old, size_t len_new) {
 }
 
 void so_resize(So *s, size_t len_new) {
-    bool is_stack = so_is_stack(*s);
-    bool is_heap = so_is_heap(*s);
     size_t len_old = so_len(*s);
     so_resize_known(s, len_old, len_new);
 }
@@ -211,10 +204,16 @@ void so_fmt_va(So *s, const char *fmt, va_list va) {
     /* calculate required memory */
     size_t len_old = so_len(*s);
     size_t len_new = len_old + len_app;
+    so_grow_by(s, len_app + 1);
     so_resize(s, len_new);
 
-    /* actual append */
-    int len_chng = vsnprintf(_so_it(s, len_old), len_app + 1, fmt, va);
+    if(len_new) {
+        /* actual append */
+        ASSERT_ARG(s);
+        ASSERT_ARG(_so_it(s, len_old));
+        //printf("IS_STACK %u, IS_HEAP %u\n", _so_is_stack(s), _so_is_heap(s));
+        int len_chng = vsnprintf(_so_it(s, len_old), len_app + 1, fmt, va);
+    }
 
 #if 0
     // check for success
@@ -258,9 +257,9 @@ const char so_p_at0(So *s) {
 
 char *_so_it(So *s, size_t i) {
     if(_so_is_stack(s)) {
-      return &s->stack.str[i];
+        return &s->stack.str[i];
     } else {
-      return &s->ref.str[i];
+        return &s->ref.str[i];
     }
 }
 
@@ -293,4 +292,26 @@ void so_free(So *s) {
     if(so_is_heap(*s)) free(so_heap_base(s));
     memset(s, 0, sizeof(*s));
 }
+
+void so_1buf_old(So *so, size_t *index) {
+    ASSERT_ARG(so);
+    ASSERT_ARG(index);
+    *index = _so_len(so);
+}
+
+void so_1buf_new(So *so, size_t *index) {
+    ASSERT_ARG(so);
+    ASSERT_ARG(index);
+    if(!*index) return;
+    So_Ref ref = _so_ref(so);
+    size_t len_old = *index;
+    size_t len_new = ref.len - len_old;
+    //printff("onebuf new %zu->%zu (%zu)",len_old,ref.len,len_new);
+    //printff("i0 %zu[%.*s] / iBUF %zu[%.*s]", len_old, ref.str, ref.str, len_new, ref.str + len_old, ref.str + len_old);
+    memmove(ref.str, ref.str + len_old, len_new);
+    //memmove(_so_it0(so), _so_it(so, len_old), len_new);
+    so_resize(so, len_new);
+    *index = 0;
+}
+
 

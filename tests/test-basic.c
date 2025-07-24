@@ -4,12 +4,27 @@
 #include "../src/so-splice.h"
 #include "../src/so-trim.h"
 #include "../src/so-uc.h"
+#include "../src/so-input.h"
+#include "../src/so-fx.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(int argc, char **argv) {
     int err = 0;
     So s = {0};
+
+#if 0
+    So onebuf = {0};
+    size_t oneindex = 0;
+    so_fmt(&onebuf, "hello this is some sample string");
+    so_1buf_old(&onebuf, &oneindex);
+    printf("1INPUT:");
+    so_input(&onebuf);
+    so_1buf_new(&onebuf, &oneindex);
+    printf("ONEBUF:");
+    so_println(onebuf);
+    so_free(&onebuf);
+#endif
 
 #if defined(ENDIAN_BIG)
     printf("BIG ENDIAN\n");
@@ -102,6 +117,22 @@ int main(int argc, char **argv) {
         so_printdbg(append);
     }
 #endif
+
+    So_Align al = {
+        .i0 = 1,
+        .iNL = 2,
+        .iE = 10,
+    };
+    So_Fx fx = {
+        .bold = true,
+        .italic = true,
+        .underline = true,
+        .align = &al,
+    };
+    So sfx = {0};
+    so_fmt_fx(&sfx, fx, "a string with a very long text attached to it that is basically unnecessary!\n");
+    so_print(sfx);
+    so_free(&sfx);
 
     so_free(&c);
     so_printdbg(c);

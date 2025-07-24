@@ -1,12 +1,28 @@
 #ifndef SO_FX_H
 
-typedef struct SoAlign {
+#include <stdbool.h>
+#include <stddef.h>
+#include <rl/color.h>
 
-} SoAlign;
+#include "so-align.h"
 
-typedef struct SoFmtX {
-    SoAlign *align;
-} SoFmtX;
+typedef struct So So;
+
+typedef struct So_Fx {
+    So_Align *align;
+    Color fg;
+    Color bg;
+    bool *nocolor;
+    bool bold;
+    bool italic;
+    bool underline;
+    bool bashsafe;
+    bool websafe;
+} So_Fx;
+
+size_t so_len_nfx(So str);
+size_t so_nfx_index(So so, size_t index);
+void so_fmt_fx(So *out, So_Fx fx, char *fmt, ...);
 
 #define SO_FX_H
 #endif

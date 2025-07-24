@@ -44,18 +44,18 @@ size_t so_count_overlap(So a, So b, bool ignorecase) { /*{{{*/
     size_t overlap = 0;
     So_Ref ra = so_ref(a);
     So_Ref rb = so_ref(b);
-    size_t len = ra.len > rb.len ? ra.len  : rb.len;
+    size_t len = ra.len > rb.len ? rb.len : ra.len;
     if(!ignorecase) {
         for(size_t i = 0; i < len; ++i) {
             char ca = ra.str[i];
-            char cb = ra.str[i];
+            char cb = rb.str[i];
             if(ca == cb) ++overlap;
             else break;
         }
     } else {
         for(size_t i = 0; i < len; ++i) {
             int ca = tolower(ra.str[i]);
-            int cb = tolower(ra.str[i]);
+            int cb = tolower(rb.str[i]);
             if(ca == cb) ++overlap;
             else break;
         }
