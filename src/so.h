@@ -51,17 +51,17 @@ const char  so_at(So s, size_t i);
 const char _so_at(So *s, size_t i);
 const char  so_at0(So s);
 const char _so_at0(So *s);
-#define     so_it(s, i) _so_it(&(s), i)
+#define     so_it(s, i)         (so_is_stack((s)) ? (s).stack.str + (i) : (s).ref.str + (i))
 char *     _so_it(So *s, size_t i);
-#define     so_it0(s)           (so_is_stack((s)) ? (s).stack.str : (s).ref.str)    //_so_it0(&(s))
+#define     so_it0(s)           (so_is_stack((s)) ? (s).stack.str : (s).ref.str)
 char *     _so_it0(So *s);
 #define     so_i0(s, i0)        so_ll(so_it((s), i0), so_len((s)) - i0)
-#define    _so_i0(s, i0)        so_ll(_so_it((s), i0), _so_len((s)) - i0)
+So         _so_i0(So *s, size_t i0);
 #define     so_iE(s, iE)        so_ll(so_it0((s)), iE)
-#define    _so_iE(s, iE)        so_ll(_so_it0((s)), iE)
+So         _so_iE(So *s, size_t iE);
 #define     so_sub(s, i0, iE)   so_ll(so_it(s, i0), so_len((s)) - (iE - i0))
-#define    _so_sub(s, i0, iE)   so_ll(_so_it(s, i0), _so_len((s)) - (iE - i0))
-#define     so_ref(s) _so_ref(&(s))
+So         _so_sub(So *s, size_t i0, size_t iE);
+#define     so_ref(s)           (so_is_stack((s)) ? (So_Ref){ .str = (s).stack.str, .len = (s).stack.len } : (So_Ref){ .str = (s).ref.str, .len = (s).ref.len })
 So_Ref     _so_ref(So *s);
 void        so_push(So *s, char c);
 void        so_extend(So *s, So b);
@@ -77,6 +77,10 @@ void        so_clear(So *s);
 void        so_free(So *s);
 void        so_1buf_old(So *so, size_t *index);
 void        so_1buf_new(So *so, size_t *index);
+
+#if 0
+#define     so_ref(s) _so_ref(&(s))
+#endif
 
 #define SO_H
 #endif

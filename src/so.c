@@ -7,8 +7,6 @@
 #include <rl/err.h>
 
 static void so_resize_known(So *s, size_t len_old, size_t len_new);
-static size_t _so_len_known(So *s, bool is_stack);
-static char *_so_it0_known(So *s, bool is_stack);
 
 static char *so_grow_by_stack(So *so, size_t len_add);
 static char *so_grow_by_heap(So *so, size_t len_add);
@@ -97,11 +95,6 @@ size_t _so_len(So *s) {
     return s->ref.len & ~SO_HEAP_BIT;
 }
 
-static inline size_t _so_len_known(So *s, bool is_stack) {
-    if(is_stack) return s->stack.len;
-    return s->ref.len & ~SO_HEAP_BIT;
-}
-
 void so_set_len(So *so, size_t len) {
     if(_so_is_stack(so)) {
         so->stack.len = len;
@@ -134,7 +127,7 @@ void so_copy(So *s, So b) {
 So so_clone(So b) {
     So result = {0};
     size_t len = so_len(b);
-    so_resize_known(&result, 0, len);
+    so_grow_by(&result, len);
     memcpy(so_it0(result), so_it0(b), len);
     return result;
 }
@@ -224,65 +217,46 @@ void so_fmt_va(So *s, const char *fmt, va_list va) {
 }
 
 const char so_at(So s, size_t i) {
-    if(so_is_stack(s)) {
-        return s.stack.str[i];
-    } else {
-        return s.ref.str[i];
-    }
+    return so_is_stack(s) ? s.stack.str[i] : s.ref.str[i];
 }
 
 const char _so_at(So *s, size_t i) {
-    if(_so_is_stack(s)) {
-        return s->stack.str[i];
-    } else {
-        return s->ref.str[i];
-    }
+    return _so_is_stack(s) ? s->stack.str[i] : s->ref.str[i];
 }
 
 const char so_at0(So s) {
-    if(so_is_stack(s)) {
-        return s.stack.str[0];
-    } else {
-        return s.ref.str[0];
-    }
+    return so_is_stack(s) ? s.stack.str[0] : s.ref.str[0];
 }
 
-const char so_p_at0(So *s) {
-    if(_so_is_stack(s)) {
-        return s->stack.str[0];
-    } else {
-        return s->ref.str[0];
-    }
+const char _so_at0(So *s) {
+    return _so_is_stack(s) ? s->stack.str[0] : s->ref.str[0];
+}
+
+
+char *_so_it0(So *s) {
+    return so_it0(*s);
 }
 
 char *_so_it(So *s, size_t i) {
-    if(_so_is_stack(s)) {
-        return &s->stack.str[i];
-    } else {
-        return &s->ref.str[i];
-    }
+    return so_it(*s, i);
 }
 
-char *_so_it0(So *s) {
-    return _so_it0_known(s, so_is_stack(*s));
+So _so_i0(So *s, size_t i0) { 
+    return so_i0(*s, i0);
 }
 
-static inline char *_so_it0_known(So *s, bool is_stack) {
-    if(is_stack) {
-      return s->stack.str;
-    } else {
-      return s->ref.str;
-    }
+So _so_iE(So *s, size_t iE) {
+    return so_iE(*s, iE);
+}
+
+So _so_sub(So *s, size_t i0, size_t iE) {
+    return so_sub(*s, i0, iE);
 }
 
 So_Ref _so_ref(So *s) {
-    bool is_stack = _so_is_stack(s);
-    So_Ref result = {
-        .len = _so_len_known(s, is_stack),
-        .str = _so_it0_known(s, is_stack),
-    };
-    return result;
+    return so_ref(*s);
 }
+
 
 void so_clear(So *s) {
     s->ref.len &= SO_HEAP_BIT;
