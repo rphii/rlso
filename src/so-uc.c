@@ -10,10 +10,13 @@ ErrDecl so_uc_point(So so, So_Uc_Point *point) {
     else if((*ref.str & 0xE0) == 0xC0) point->bytes = 2;
     else if((*ref.str & 0xF0) == 0xE0) point->bytes = 3;
     else if((*ref.str & 0xF8) == 0xF0) point->bytes = 4;
+    else if((*ref.str & 0xFC) == 0xF8) point->bytes = 5;
+    else if((*ref.str & 0xFE) == 0xFC) point->bytes = 6;
     else return -1; //THROW("unknown utf-8 pattern [%02x,%02x,%02x,%02x,%02x,%02x,%02x,%02x]", (unsigned char )ref.str[0], (unsigned char )ref.str[1], (unsigned char )ref.str[2], (unsigned char )ref.str[3], (unsigned char )ref.str[4], (unsigned char )ref.str[5], (unsigned char )ref.str[6], (unsigned char )ref.str[7]);
     // magical mask shifting
-    int shift = (point->bytes - 1) * 6;
+    size_t shift = (point->bytes - 1) * 6;
     int mask = 0x7F;
+    if(ref.len < point->bytes) return -1;
     if(point->bytes > 1) mask >>= point->bytes;
     // extract info from bytes
     for(int i = 0; i < point->bytes; i++) {
@@ -33,12 +36,12 @@ ErrDecl so_uc_point(So so, So_Uc_Point *point) {
         mask = 0x3F;
     }
     // one final check, unicode doesn't go that far, wth unicode, TODO check ?!
-    if(tinker.val > 0x10FFFF || !point->bytes) {
-        point->val = (unsigned char)*ref.str;
-        point->bytes = 1;
-    } else {
+    /////if(tinker.val > 0x10FFFF || !point->bytes) {
+    /////    point->val = (unsigned char)*ref.str;
+    /////    point->bytes = 1;
+    /////} else {
         point->val = tinker.val;
-    }
+    /////}
     return 0;
 }
 
@@ -55,6 +58,7 @@ ErrDecl so_uc_fmt_point(So *out, So_Uc_Point *point) {
     else if(in < 0x200000) bytes = 4;
     else if(in < 0x4000000) bytes = 5;
     else if(in < 0x80000000) bytes = 6;
+    else return -1;
     shift = (bytes - 1) * 6;
     uint32_t mask = 0x7F;
     if(bytes > 1) mask >>= bytes;

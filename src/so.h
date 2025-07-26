@@ -43,7 +43,7 @@ bool        so_is_empty(So s);
 bool        so_is_stack(So s);
 bool        so_is_heap(So s);
 
-#define     so(s)           (So){ .ref.str = (s), .ref.len = sizeof((s)) - 1 }
+#define     so(s)           (So){ .ref.str = (s), .ref.len = (s) ? sizeof((s)) - 1 : 0 }
 #define     so_l(s)         (So){ .ref.str = (s), .ref.len = (s) ? strlen((s)) : 0 }
 #define     so_ll(s, l)     (So){ .ref.str = (s), .ref.len = (l) }
 

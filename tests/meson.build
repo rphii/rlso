@@ -1,7 +1,15 @@
 examples = [
-  'so',
-  'so_l',
-  'so_input'
+  'len-0',
+  'len-0.2',
+  'len-a',
+  'len-1000',
+  'push-len',
+  'uc',
+  'uc2',
+  'uc3',
+  'uc4',
+  'uc5',
+  'uc6',
   ]
 
 tests = []

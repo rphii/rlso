@@ -82,7 +82,7 @@ bool so_is_heap(So s) {
 }
 
 static bool _so_is_heap(So *s) {
-    return (s->ref.len & SO_HEAP_BIT);
+    return so_is_heap(*s);
 }
 
 size_t so_len(So s) {
@@ -91,8 +91,7 @@ size_t so_len(So s) {
 }
 
 size_t _so_len(So *s) {
-    if(_so_is_stack(s)) return s->stack.len;
-    return s->ref.len & ~SO_HEAP_BIT;
+    return so_len(*s);
 }
 
 void so_set_len(So *so, size_t len) {
@@ -221,7 +220,7 @@ const char so_at(So s, size_t i) {
 }
 
 const char _so_at(So *s, size_t i) {
-    return _so_is_stack(s) ? s->stack.str[i] : s->ref.str[i];
+    return so_at(*s, i);
 }
 
 const char so_at0(So s) {
@@ -229,7 +228,7 @@ const char so_at0(So s) {
 }
 
 const char _so_at0(So *s) {
-    return _so_is_stack(s) ? s->stack.str[0] : s->ref.str[0];
+    return so_at0(*s);
 }
 
 

@@ -1,7 +1,7 @@
 project('rlso', 'c')
 subdir('src')
 subdir('man')
-subdir('examples')
+subdir('tests')
 
 pkg = import('pkgconfig')
 pkg.generate(
