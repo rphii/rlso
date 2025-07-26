@@ -3,7 +3,7 @@
 
 ErrDecl so_uc_point(So so, So_Uc_Point *point) {
     So_Ref ref = so_ref(so);
-    ASSERT_ARG(point);
+    ASSERT_ARG(point); /* LCOV_EXCL_LINE */
     So_Uc_Point tinker = {0};
     // figure out how many bytes we need
     if((*ref.str & 0x80) == 0) point->bytes = 1;

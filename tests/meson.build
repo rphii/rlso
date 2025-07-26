@@ -10,6 +10,7 @@ examples = [
   'uc4',
   'uc5',
   'uc6',
+  'uc7',
   ]
 
 tests = []

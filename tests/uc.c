@@ -12,7 +12,7 @@ int main(void) {
     EXPECT(so_uc_point(so, &q), 0);
     EXPECT(q.bytes, p.bytes);
     EXPECT(q.val, p.val);
-    so_clear(&so);
+    so_free(&so);
     return 0;
 }
 

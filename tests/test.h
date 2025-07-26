@@ -8,6 +8,9 @@
 #define EXPECT(expr, val)   \
     ASSERT(expr == val, "expected true")
 
+#define NEXPECT(expr, val)   \
+    ASSERT(expr != val, "expected true")
+
 #define TEST_H
 #endif
 

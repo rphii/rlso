@@ -18,7 +18,7 @@ int main(void) {
     printff("bytes q %u, p %u", q.bytes, p.bytes);
     EXPECT(q.bytes, p.bytes);
     EXPECT(q.val, p.val);
-    so_clear(&so);
+    so_free(&so);
     return 0;
 }
 
