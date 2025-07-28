@@ -122,9 +122,10 @@ void so_change_len(So *so, size_t len) {
 
 void so_copy(So *s, So b) {
     so_clear(s);
-    size_t len = so_len(b);
-    so_resize_known(s, 0, len);
-    memcpy(_so_it0(s), so_it0(b), len);
+    So_Ref rb = so_ref(b);
+    So_Ref ref = _so_ref(s);
+    //so_resize_known(s, 0, ref.len);
+    memcpy(so_grow_by(s, rb.len), rb.str, ref.len);
 }
 
 //#include "so-print.h"
@@ -208,17 +209,17 @@ void so_fmt_va(So *s, const char *fmt, va_list va) {
 #endif
 
     /* calculate required memory */
-    size_t len_old = so_len(*s);
-    size_t len_new = len_old + len_app;
+    So_Ref old = _so_ref(s);
+    size_t len_new = old.len + len_app;
     so_grow_by(s, len_app + 1);
     so_resize(s, len_new);
 
     if(len_new) {
         /* actual append */
         ASSERT_ARG(s);
-        ASSERT_ARG(_so_it(s, len_old));
+        //ASSERT_ARG(_so_it(s, old.len));
         //printf("IS_STACK %u, IS_HEAP %u\n", _so_is_stack(s), _so_is_heap(s));
-        int len_chng = vsnprintf(_so_it(s, len_old), len_app + 1, fmt, va);
+        int len_chng = vsnprintf(old.str + old.len, len_app + 1, fmt, va);
     }
 
 #if 0
@@ -233,41 +234,41 @@ const char so_at(So s, size_t i) {
     return so_is_stack(s) ? s.stack.str[i] : s.ref.str[i];
 }
 
-const char _so_at(So *s, size_t i) {
-    return so_at(*s, i);
+const char _so_at(So_Ref ref, size_t i) {
+    return ref.str[i];
 }
 
 const char so_at0(So s) {
     return so_is_stack(s) ? s.stack.str[0] : s.ref.str[0];
 }
 
-const char _so_at0(So *s) {
-    return so_at0(*s);
+const char _so_at0(So_Ref ref) {
+    return *ref.str;
 }
 
 
-char *_so_it0(So *s) {
-    return so_it0(*s);
+char *_so_it0(So_Ref ref) {
+    return ref.str;
 }
 
-char *_so_it(So *s, size_t i) {
-    return so_it(*s, i);
+char *_so_it(So_Ref ref, size_t i) {
+    return ref.str + i;
 }
 
-So _so_i0(So *s, size_t i0) { 
-    return so_i0(*s, i0);
+So _so_i0(So_Ref ref, size_t i0) { 
+    return (So){ .ref.str = ref.str + i0, .ref.len = ref.len - i0 };
 }
 
-So _so_iE(So *s, size_t iE) {
-    return so_iE(*s, iE);
+So _so_iE(So_Ref ref, size_t iE) {
+    return (So){ .ref.str = ref.str, .ref.len = iE };
 }
 
-So _so_sub(So *s, size_t i0, size_t iE) {
-    return so_sub(*s, i0, iE);
+So _so_sub(So_Ref ref, size_t i0, size_t iE) {
+    return (So){ .ref.str = ref.str + i0, .ref.len = (iE - i0) };
 }
 
-So_Ref _so_ref(So *s) {
-    return so_ref(*s);
+So_Ref _so_ref(So *so) {
+    return so_ref(*so);
 }
 
 

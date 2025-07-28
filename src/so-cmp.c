@@ -6,11 +6,7 @@
 
 /* internal use {{{ */
 
-static inline int so_cmp_s_len(char *a, size_t la, char *b, size_t lb);
-static inline int so_cmp_c_len(char *a, size_t la, char *b, size_t lb);
-static inline int so_cmp_cs_len(char *a, size_t la, char *b, size_t lb);
-
-static inline int so_cmp_ref(So_Ref a, So_Ref b) {
+int _so_cmp(So_Ref a, So_Ref b) {
     int result;
     //printf("CMP:%.*s:%zu\n    %.*s:%zu\n", a.len, a.str,a.len, b.len, b.str,b.len);
     if(a.len != b.len) result = a.len - b.len;
@@ -18,38 +14,37 @@ static inline int so_cmp_ref(So_Ref a, So_Ref b) {
     return result;
 }
 
-static inline int so_cmp_s_len(char *a, size_t la, char *b, size_t lb) {
+int _so_cmp_s(So_Ref a, So_Ref b) {
     int result;
-    if(la != lb) {
-        size_t less = la < lb ? la : lb;
-        result = memcmp(a, b, less);
+    if(a.len != b.len) {
+        size_t less = a.len < b.len ? a.len : b.len;
+        result = memcmp(a.str, b.str, less);
         if(!result) {
-            result = la - lb;
+            result = a.len - b.len;
         }
     } else {
-        result = memcmp(a, b, la);
+        result = memcmp(a.str, b.str, a.len);
     }
     return result;
 }
 
-static inline int so_cmp_c_len(char *a, size_t la, char *b, size_t lb) {
-    if(la != lb) return la - lb;
-    for(size_t i = 0; i < la; ++i) {
-        char ca = a[i];
-        char cb = b[i];
+int _so_cmp_c(So_Ref a, So_Ref b) {
+    if(a.len != b.len) return a.len - b.len;
+    for(size_t i = 0; i < a.len; ++i) {
+        char ca = a.str[i];
+        char cb = b.str[i];
         if(tolower((int)ca) != tolower((int)cb)) return ca - cb;
     }
     return 0;
 }
 
-static inline int so_cmp_cs_len(char *a, size_t la, char *b, size_t lb) {
-    int result;
+int _so_cmp_cs(So_Ref a, So_Ref b) {
     size_t less;
-    if(la != lb) less = la < lb ? la : lb;
-    else less = la;
+    if(a.len != b.len) less = a.len < b.len ? a.len : b.len;
+    else less = a.len;
     for(size_t i = 0; i < less; ++i) {
-        char ca = a[i];
-        char cb = b[i];
+        char ca = a.str[i];
+        char cb = b.str[i];
         if(tolower((int)ca) != tolower((int)cb)) return ca - cb;
     }
     return 0;
@@ -60,43 +55,46 @@ static inline int so_cmp_cs_len(char *a, size_t la, char *b, size_t lb) {
 /* compare {{{ */
 
 int so_cmp(So a, So b) {
-    return so_cmp_ref(so_ref(a), so_ref(b));
+    return _so_cmp(so_ref(a), so_ref(b));
 }
 
 int so_cmp_s(So a, So b) {
-    return so_cmp_s_len(so_it0(a), so_len(a), so_it0(b), so_len(b));
+    So_Ref ra = so_ref(a), rb = so_ref(b);
+    return _so_cmp_s(ra, rb);
 }
 
 int so_cmp_c(So a, So b) {
-    return so_cmp_c_len(so_it0(a), so_len(a), so_it0(b), so_len(b));
+    So_Ref ra = so_ref(a), rb = so_ref(b);
+    return _so_cmp_c(ra, rb);
 }
 
 int so_cmp_cs(So a, So b) {
-    return so_cmp_cs_len(so_it0(a), so_len(a), so_it0(b), so_len(b));
+    So_Ref ra = so_ref(a), rb = so_ref(b);
+    return _so_cmp_cs(ra, rb);
 }
 
 int so_cmp_p(So *a, So *b) {
     if(!a && !b) return 0;
     if(!a || !b) return a - b;
-    return so_cmp_ref(_so_ref(a), _so_ref(b));
+    return _so_cmp(_so_ref(a), _so_ref(b));
 }
 
 int so_cmp_sp(So *a, So *b) {
     if(!a && !b) return 0;
     if(!a || !b) return a - b;
-    return so_cmp_s_len(_so_it0(a), _so_len(a), _so_it0(b), _so_len(b));
+    return _so_cmp_s(_so_ref(a), _so_ref(b));
 }
 
 int so_cmp_cp(So *a, So *b) {
     if(!a && !b) return 0;
     if(!a || !b) return a - b;
-    return so_cmp_c_len(_so_it0(a), _so_len(a), _so_it0(b), _so_len(b));
+    return _so_cmp_c(_so_ref(a), _so_ref(b));
 }
 
 int so_cmp_csp(So *a, So *b) {
     if(!a && !b) return 0;
     if(!a || !b) return a - b;
-    return so_cmp_cs_len(_so_it0(a), _so_len(a), _so_it0(b), _so_len(b));
+    return _so_cmp_cs(_so_ref(a), _so_ref(b));
 }
 
 /*}}}*/
@@ -107,64 +105,52 @@ int so_cmp0(So a, So b) {
     So_Ref ra = so_ref(a), rb = so_ref(b);
     if(ra.len < rb.len) return ra.len - rb.len;
     ra.len = rb.len;
-    return so_cmp_ref(ra, rb);
+    return _so_cmp(ra, rb);
 }
 
 int so_cmp0_c(So a, So b) {
-    size_t la = so_len(a);
-    size_t lb = so_len(b);
-    if(la < lb) return la - lb;
-    return so_cmp_c_len(so_it0(a), lb, so_it0(b), lb);
+    So_Ref ra = so_ref(a), rb = so_ref(b);
+    if(ra.len < rb.len) return ra.len - rb.len;
+    ra.len = rb.len;
+    return _so_cmp_c(ra, rb);
 }
 
 int so_cmp0_s(So a, So b) {
-    size_t la = so_len(a);
-    size_t lb = so_len(b);
-    if(la < lb) return la - lb;
-    return so_cmp_c_len(so_it0(a), lb, so_it0(b), lb);
+    So_Ref ra = so_ref(a), rb = so_ref(b);
+    if(ra.len < rb.len) return ra.len - rb.len;
+    ra.len = rb.len;
+    return _so_cmp_c(ra, rb);
 }
 
 int so_cmp0_cs(So a, So b) {
-    size_t la = so_len(a);
-    size_t lb = so_len(b);
-    if(la < lb) return la - lb;
-    return so_cmp_cs_len(so_it0(a), lb, so_it0(b), lb);
+    So_Ref ra = so_ref(a), rb = so_ref(b);
+    if(ra.len < rb.len) return ra.len - rb.len;
+    ra.len = rb.len;
+    return _so_cmp_cs(ra, rb);
 }
 
 int so_cmp0_p(So *a, So *b) {
     if(!a && !b) return 0;
     if(!a || !b) return a - b;
-    So_Ref ra = _so_ref(a), rb = _so_ref(b);
-    if(ra.len < rb.len) return ra.len - rb.len;
-    ra.len = rb.len;
-    return so_cmp_ref(ra, rb);
+    return so_cmp0(*a, *b);
 }
 
 int so_cmp0_sp(So *a, So *b) {
     if(!a && !b) return 0;
     if(!a || !b) return a - b;
-    size_t la = _so_len(a);
-    size_t lb = _so_len(b);
-    if(la < lb) return la - lb;
-    return so_cmp_s_len(_so_it0(a), lb, _so_it0(b), lb);
+    return so_cmp0_s(*a, *b);
 }
 
 int so_cmp0_cp(So *a, So *b) {
     if(!a && !b) return 0;
     if(!a || !b) return a - b;
-    size_t la = _so_len(a);
-    size_t lb = _so_len(b);
-    if(la < lb) return la - lb;
-    return so_cmp_c_len(_so_it0(a), lb, _so_it0(b), lb);
+    return so_cmp0_c(*a, *b);
 }
 
 int so_cmp0_csp(So *a, So *b) {
     if(!a && !b) return 0;
     if(!a || !b) return a - b;
-    size_t la = _so_len(a);
-    size_t lb = _so_len(b);
-    if(la < lb) return la - lb;
-    return so_cmp_cs_len(_so_it0(a), lb, _so_it0(b), lb);
+    return so_cmp0_cs(*a, *b);
 }
 
 /*}}}*/
@@ -176,61 +162,51 @@ int so_cmpE(So a, So b) {
 }
 
 int so_cmpE_c(So a, So b) {
-    size_t la = so_len(a);
-    size_t lb = so_len(b);
-    if(la < lb) return la - lb;
-    return so_cmp_c_len(so_it(a, la - lb), lb, so_it0(b), lb);
+    So_Ref ra = so_ref(a), rb = so_ref(b);
+    if(ra.len < rb.len) return ra.len - rb.len;
+    size_t delta = ra.len - rb.len;
+    ra.str += delta; ra.len -= delta;
+    return _so_cmp_c(ra, rb);
 }
 
 int so_cmpE_s(So a, So b) {
-    size_t la = so_len(a);
-    size_t lb = so_len(b);
-    if(la < lb) return la - lb;
-    return so_cmp_s_len(so_it(a, la - lb), lb, so_it0(b), lb);
+    So_Ref ra = so_ref(a), rb = so_ref(b);
+    if(ra.len < rb.len) return ra.len - rb.len;
+    size_t delta = ra.len - rb.len;
+    ra.str += delta; ra.len -= delta;
+    return _so_cmp_s(ra, rb);
 }
 
 int so_cmpE_cs(So a, So b) {
-    size_t la = so_len(a);
-    size_t lb = so_len(b);
-    if(la < lb) return la - lb;
-    return so_cmp_cs_len(so_it(a, la - lb), lb, so_it0(b), lb);
+    So_Ref ra = so_ref(a), rb = so_ref(b);
+    if(ra.len < rb.len) return ra.len - rb.len;
+    size_t delta = ra.len - rb.len;
+    ra.str += delta; ra.len -= delta;
+    return _so_cmp_cs(ra, rb);
 }
 
 int so_cmpE_p(So *a, So *b) {
     if(!a && !b) return 0;
     if(!a || !b) return a - b;
-    So_Ref ra = _so_ref(a), rb = _so_ref(b);
-    if(ra.len < rb.len) return ra.len - rb.len;
-    ra.str += ra.len - rb.len;
-    ra.len = rb.len;
-    return so_cmp_ref(ra, rb);
+    return so_cmpE(*a, *b);
 }
 
 int so_cmpE_cp(So *a, So *b) {
     if(!a && !b) return 0;
     if(!a || !b) return a - b;
-    size_t la = _so_len(a);
-    size_t lb = _so_len(b);
-    if(la < lb) return la - lb;
-    return so_cmp_c_len(_so_it(a, la - lb), lb, _so_it0(b), lb);
+    return so_cmpE_c(*a, *b);
 }
 
 int so_cmpE_sp(So *a, So *b) {
     if(!a && !b) return 0;
     if(!a || !b) return a - b;
-    size_t la = _so_len(a);
-    size_t lb = _so_len(b);
-    if(la < lb) return la - lb;
-    return so_cmp_s_len(_so_it(a, la - lb), lb, _so_it0(b), lb);
+    return so_cmpE_s(*a, *b);
 }
 
 int so_cmpE_csp(So *a, So *b) {
     if(!a && !b) return 0;
     if(!a || !b) return a - b;
-    size_t la = _so_len(a);
-    size_t lb = _so_len(b);
-    if(la < lb) return la - lb;
-    return so_cmp_cs_len(_so_it(a, la - lb), lb, _so_it0(b), lb);
+    return so_cmpE_cs(*a, *b);
 }
 
 /*}}}*/

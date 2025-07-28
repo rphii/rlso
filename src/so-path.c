@@ -16,25 +16,25 @@ void so_path_join(So *out, So a, So b) {
     so_free(&tmp);
 }
 
-const So _so_get_ext(So *str) { /*{{{*/
+
+const So _so_get_ext(So_Ref ref) { /*{{{*/
     /* also handles: file.dir/filename -> / is after . */
     So result = SO;
-    size_t i = so_rfind_ch(*str, PLATFORM_CH_SUBDIR);
-    size_t j = so_rfind_ch(*str, '.');
+    size_t i = _so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
+    size_t j = _so_rfind_ch(ref, '.');
     if(j > i) {
-        result = _so_i0(str, j);
+        result = _so_i0(ref, j);
     }
     return result;
 } /*}}}*/
 
-const So _so_get_noext(So *str) { /*{{{*/
+const So _so_get_noext(So_Ref ref) { /*{{{*/
 #if 1
     /* also handles: file.dir/filename -> / is after . */
-    size_t len = _so_len(str);
-    size_t i = so_rfind_ch(*str, PLATFORM_CH_SUBDIR);
-    size_t j = so_rfind_ch(*str, '.');
-    size_t sp = (j < i || j == len) ? len : j;
-    So result = _so_iE(str, sp);
+    size_t i = _so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
+    size_t j = _so_rfind_ch(ref, '.');
+    size_t sp = (j < i || j == ref.len) ? ref.len : j;
+    So result = _so_iE(ref, sp);
 #else
     So_Ref ref = _so_ref(str);
     So result = { .ref = ref };
@@ -52,9 +52,9 @@ const So _so_get_noext(So *str) { /*{{{*/
     return result;
 } /*}}}*/
 
-const So _so_get_dir(So *str) { /*{{{*/
+const So _so_get_dir(So_Ref ref) { /*{{{*/
 #if 1
-    So result = _so_rsplit_ch(str, PLATFORM_CH_SUBDIR, 0);
+    So result = _so_rsplit_ch(ref, PLATFORM_CH_SUBDIR, 0);
 #else
     So_Ref ref = _so_ref(str);
     So result = { .ref = ref };
@@ -71,10 +71,10 @@ const So _so_get_dir(So *str) { /*{{{*/
     return result;
 } /*}}}*/
 
-const So _so_get_nodir(So *str) { /*{{{*/
+const So _so_get_nodir(So_Ref ref) { /*{{{*/
 #if 1
     So result = SO;
-    _so_rsplit_ch(str, PLATFORM_CH_SUBDIR, &result);
+    _so_rsplit_ch(ref, PLATFORM_CH_SUBDIR, &result);
 #else
     So_Ref ref = _so_ref(str);
     So result = { .ref = ref };
@@ -92,14 +92,12 @@ const So _so_get_nodir(So *str) { /*{{{*/
     return result;
 } /*}}}*/
 
-const So _so_get_basename(So *str) { /*{{{*/
+const So _so_get_basename(So_Ref ref) { /*{{{*/
 #if 1
     So result = SO;
-    _so_rsplit_ch(str, PLATFORM_CH_SUBDIR, &result);
-    if(!so_len(result)) result = *str;
-    printff(">>>>>%.*s\n", SO_F(result));
+    _so_rsplit_ch(ref, PLATFORM_CH_SUBDIR, &result);
+    if(!so_len(result)) result = so_rev(ref);
     result = so_rsplit_ch(result, '.', 0);
-    printff(">>!!!%.*s\n", SO_F(result));
 #else
     So_Ref ref = _so_ref(str);
     So result = { .ref = ref };
