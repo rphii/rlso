@@ -37,6 +37,7 @@ typedef struct So {
     };
 } So;
 
+#define SO          (So){0};
 #define SO_F(s)     (int)(so_len((s))), so_it0((s))
 
 bool        so_is_empty(So s);

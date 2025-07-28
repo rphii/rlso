@@ -4,6 +4,7 @@
 *.txt
 *.vim
 *.swp
+*.tmp
 *.json
 *perf.data*
 *callgrind.out.*

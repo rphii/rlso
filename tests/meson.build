@@ -13,6 +13,7 @@ examples = [
   'uc7',
   'splice',
   'env',
+  'file',
   ]
 
 tests = []

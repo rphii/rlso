@@ -14,7 +14,7 @@ typedef enum {
     SO_FILE_ERR_INVALID,
 } So_File_Err;
 
-FILE *so_file_fp(So filename);
+FILE *so_file_fp(So filename, char *mode);
 ErrDecl so_file_read_fp(FILE *file, So *content);
 ErrDecl so_file_read(So filename, So *content);
 ErrDecl so_file_write_fp(FILE *file, So content);

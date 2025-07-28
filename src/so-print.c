@@ -26,6 +26,7 @@ void so_fprintln(FILE *fp, So so) {
 void so_fprintdbg(FILE *fp, So so) {
     fprintf(stdout, "%c[%.*s]%zu", so_is_stack(so) ? 's' : so_is_heap(so) ? 'h' : 'r',
             SO_F(so), so_len(so));
+    fprintf(stdout, " (%p)", so.ref.str);
     if(so_is_stack(so)) fprintf(stdout, "/%zu", SO_STACK_CAP);
     if(so_is_heap(so)) {
         fprintf(stdout, "/%zu", so_heap_base(&so)->cap);

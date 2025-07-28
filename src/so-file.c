@@ -8,11 +8,11 @@
 #include <stdlib.h>
 #include <errno.h>
 
-FILE *so_file_fp(So filename) {
+FILE *so_file_fp(So filename, char *mode) {
     /* get clean C string */
     char path[SO_FILE_PATH_MAX];
     so_as_cstr(filename, path, SO_FILE_PATH_MAX);
-    FILE *file = fopen(path, "r");
+    FILE *file = fopen(path, mode);
     return file;
 }
 
@@ -42,9 +42,14 @@ ErrDecl so_file_write_fp(FILE *file, So content) {
     int err = 0;
     /* write file */
     So_Ref ref = so_ref(content);
-    size_t bytes_written = fwrite(ref.str, 1, ref.len, file);
+#if SO_File_CHECK_BYTES_WRITTEN
+    size_t bytes_written = 
+#endif
+        fwrite(ref.str, 1, ref.len, file);
+#if SO_File_CHECK_BYTES_WRITTEN
     if(bytes_written != ref.len) ERR(SO_FILE_ERR_BYTES);
 clean:
+#endif
     /* close file outside */
     return err;
 }
@@ -63,7 +68,7 @@ ErrDecl so_file_read(So filename, So *content) {
         ERR(SO_FILE_ERR_DIR);
     }
     /* open and read */
-    file = so_file_fp(filename);
+    file = so_file_fp(filename, "r");
     if(!file || errno) ERR(SO_FILE_ERR_OPEN);
     err = so_file_read_fp(file, content);
 clean:
@@ -84,7 +89,7 @@ ErrDecl so_file_write(So filename, So content) {
         ERR(SO_FILE_ERR_DIR);
     }
     /* open and read */
-    file = so_file_fp(filename);
+    file = so_file_fp(filename, "w");
     if(!file || errno) ERR(SO_FILE_ERR_OPEN);
     err = so_file_write_fp(file, content);
 clean:
