@@ -12,9 +12,36 @@ setup build && meson install -C build
 ```
 
 Installation features:
-- `librphiiso` the `So` library
+- `librlso.so` the `So` library
 - [man](man) pages *(WIP)*
-- [tests](examples) using meson
+
+## 📊 Tests & Coverage
+
+There are various [tests](tests).
+
+### Recommended dependencies
+
+- lcov *(coverage)*
+- gcovr *(coverage)*
+- valgrind *(recommended)*
+
+#### Gentoo
+```sh
+emerge -a gcovr lcov valgrind
+```
+
+#### Arch
+```sh
+pacman -S gcovr lcov valgrind
+```
+
+### Run
+
+See the provided [run-tests.sh](run-tests.sh) script.
+
+### Results
+
+See output of where the last command put the .html file.
 
 ## ✨ Features
 

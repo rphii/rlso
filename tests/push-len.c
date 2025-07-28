@@ -52,9 +52,11 @@ int main(void) {
         EXPECT(so_at0(copy), first);
         /* clean */
         so_free(&clone);
+        so_free(&r);
         so_clear(&copy);
     }
     so_free(&copy);
+    so_free(&so);
     return 0;
 }
 
