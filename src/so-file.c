@@ -8,6 +8,14 @@
 #include <stdlib.h>
 #include <errno.h>
 
+FILE *so_file_fp(So filename) {
+    /* get clean C string */
+    char path[SO_FILE_PATH_MAX];
+    so_as_cstr(filename, path, SO_FILE_PATH_MAX);
+    FILE *file = fopen(path, "r");
+    return file;
+}
+
 ErrDecl so_file_read_fp(FILE *file, So *content) {
     ASSERT_ARG(file);
     ASSERT_ARG(content);
@@ -29,7 +37,7 @@ clean:
     return err;
 }
 
-int so_file_write_fp(FILE *file, So content) {
+ErrDecl so_file_write_fp(FILE *file, So content) {
     ASSERT_ARG(file);
     int err = 0;
     /* write file */
@@ -54,11 +62,8 @@ ErrDecl so_file_read(So filename, So *content) {
                 ref.str[ref.len] == '/')) {
         ERR(SO_FILE_ERR_DIR);
     }
-    /* get clean C string */
-    char path[SO_FILE_PATH_MAX];
-    so_as_cstr(filename, path, SO_FILE_PATH_MAX);
     /* open and read */
-    file = fopen(path, "r");
+    file = so_file_fp(filename);
     if(!file || errno) ERR(SO_FILE_ERR_OPEN);
     err = so_file_read_fp(file, content);
 clean:
@@ -78,11 +83,8 @@ ErrDecl so_file_write(So filename, So content) {
                 ref.str[ref.len] == '/')) {
         ERR(SO_FILE_ERR_DIR);
     }
-    /* get clean C string */
-    char path[SO_FILE_PATH_MAX];
-    so_as_cstr(filename, path, SO_FILE_PATH_MAX);
-    /* open and write */
-    file = fopen(path, "w");
+    /* open and read */
+    file = so_file_fp(filename);
     if(!file || errno) ERR(SO_FILE_ERR_OPEN);
     err = so_file_write_fp(file, content);
 clean:
