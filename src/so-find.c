@@ -128,10 +128,10 @@ size_t _so_rfind_ch(So_Ref ref, char c) {
     if(!s) return ref.len;
     return s - ref.str;
 #else
-    for(size_t i = so_len(so); i > 0; --i) {
-        if(so.so[i - 1] == c) return i - 1;
+    for(size_t i = ref.len; i > 0; --i) {
+        if(ref.str[i - 1] == c) return i - 1;
     }
-    return len;
+    return ref.len;
 #endif
 }
 

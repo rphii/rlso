@@ -7,6 +7,7 @@ So _so_split(So_Ref ref, size_t i, So *right) {
     So left = _so_iE(ref, i);
     return left;
 }
+#include<stdio.h>
 
 So _so_split_ext(So_Ref ref, size_t i, size_t n, So *right) {
     if(right) {

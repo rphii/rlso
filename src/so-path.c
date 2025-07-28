@@ -54,7 +54,8 @@ const So _so_get_noext(So_Ref ref) { /*{{{*/
 
 const So _so_get_dir(So_Ref ref) { /*{{{*/
 #if 1
-    So result = _so_rsplit_ch(ref, PLATFORM_CH_SUBDIR, 0);
+    size_t i = _so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
+    So result = i < ref.len ? _so_iE(ref, i) : SO;
 #else
     So_Ref ref = _so_ref(str);
     So result = { .ref = ref };
@@ -73,8 +74,8 @@ const So _so_get_dir(So_Ref ref) { /*{{{*/
 
 const So _so_get_nodir(So_Ref ref) { /*{{{*/
 #if 1
-    So result = SO;
-    _so_rsplit_ch(ref, PLATFORM_CH_SUBDIR, &result);
+    size_t i = _so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
+    So result = i < ref.len ? _so_i0(ref, i + 1) : so_rev(ref);
 #else
     So_Ref ref = _so_ref(str);
     So result = { .ref = ref };
