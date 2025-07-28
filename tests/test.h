@@ -4,6 +4,7 @@
 #include "../src/so.h"
 #include "../src/so-uc.h"
 #include "../src/so-cmp.h"
+#include "../src/so-env.h"
 #include "../src/so-trim.h"
 #include "../src/so-print.h"
 #include "../src/so-split.h"
