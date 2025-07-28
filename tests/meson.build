@@ -12,6 +12,7 @@ examples = [
   'uc6',
   'uc7',
   'splice',
+  'splice.2',
   'env',
   'file',
   'path',
