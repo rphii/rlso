@@ -26,7 +26,7 @@ tests = []
 if get_option('tests').enabled()
 
   foreach ex : examples
-    tests += executable(ex, ex + '.c', link_with: rlso, build_by_default: false)
+    tests += executable(ex, ex + '.c', link_with: rlso)
   endforeach
 
   foreach ex : tests
