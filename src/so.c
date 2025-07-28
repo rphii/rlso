@@ -69,6 +69,10 @@ bool so_is_empty(So s) {
     return !so_len(s);
 }
 
+bool so_is_zero(So s) {
+    return !s.ref.str && !s.ref.len;
+}
+
 bool so_is_stack(So s) {
     return (s.stack.len & ~SO_STACK_HEAP_BIT);
 }

@@ -11,6 +11,7 @@ examples = [
   'uc5',
   'uc6',
   'uc7',
+  'splice',
   ]
 
 tests = []
