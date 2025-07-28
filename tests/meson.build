@@ -23,12 +23,15 @@ examples = [
 
 tests = []
 
-foreach ex : examples
-  tests += executable(ex, ex + '.c', link_with: rlso)
-endforeach
+if get_option('tests').enabled()
 
-foreach ex : tests
-  test(ex.name(), ex)
-endforeach
+  foreach ex : examples
+    tests += executable(ex, ex + '.c', link_with: rlso, build_by_default: false)
+  endforeach
 
+  foreach ex : tests
+    test(ex.name(), ex)
+  endforeach
+
+endif
 
