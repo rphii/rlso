@@ -2,6 +2,7 @@
 
 #include <rl/endian-detect.h>
 
+#include "so-heap.h"
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdarg.h>
@@ -37,7 +38,7 @@ typedef struct So {
     };
 } So;
 
-#define SO          (So){0};
+#define SO          (So){0}
 #define SO_F(s)     (int)(so_len((s))), so_it0((s))
 
 bool        so_is_empty(So s);
@@ -63,7 +64,7 @@ So         _so_i0(So *s, size_t i0);
 So         _so_iE(So *s, size_t iE);
 #define     so_sub(s, i0, iE)   so_ll(so_it(s, i0), so_len((s)) - (iE - i0))
 So         _so_sub(So *s, size_t i0, size_t iE);
-#define     so_ref(s)           (so_is_stack((s)) ? (So_Ref){ .str = (s).stack.str, .len = (s).stack.len } : (So_Ref){ .str = (s).ref.str, .len = (s).ref.len })
+#define     so_ref(s)           (so_is_stack((s)) ? (So_Ref){ .str = (s).stack.str, .len = (s).stack.len } : (So_Ref){ .str = (s).ref.str, .len = (s).ref.len & ~SO_HEAP_BIT })
 So_Ref     _so_ref(So *s);
 void        so_push(So *s, char c);
 void        so_extend(So *s, So b);

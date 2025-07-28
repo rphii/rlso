@@ -127,11 +127,14 @@ void so_copy(So *s, So b) {
     memcpy(_so_it0(s), so_it0(b), len);
 }
 
+//#include "so-print.h"
+
 So so_clone(So b) {
     So result = {0};
     size_t len = so_len(b);
-    so_grow_by(&result, len);
-    memcpy(so_it0(result), so_it0(b), len);
+    //printff("CLONE:[%.*s]", SO_F(b));
+    memcpy(so_grow_by(&result, len), so_it0(b), len);
+    //so_printdbg(result);
     return result;
 }
 
@@ -148,8 +151,15 @@ void so_push(So *s, char c) {
 }
 
 void so_extend(So *s, So b) {
+    So_Heap *heap = 0;
     So_Ref ref = so_ref(b);
+    if(so_is_heap(b) && _so_is_heap(s) && b.ref.str == s->ref.str) {
+
+        heap = so_heap_grow(0, ref.len);
+        ref.str = heap->str;
+    }
     memcpy(so_grow_by(s, ref.len), ref.str, ref.len);
+    if(heap) free(heap);
 }
 
 void so_resize_known(So *s, size_t len_old, size_t len_new) {

@@ -4,6 +4,7 @@
 #include <rl/err.h>
 
 typedef struct So So;
+typedef struct So_Ref So_Ref;
 
 void so_as_cstr(So so, char *cstr, size_t cap);
 ErrDecl so_as_size(So so, size_t *out, int base);

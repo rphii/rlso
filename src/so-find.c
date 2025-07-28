@@ -106,12 +106,11 @@ size_t so_find_nsub(So so, So sub, So_Cmp_Attr attr) { /*{{{*/
 } /*}}}*/
 
 size_t so_rfind_ch(So so, char c) { /*{{{*/
-    size_t len = so_len(so);
-    char *s0 = so_it0(so);
+    So_Ref ref = so_ref(so);
 #if 1
-    char *s = memrchr(s0, c, len);
-    if(!s) return len;
-    return s - s0;
+    char *s = memrchr(ref.str, c, ref.len);
+    if(!s) return ref.len;
+    return s - ref.str;
 #else
     for(size_t i = so_len(so); i > 0; --i) {
         if(so.so[i - 1] == c) return i - 1;

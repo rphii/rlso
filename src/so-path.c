@@ -3,28 +3,40 @@
 #include "so.h"
 #include "so-find.h"
 #include "so-path.h"
+#include "so-split.h"
+#include "so-print.h"
+#include<rl/err.h>
 
-const So so_get_ext(So str) { /*{{{*/
-    //size_t len = so_len_raw(str);
-    //So result = so_ll(str.str, len);
-    So_Ref ref = so_ref(str);
-    So result = { .ref = ref };
-    if(ref.len) {
-        size_t i = so_rfind_ch(result, '.');
-        if(i < ref.len) {
-            /* in case we have something like: file.dir/filename -> / is after . */
-            size_t j = so_rfind_ch(result, PLATFORM_CH_SUBDIR);
-            if((j < ref.len && j < i) || (j == ref.len)) {
-                result.ref.str += i;
-                result.ref.len = ref.len - i;
-            }
-        }
+void so_path_join(So *out, So a, So b) {
+    So tmp = so_clone(b);
+    so_clear(out);
+    so_extend(out, a);
+    so_push(out, PLATFORM_CH_SUBDIR);
+    so_extend(out, tmp);
+    so_free(&tmp);
+}
+
+const So _so_get_ext(So *str) { /*{{{*/
+    /* also handles: file.dir/filename -> / is after . */
+    So result = SO;
+    size_t i = so_rfind_ch(*str, PLATFORM_CH_SUBDIR);
+    size_t j = so_rfind_ch(*str, '.');
+    if(j > i) {
+        result = _so_i0(str, j);
     }
     return result;
 } /*}}}*/
 
-const So so_get_noext(So str) { /*{{{*/
-    So_Ref ref = so_ref(str);
+const So _so_get_noext(So *str) { /*{{{*/
+#if 1
+    /* also handles: file.dir/filename -> / is after . */
+    size_t len = _so_len(str);
+    size_t i = so_rfind_ch(*str, PLATFORM_CH_SUBDIR);
+    size_t j = so_rfind_ch(*str, '.');
+    size_t sp = (j < i || j == len) ? len : j;
+    So result = _so_iE(str, sp);
+#else
+    So_Ref ref = _so_ref(str);
     So result = { .ref = ref };
     if(ref.len) {
         size_t i = so_rfind_ch(result, '.');
@@ -36,11 +48,15 @@ const So so_get_noext(So str) { /*{{{*/
             }
         }
     }
+#endif
     return result;
 } /*}}}*/
 
-const So so_get_dir(So str) { /*{{{*/
-    So_Ref ref = so_ref(str);
+const So _so_get_dir(So *str) { /*{{{*/
+#if 1
+    So result = _so_rsplit_ch(str, PLATFORM_CH_SUBDIR, 0);
+#else
+    So_Ref ref = _so_ref(str);
     So result = { .ref = ref };
     if(ref.len) {
         size_t i0 = so_rfind_ch(result, '/');
@@ -51,11 +67,16 @@ const So so_get_dir(So str) { /*{{{*/
         else if(i0 >= ref.len) i0 = 0;
         result.ref.len = i0;
     }
+#endif
     return result;
 } /*}}}*/
 
-const So so_get_nodir(So str) { /*{{{*/
-    So_Ref ref = so_ref(str);
+const So _so_get_nodir(So *str) { /*{{{*/
+#if 1
+    So result = SO;
+    _so_rsplit_ch(str, PLATFORM_CH_SUBDIR, &result);
+#else
+    So_Ref ref = _so_ref(str);
     So result = { .ref = ref };
     if(ref.len) {
         size_t i0 = so_rfind_ch(result, '/');
@@ -67,11 +88,20 @@ const So so_get_nodir(So str) { /*{{{*/
         result.ref.str += i0;
         result.ref.len -= i0;
     }
+#endif
     return result;
 } /*}}}*/
 
-const So so_get_basename(So str) { /*{{{*/
-    So_Ref ref = so_ref(str);
+const So _so_get_basename(So *str) { /*{{{*/
+#if 1
+    So result = SO;
+    _so_rsplit_ch(str, PLATFORM_CH_SUBDIR, &result);
+    if(!so_len(result)) result = *str;
+    printff(">>>>>%.*s\n", SO_F(result));
+    result = so_rsplit_ch(result, '.', 0);
+    printff(">>!!!%.*s\n", SO_F(result));
+#else
+    So_Ref ref = _so_ref(str);
     So result = { .ref = ref };
     if(ref.len) {
         size_t iE = so_rfind_ch(result, '.');
@@ -86,6 +116,7 @@ const So so_get_basename(So str) { /*{{{*/
         result.ref.len = (iE - i0);
         /*TRYC(so_fmt(basename, "%.*s", (int)(iE - i0), so_iter_at(str, i0)));*/
     }
+#endif
     return result;
 } /*}}}*/
 

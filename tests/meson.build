@@ -14,6 +14,9 @@ examples = [
   'splice',
   'env',
   'file',
+  'path',
+  'path.2',
+  'path.3',
   ]
 
 tests = []

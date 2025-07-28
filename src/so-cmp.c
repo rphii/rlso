@@ -2,6 +2,7 @@
 #include "so.h"
 #include <string.h>
 #include <ctype.h>
+#include<stdio.h>
 
 /* internal use {{{ */
 
@@ -11,6 +12,7 @@ static inline int so_cmp_cs_len(char *a, size_t la, char *b, size_t lb);
 
 static inline int so_cmp_ref(So_Ref a, So_Ref b) {
     int result;
+    //printf("CMP:%.*s:%zu\n    %.*s:%zu\n", a.len, a.str,a.len, b.len, b.str,b.len);
     if(a.len != b.len) result = a.len - b.len;
     else result = memcmp(a.str, b.str, a.len);
     return result;
