@@ -11,6 +11,7 @@
 #include "../src/so-trim.h"
 #include "../src/so-file.h"
 #include "../src/so-path.h"
+#include "../src/so-count.h"
 #include "../src/so-print.h"
 #include "../src/so-split.h"
 #include "../src/so-splice.h"

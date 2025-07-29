@@ -22,6 +22,7 @@ examples = [
   'path.4.c',
   'vso.c',
   'as-size.c',
+  'count.c',
   ]
 
 tests = []
