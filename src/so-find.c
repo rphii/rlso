@@ -48,12 +48,14 @@ size_t so_find_ws(So so) { /*{{{*/
 } /*}}}*/
 
 size_t so_find_nws(So so) { /*{{{*/
-    size_t len = so_len(so);
-    char *s0 = so_it0(so);
-    for(size_t i = 0; i < len; ++i) {
-        if(!isspace(s0[i])) return i;
+    return _so_find_nws(so_ref(so));
+} /*}}}*/
+
+size_t _so_find_nws(So_Ref ref) { /*{{{*/
+    for(size_t i = 0; i < ref.len; ++i) {
+        if(!isspace(ref.str[i])) return i;
     }
-    return len;
+    return ref.len;
 } /*}}}*/
 
 size_t so_find_any(So so, So any) { /*{{{*/
@@ -156,7 +158,10 @@ size_t so_rfind_ws(So so) { /*{{{*/
 } /*}}}*/
 
 size_t so_rfind_nws(So so) { /*{{{*/
-    So_Ref ref = so_ref(so);
+    return _so_rfind_nws(so_ref(so));
+} /*}}}*/
+
+size_t _so_rfind_nws(So_Ref ref) { /*{{{*/
     for(size_t i = ref.len; i > 0; --i) {
         if(!isspace(ref.str[i - 1])) return i - 1;
     }
