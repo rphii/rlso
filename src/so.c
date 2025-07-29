@@ -152,15 +152,19 @@ void so_push(So *s, char c) {
 }
 
 void so_extend(So *s, So b) {
-    So_Heap *heap = 0;
+    So heap = {0};
     So_Ref ref = so_ref(b);
+    char *s0;
     if(so_is_heap(b) && _so_is_heap(s) && b.ref.str == s->ref.str) {
-
-        heap = so_heap_grow(0, ref.len);
-        ref.str = heap->str;
+        s0 = so_grow_by(&heap, ref.len);
+    } else {
+        s0 = so_grow_by(s, ref.len);
     }
-    memcpy(so_grow_by(s, ref.len), ref.str, ref.len);
-    if(heap) free(heap);
+    memcpy(s0, ref.str, ref.len);
+    if(!so_is_zero(heap)) {
+        so_free(s);
+        *s = heap;
+    }
 }
 
 void so_resize_known(So *s, size_t len_old, size_t len_new) {

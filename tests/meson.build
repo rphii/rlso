@@ -20,6 +20,7 @@ examples = [
   'path.3',
   'path.4',
   'vso',
+  'as-size',
   ]
 
 tests = []
