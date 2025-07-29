@@ -143,7 +143,7 @@ size_t so_rfind_nch(So so, char c) { /*{{{*/
 
 size_t _so_rfind_nch(So_Ref ref, char c) { /*{{{*/
     for(size_t i = ref.len; i > 0; --i) {
-        if(ref.str[i - 1] != c) return i - 1;
+        if(ref.str[i - 1] != c) return i;
     }
     return 0;
 } /*}}}*/
@@ -163,9 +163,9 @@ size_t so_rfind_nws(So so) { /*{{{*/
 
 size_t _so_rfind_nws(So_Ref ref) { /*{{{*/
     for(size_t i = ref.len; i > 0; --i) {
-        if(!isspace(ref.str[i - 1])) return i - 1;
+        if(!isspace(ref.str[i - 1])) return i;
     }
-    return ref.len;
+    return 0;
 } /*}}}*/
 
 size_t so_rfind_any(So so, So any) { /*{{{*/

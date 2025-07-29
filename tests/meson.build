@@ -23,6 +23,10 @@ examples = [
   'vso.c',
   'as-size.c',
   'count.c',
+  'split.c',
+  'triml.c',
+  'trimr.c',
+  'trim.c',
   ]
 
 tests = []

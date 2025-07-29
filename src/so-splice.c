@@ -11,6 +11,7 @@ size_t _so_splice(So_Ref to_splice, So *prev, char sep) {
     So result = {0};
     if(prev && !so_is_zero(*prev)) {
         size_t from = 1 + pref.len + pref.str - to_splice.str; /* +1 to skip separator */
+        if(from + pref.len >= to_splice.len) return 0;
         result = so_split_ch(_so_i0(to_splice, from), sep, 0);
     } else {
         result = _so_split_ch(to_splice, sep, 0);
