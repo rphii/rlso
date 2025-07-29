@@ -1,7 +1,16 @@
 #include "so.h"
 #include "so-as.h"
-#include <stdlib.h>
 #include <rl/err.h>
+#include <stdint.h>
+
+#define SO_AS_SIZE_BASE_MAX     36
+
+static int static_so_as_unbase_char(char c) {
+    if(c >= '0' && c <= '9') return c - '0';
+    if(c >= 'a' && c <= 'z') return c - 'a' + 10;
+    if(c >= 'A' && c <= 'Z') return c - 'A' + 10;
+    return -1;
+}
 
 void so_as_cstr(So so, char *buf, size_t cap) {
     ASSERT_ARG(buf);
@@ -15,15 +24,42 @@ void so_as_cstr(So so, char *buf, size_t cap) {
     }
 }
 
+ErrDecl _so_as_size(So_Ref ref, size_t *out, int base) {
+    if(!ref.len) return -1;
+    if(base > SO_AS_SIZE_BASE_MAX) return -1;
+    size_t result = 0;
+    for(size_t i = 0; i < ref.len; ++i) {
+        int val = static_so_as_unbase_char(ref.str[i]);
+        if(val < 0 || val >= base) {
+            return -1;
+        }
+        size_t next = result * base + val;
+        if(next < result) {
+            *out = SIZE_MAX;
+            return -1;
+        }
+        result = next;
+    }
+    *out = result;
+    return 0;
+}
+
 ErrDecl so_as_size(So so, size_t *out, int base) {
     So_Ref ref = so_ref(so);
-    if(!ref.len) return -1;
-    char *endptr;
-    char temp[32] = {0};
-    so_as_cstr(so, temp, 32);
-    size_t result = strtoull(temp, &endptr, base);
-    if(endptr - temp != ref.len) return -1;
-    if(out) *out = result;
-    return 0;
+    size_t base_use = base ? base : 10;
+    if(ref.len >= 2 && ref.str[0] == '0') {
+        ref.str += 1; ref.len -= 1;
+        if(ref.str[0] == 'x' || ref.str[0] == 'X') {
+            ref.str += 1; ref.len -= 1;
+            base_use = base ? base : 16;
+        } else if(ref.str[0] == 'b' || ref.str[0] == 'b') {
+            ref.str += 1; ref.len -= 1;
+            base_use = base ? base : 2;
+        } else {
+            base_use = base ? base : 8;
+        }
+    }
+    int result = _so_as_size(ref, out, base_use);
+    return result;
 }
 
