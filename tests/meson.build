@@ -1,4 +1,5 @@
 examples = [
+  'endian',
   'len-0',
   'len-0.2',
   'len-a',
