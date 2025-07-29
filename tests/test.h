@@ -1,6 +1,7 @@
 #ifndef TEST_H
 
 #include <rl/err.h>
+#include <rl/array.h>
 #include <rl/platform-detect.h>
 #include "../src/so.h"
 #include "../src/so-uc.h"
@@ -12,6 +13,7 @@
 #include "../src/so-print.h"
 #include "../src/so-split.h"
 #include "../src/so-splice.h"
+#include "../src/vso.h"
 
 #define EXPECT(expr, val)   do {\
     size_t a = ((expr)); \

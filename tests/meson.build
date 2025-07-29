@@ -19,14 +19,17 @@ examples = [
   'path.2',
   'path.3',
   'path.4',
+  'vso',
   ]
 
 tests = []
 
+dep_rlc = dependency('rlc', required: true)
+
 if get_option('tests').enabled()
 
   foreach ex : examples
-    tests += executable(ex, ex + '.c', link_with: rlso)
+    tests += executable(ex, ex + '.c', link_with: rlso, dependencies: [dep_rlc])
   endforeach
 
   foreach ex : tests
