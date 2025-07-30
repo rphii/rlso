@@ -4,7 +4,7 @@ Dynamically Allocatable String in C.
 
 ## 🛠️ Installation
 
-- Depends on [rphii/metac](https://github.com/rphii/metac)
+- Depends on [rphii/rlc](https://github.com/rphii/rlc)
 
 ```sh
 git clone https://github.com/rphii/so && cd so
