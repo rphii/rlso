@@ -177,7 +177,7 @@ size_t _so_rfind_nany(So_Ref ref, So_Ref nany) { /*{{{*/
 
 size_t _so_rfind_sub(So_Ref ref, So_Ref sub, bool ignorecase) {
     /* basic checks */
-    if(!sub.len) return 0;
+    if(!sub.len) return ref.len;
     if(sub.len > ref.len) return ref.len;
     So_Ref sweep = ref;
     size_t len = ref.len;
