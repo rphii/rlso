@@ -2,8 +2,10 @@
 
 #include <stddef.h>
 
+#if 0
 #define SO_HEAP_MAX     (((size_t)1) << ((sizeof(size_t) - 1) * 8))
 #define SO_HEAP_BIT     (((size_t)1) << ((sizeof(size_t)) * 8 - 1))
+#endif
 
 typedef struct So_Heap {
     char *str;
