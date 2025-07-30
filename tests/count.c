@@ -9,6 +9,10 @@ int main(void) {
     EXPECT(so_count_any(so("abcxxxabc"), so("ba")), 4);
     EXPECT(so_count_nany(so("abc"), so("ba")), 1);
     EXPECT(so_count_nany(so("abcxxxabc"), so("ba")), 5);
+    EXPECT(so_count_overlapx(so("eyo"), so("eyoab"), false), 3);
+    EXPECT(so_count_overlapx(so("eyoabc"), so("eyo"), false), 3);
+    EXPECT(so_count_overlapx(SO, so("eyo"), false), 0);
+    EXPECT(so_count_overlapx(so("asdf"), SO, false), 0);
     /* empty */
     EXPECT(so_count_ch(SO, 'x'), 0);
     EXPECT(so_count_nch(SO, 'x'), 0);
