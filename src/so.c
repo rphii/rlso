@@ -157,7 +157,7 @@ void so_extend(So *s, So b) {
     char *s0;
     if(so_is_heap(b) && _so_is_heap(s) && b.ref.str == s->ref.str) {
         s0 = so_grow_by(&heap, ref.len);
-        memcpy(heap.ref.str, s->ref.str, s->ref.len);
+        memcpy(heap.ref.str, ref.str, ref.len);
     } else {
         s0 = so_grow_by(s, ref.len);
     }

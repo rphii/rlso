@@ -68,7 +68,7 @@ ErrDecl so_file_read(So filename, So *content) {
         ERR(SO_FILE_ERR_DIR);
     }
     /* open and read */
-    file = so_file_fp(filename, "rb");
+    file = so_file_fp(filename, "r");
     if(!file || errno) ERR(SO_FILE_ERR_OPEN);
     err = so_file_read_fp(file, content);
 clean:
@@ -89,7 +89,7 @@ ErrDecl so_file_write(So filename, So content) {
         ERR(SO_FILE_ERR_DIR);
     }
     /* open and read */
-    file = so_file_fp(filename, "wb");
+    file = so_file_fp(filename, "w");
     if(!file || errno) ERR(SO_FILE_ERR_OPEN);
     err = so_file_write_fp(file, content);
 clean:
