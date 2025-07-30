@@ -188,6 +188,10 @@ char *so_it0(So so) {
     return so.str;
 }
 
+char *so_itE(So so) {
+    return so.str + so.len;
+}
+
 char *so_it(So so, size_t i) {
     return so.str + i;
 }

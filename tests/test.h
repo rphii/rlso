@@ -5,6 +5,7 @@
 #include <rl/platform-detect.h>
 #include "../src/so.h"
 #include "../src/so-as.h"
+#include "../src/so-fx.h"
 #include "../src/so-uc.h"
 #include "../src/so-cmp.h"
 #include "../src/so-cmp-attr.h"

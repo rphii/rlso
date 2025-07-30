@@ -1,5 +1,6 @@
 #include "so.h"
 #include "so-find.h"
+#include "so-split.h"
 #include "so-fx.h"
 #include "so-cmp.h"
 
@@ -11,24 +12,19 @@
 
 size_t so_len_nfx(So str) { /*{{{*/
     size_t len = so_len(str);
-    So snip = so_ll(so_it0(str), len);
+    So snip = str;
     So pat = so("\033[");
-    bool count = true;
-    size_t len_nof = 0;
-    for(size_t i = 0; i < len; ++i) {
-        //printff("i %zu, so_len %zu", i, so_len(snip));
+    size_t len_nof = str.len;
+    while(so_len(snip)) {
         ASSERT_ARG(so_len(snip));
-        if(!count) {
-            if(so_at(snip, 0) == 'm') {
-                count = true;
-            }
+        So right, left = so_split_sub(snip, pat, &right, SO_CMP);
+        if(so_len(right)) {
+            so_split_ch(right, 'm', &snip);
+            size_t gap = so_it0(snip) - so_itE(left);
+            len_nof -= gap;
         } else {
-            ++len_nof;
-            if(!so_cmp0(snip, pat)) {
-                count = false;
-            }
+            snip = right;
         }
-        snip = so_i0(snip, 1);
     }
     return len_nof;
 } /*}}}*/

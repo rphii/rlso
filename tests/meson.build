@@ -30,6 +30,7 @@ examples = [
   'input.c',
   'find.c',
   'extend.c',
+  'len-nfx.c',
   ]
 
 tests = []
