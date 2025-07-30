@@ -1,5 +1,6 @@
 #include "so.h"
 #include "so-count.h"
+#include "so-cmp.h"
 #include <ctype.h>
 
 size_t so_count_ch(So str, char c) {
@@ -18,8 +19,8 @@ size_t so_count_nany(So str, So nany) {
     return _so_count_nany(so_ref(str), so_ref(nany));
 }
 
-size_t so_count_overlap(So a, So b, bool ignorecase) {
-    return _so_count_overlap(so_ref(a), so_ref(b), ignorecase);
+size_t so_count_overlapx(So a, So b, So_Cmp_Attr attr) {
+    return _so_count_overlapx(so_ref(a), so_ref(b), attr);
 }
 
 
@@ -55,23 +56,15 @@ size_t _so_count_nany(So_Ref ref, So_Ref nany) { /*{{{*/
     return result;
 } /*}}}*/
 
-size_t _so_count_overlap(So_Ref ra, So_Ref rb, bool ignorecase) { /*{{{*/
+size_t _so_count_overlapx(So_Ref ra, So_Ref rb, So_Cmp_Attr attr) { /*{{{*/
     size_t overlap = 0;
     size_t len = ra.len > rb.len ? rb.len : ra.len;
-    if(!ignorecase) {
-        for(size_t i = 0; i < len; ++i) {
-            char ca = ra.str[i];
-            char cb = rb.str[i];
-            if(ca == cb) ++overlap;
-            else break;
-        }
-    } else {
-        for(size_t i = 0; i < len; ++i) {
-            int ca = tolower(ra.str[i]);
-            int cb = tolower(rb.str[i]);
-            if(ca == cb) ++overlap;
-            else break;
-        }
+    ra.len = 1;
+    rb.len = 1;
+    for(overlap = 0; overlap < len; ++overlap) {
+        if(_so_cmp(ra, rb)) break;
+        ++ra.str;
+        ++rb.str;
     }
     return overlap;
 } /*}}}*/

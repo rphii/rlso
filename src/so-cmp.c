@@ -169,7 +169,7 @@ int so_cmpE(So a, So b) {
     So_Ref ra = so_ref(a), rb = so_ref(b);
     if(ra.len < rb.len) return ra.len - rb.len;
     size_t delta = ra.len - rb.len;
-    ra.str += delta; ra.len -= delta;
+    so_ref_shift(&ra, delta);
     return _so_cmp(ra, rb);
 }
 
@@ -177,7 +177,7 @@ int so_cmpE_c(So a, So b) {
     So_Ref ra = so_ref(a), rb = so_ref(b);
     if(ra.len < rb.len) return ra.len - rb.len;
     size_t delta = ra.len - rb.len;
-    ra.str += delta; ra.len -= delta;
+    so_ref_shift(&ra, delta);
     return _so_cmp_c(ra, rb);
 }
 
@@ -185,7 +185,7 @@ int so_cmpE_s(So a, So b) {
     So_Ref ra = so_ref(a), rb = so_ref(b);
     if(ra.len < rb.len) return ra.len - rb.len;
     size_t delta = ra.len - rb.len;
-    ra.str += delta; ra.len -= delta;
+    so_ref_shift(&ra, delta);
     return _so_cmp_s(ra, rb);
 }
 
@@ -193,7 +193,7 @@ int so_cmpE_cs(So a, So b) {
     So_Ref ra = so_ref(a), rb = so_ref(b);
     if(ra.len < rb.len) return ra.len - rb.len;
     size_t delta = ra.len - rb.len;
-    ra.str += delta; ra.len -= delta;
+    so_ref_shift(&ra, delta);
     return _so_cmp_cs(ra, rb);
 }
 

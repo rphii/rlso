@@ -48,12 +48,12 @@ ErrDecl so_as_size(So so, size_t *out, int base) {
     So_Ref ref = so_ref(so);
     size_t base_use = base ? base : 10;
     if(ref.len >= 2 && ref.str[0] == '0') {
-        ref.str += 1; ref.len -= 1;
+        so_ref_shift(&ref, 1);
         if(ref.str[0] == 'x' || ref.str[0] == 'X') {
-            ref.str += 1; ref.len -= 1;
+            so_ref_shift(&ref, 1);
             base_use = base ? base : 16;
         } else if(ref.str[0] == 'b' || ref.str[0] == 'b') {
-            ref.str += 1; ref.len -= 1;
+            so_ref_shift(&ref, 1);
             base_use = base ? base : 2;
         } else {
             base_use = base ? base : 8;

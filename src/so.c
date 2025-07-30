@@ -275,6 +275,11 @@ So_Ref _so_ref(So *so) {
     return so_ref(*so);
 }
 
+void so_ref_shift(So_Ref *ref, size_t shift) {
+    ref->str += shift;
+    ref->len -= shift;
+}
+
 
 void so_clear(So *s) {
     s->ref.len &= SO_HEAP_BIT;

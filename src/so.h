@@ -38,7 +38,7 @@ typedef struct So {
     };
 } So;
 
-#define SO          (So){0}
+#define SO          (So){.ref.str = 0, .ref.len = 0}
 #define SO_F(s)     (int)(so_len((s))), so_it0((s))
 
 bool        so_is_empty(So s);
@@ -66,6 +66,7 @@ So         _so_iE(So_Ref s, size_t iE);
 So         _so_sub(So_Ref s, size_t i0, size_t iE);
 #define     so_ref(s)           (so_is_stack((s)) ? (So_Ref){ .str = (s).stack.str, .len = (s).stack.len } : (So_Ref){ .str = (s).ref.str, .len = (s).ref.len & ~SO_HEAP_BIT })
 So_Ref     _so_ref(So *s);
+void        so_ref_shift(So_Ref *ref, size_t shift);
 #define     so_rev(s)           (So){ .ref.str = (s).str, .ref.len = (s).len }
 void        so_push(So *s, char c);
 void        so_extend(So *s, So b);

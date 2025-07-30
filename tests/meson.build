@@ -28,6 +28,8 @@ examples = [
   'trimr.c',
   'trim.c',
   'cmp.c',
+  'input.c',
+  'find.c',
   ]
 
 tests = []
