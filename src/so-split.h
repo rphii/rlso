@@ -11,7 +11,7 @@ typedef struct So_Ref So_Ref;
 
 #define so_split_ch(so, c, right) _so_split_ch(so_ref((so)), c, right)
 #define so_split_nch(so, c, right) _so_split_nch(so_ref((so)), c, right)
-#define so_split_sub(so, sub, right, attr) _so_split_sub(so_ref((so)), so_ref((sub)), attr)
+#define so_split_sub(so, sub, right, attr) _so_split_sub(so_ref((so)), so_ref((sub)), right, attr)
 
 #define so_rsplit_ch(so, c, right) _so_rsplit_ch(so_ref((so)), c, right)
 #define so_rsplit_nch(so, c, right) _so_rsplit_nch(so_ref((so)), c, right)

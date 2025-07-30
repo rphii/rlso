@@ -10,5 +10,9 @@ int main(void) {
     EXPECT_CMP(right, so("abc"));
     EXPECT_CMP(so_rsplit_nch(so("abcxxx"), 'x', &right), so("abc"));
     EXPECT_CMP(right, so("xxx"));
+    EXPECT_CMP(so_split_sub(so("abca-stringa-stringxxx"), so("a-string"), &right, SO_CMP), so("abc"));
+    EXPECT_CMP(right, so("a-stringxxx"));
+    EXPECT_CMP(so_rsplit_sub(so("abca-stringa-stringxxx"), so("a-string"), &right, SO_CMP), so("abca-string"));
+    EXPECT_CMP(right, so("xxx"));
     return 0;
 }
