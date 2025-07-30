@@ -11,31 +11,9 @@
 #define SO_STACK_CAP        (sizeof(So_Ref) - 1)
 #define SO_STACK_HEAP_BIT   (((size_t)1) << ((sizeof(unsigned char)) * 8 - 1))
 
-typedef struct So_Ref {
-#if defined(ENDIAN_BIG)
-    size_t len;
-    char *str;
-#else
-    char *str;
-    size_t len;
-#endif
-} So_Ref;
-
-typedef struct So_Stack {
-#if defined(ENDIAN_BIG)
-    unsigned char len;
-    char str[SO_STACK_CAP];
-#else
-    char str[SO_STACK_CAP];
-    unsigned char len;
-#endif
-} So_Stack;
-
 typedef struct So {
-    union {
-        So_Stack stack;
-        So_Ref ref;
-    };
+    char *str;
+    size_t len;
 } So;
 
 #define SO          (So){.ref.str = 0, .ref.len = 0}
