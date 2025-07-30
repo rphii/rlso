@@ -7,6 +7,7 @@
 #include "../src/so-as.h"
 #include "../src/so-uc.h"
 #include "../src/so-cmp.h"
+#include "../src/so-cmp-attr.h"
 #include "../src/so-env.h"
 #include "../src/so-trim.h"
 #include "../src/so-file.h"

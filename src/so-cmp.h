@@ -3,6 +3,8 @@
 #include "so-cmp-attr.h"
 
 typedef struct So So;
+typedef int (*So_Cmp_Func)(So, So);
+typedef int (*So_Cmp_Func_p)(So *, So *);
 
 int so_cmp(So a, So b);
 int so_cmp_s(So a, So b);

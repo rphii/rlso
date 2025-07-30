@@ -27,6 +27,7 @@ examples = [
   'triml.c',
   'trimr.c',
   'trim.c',
+  'cmp.c',
   ]
 
 tests = []

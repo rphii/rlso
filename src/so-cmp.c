@@ -75,25 +75,29 @@ int so_cmp_cs(So a, So b) {
 
 int so_cmp_p(So *a, So *b) {
     if(!a && !b) return 0;
-    if(!a || !b) return a - b;
+    if(!a) return so_len(*b);
+    if(!b) return so_len(*a);
     return _so_cmp(_so_ref(a), _so_ref(b));
 }
 
 int so_cmp_sp(So *a, So *b) {
     if(!a && !b) return 0;
-    if(!a || !b) return a - b;
+    if(!a) return so_len(*b);
+    if(!b) return so_len(*a);
     return _so_cmp_s(_so_ref(a), _so_ref(b));
 }
 
 int so_cmp_cp(So *a, So *b) {
     if(!a && !b) return 0;
-    if(!a || !b) return a - b;
+    if(!a) return so_len(*b);
+    if(!b) return so_len(*a);
     return _so_cmp_c(_so_ref(a), _so_ref(b));
 }
 
 int so_cmp_csp(So *a, So *b) {
     if(!a && !b) return 0;
-    if(!a || !b) return a - b;
+    if(!a) return so_len(*b);
+    if(!b) return so_len(*a);
     return _so_cmp_cs(_so_ref(a), _so_ref(b));
 }
 
@@ -131,25 +135,29 @@ int so_cmp0_cs(So a, So b) {
 
 int so_cmp0_p(So *a, So *b) {
     if(!a && !b) return 0;
-    if(!a || !b) return a - b;
+    if(!a) return so_len(*b);
+    if(!b) return so_len(*a);
     return so_cmp0(*a, *b);
 }
 
 int so_cmp0_sp(So *a, So *b) {
     if(!a && !b) return 0;
-    if(!a || !b) return a - b;
+    if(!a) return so_len(*b);
+    if(!b) return so_len(*a);
     return so_cmp0_s(*a, *b);
 }
 
 int so_cmp0_cp(So *a, So *b) {
     if(!a && !b) return 0;
-    if(!a || !b) return a - b;
+    if(!a) return so_len(*b);
+    if(!b) return so_len(*a);
     return so_cmp0_c(*a, *b);
 }
 
 int so_cmp0_csp(So *a, So *b) {
     if(!a && !b) return 0;
-    if(!a || !b) return a - b;
+    if(!a) return so_len(*b);
+    if(!b) return so_len(*a);
     return so_cmp0_cs(*a, *b);
 }
 
@@ -158,7 +166,11 @@ int so_cmp0_csp(So *a, So *b) {
 /* compare end {{{ */
 
 int so_cmpE(So a, So b) {
-    return so_cmpE_p(&a, &b);
+    So_Ref ra = so_ref(a), rb = so_ref(b);
+    if(ra.len < rb.len) return ra.len - rb.len;
+    size_t delta = ra.len - rb.len;
+    ra.str += delta; ra.len -= delta;
+    return _so_cmp(ra, rb);
 }
 
 int so_cmpE_c(So a, So b) {
@@ -187,25 +199,29 @@ int so_cmpE_cs(So a, So b) {
 
 int so_cmpE_p(So *a, So *b) {
     if(!a && !b) return 0;
-    if(!a || !b) return a - b;
+    if(!a) return so_len(*b);
+    if(!b) return so_len(*a);
     return so_cmpE(*a, *b);
 }
 
 int so_cmpE_cp(So *a, So *b) {
     if(!a && !b) return 0;
-    if(!a || !b) return a - b;
+    if(!a) return so_len(*b);
+    if(!b) return so_len(*a);
     return so_cmpE_c(*a, *b);
 }
 
 int so_cmpE_sp(So *a, So *b) {
     if(!a && !b) return 0;
-    if(!a || !b) return a - b;
+    if(!a) return so_len(*b);
+    if(!b) return so_len(*a);
     return so_cmpE_s(*a, *b);
 }
 
 int so_cmpE_csp(So *a, So *b) {
     if(!a && !b) return 0;
-    if(!a || !b) return a - b;
+    if(!a) return so_len(*b);
+    if(!b) return so_len(*a);
     return so_cmpE_cs(*a, *b);
 }
 
@@ -213,23 +229,29 @@ int so_cmpE_csp(So *a, So *b) {
 
 
 int so_cmpx(So a, So b, So_Cmp_Attr attr) {
-    if( (attr & SO_CMP_CASE_INSENSITIVE) &&  (attr & SO_CMP_SORTABLE) &&  (attr & SO_CMP_BEGIN) && !(attr & SO_CMP_END)) return so_cmp0_cs(a, b);
-    if(!(attr & SO_CMP_CASE_INSENSITIVE) &&  (attr & SO_CMP_SORTABLE) &&  (attr & SO_CMP_BEGIN) && !(attr & SO_CMP_END)) return so_cmp0_s(a, b);
-    if( (attr & SO_CMP_CASE_INSENSITIVE) && !(attr & SO_CMP_SORTABLE) &&  (attr & SO_CMP_BEGIN) && !(attr & SO_CMP_END)) return so_cmp0_c(a, b);
-    if(!(attr & SO_CMP_CASE_INSENSITIVE) && !(attr & SO_CMP_SORTABLE) &&  (attr & SO_CMP_BEGIN) && !(attr & SO_CMP_END)) return so_cmp0(a, b);
-    if( (attr & SO_CMP_CASE_INSENSITIVE) &&  (attr & SO_CMP_SORTABLE) && !(attr & SO_CMP_BEGIN) &&  (attr & SO_CMP_END)) return so_cmpE_cs(a, b);
-    if(!(attr & SO_CMP_CASE_INSENSITIVE) &&  (attr & SO_CMP_SORTABLE) && !(attr & SO_CMP_BEGIN) &&  (attr & SO_CMP_END)) return so_cmpE_s(a, b);
-    if( (attr & SO_CMP_CASE_INSENSITIVE) && !(attr & SO_CMP_SORTABLE) && !(attr & SO_CMP_BEGIN) &&  (attr & SO_CMP_END)) return so_cmpE_c(a, b);
-    if(!(attr & SO_CMP_CASE_INSENSITIVE) && !(attr & SO_CMP_SORTABLE) && !(attr & SO_CMP_BEGIN) &&  (attr & SO_CMP_END)) return so_cmpE(a, b);
-    if( (attr & SO_CMP_CASE_INSENSITIVE) &&  (attr & SO_CMP_SORTABLE) && !(attr & SO_CMP_BEGIN) && !(attr & SO_CMP_END)) return so_cmp_cs(a, b);
-    if(!(attr & SO_CMP_CASE_INSENSITIVE) &&  (attr & SO_CMP_SORTABLE) && !(attr & SO_CMP_BEGIN) && !(attr & SO_CMP_END)) return so_cmp_s(a, b);
-    if( (attr & SO_CMP_CASE_INSENSITIVE) && !(attr & SO_CMP_SORTABLE) && !(attr & SO_CMP_BEGIN) && !(attr & SO_CMP_END)) return so_cmp_c(a, b);
+    if((attr & SO_CMP_BEGIN) && (attr & SO_CMP_END)) return -1;
+    if(attr & SO_CMP_BEGIN) {
+        if( (attr & SO_CMP_CASE_INSENSITIVE) &&  (attr & SO_CMP_SORTABLE)) return so_cmp0_cs(a, b);
+        if(!(attr & SO_CMP_CASE_INSENSITIVE) &&  (attr & SO_CMP_SORTABLE)) return so_cmp0_s(a, b);
+        if( (attr & SO_CMP_CASE_INSENSITIVE)) return so_cmp0_c(a, b);
+        return so_cmp0(a, b);
+    } else if(attr & SO_CMP_END) {
+        if( (attr & SO_CMP_CASE_INSENSITIVE) &&  (attr & SO_CMP_SORTABLE)) return so_cmpE_cs(a, b);
+        if(!(attr & SO_CMP_CASE_INSENSITIVE) &&  (attr & SO_CMP_SORTABLE)) return so_cmpE_s(a, b);
+        if( (attr & SO_CMP_CASE_INSENSITIVE)) return so_cmpE_c(a, b);
+        return so_cmpE(a, b);
+    } else {
+        if( (attr & SO_CMP_CASE_INSENSITIVE) &&  (attr & SO_CMP_SORTABLE)) return so_cmp_cs(a, b);
+        if(!(attr & SO_CMP_CASE_INSENSITIVE) &&  (attr & SO_CMP_SORTABLE)) return so_cmp_s(a, b);
+        if( (attr & SO_CMP_CASE_INSENSITIVE)) return so_cmp_c(a, b);
+    }
     return so_cmp(a, b);
 }
 
 int so_cmpx_p(So *a, So *b, So_Cmp_Attr attr) {
     if(!a && !b) return 0;
-    if(!a || !b) return a - b;
+    if(!a) return so_len(*b);
+    if(!b) return so_len(*a);
     return so_cmpx(*a, *b, attr);
 }
 
