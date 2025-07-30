@@ -1,6 +1,6 @@
 # 🧵 So - String Object 
 
-Small String Optimized and Dynamically Allocatable String in C.
+Dynamically Allocatable String in C.
 
 ## 🛠️ Installation
 
