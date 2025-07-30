@@ -2,11 +2,12 @@ import sys
 
 if __name__ == '__main__':
     args = sys.argv[1:]
-    out = ""
+    out = "".encode()
     for file in args:
-        with open(file, 'r', encoding='utf-8', errors='ignore') as f:
-            out += "[" + file + "]\n"
+        print(file);
+        with open(file, 'rb') as f:
+            out += ("[" + file + "]\n").encode();
             out += f.read()
-    with open("out.py.txt", 'w') as f:
+    with open("out.py.txt", 'wb') as f:
         f.write(out)
 

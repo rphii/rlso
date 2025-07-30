@@ -30,6 +30,7 @@ examples = [
   'cmp.c',
   'input.c',
   'find.c',
+  'extend.c',
   ]
 
 tests = []
