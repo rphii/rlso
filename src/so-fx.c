@@ -10,7 +10,7 @@
 #include <wordexp.h>
 
 size_t so_len_nfx(So str) { /*{{{*/
-    size_t len = so_len(str), n = 0, m = 0;
+    size_t len = so_len(str);
     So snip = so_ll(so_it0(str), len);
     So pat = so("\033[");
     bool count = true;
@@ -35,7 +35,7 @@ size_t so_len_nfx(So str) { /*{{{*/
 
 
 size_t so_nfx_index(So so, size_t index) {
-    So_Ref ref = so_ref(so);
+    So ref = so;
     size_t len_nof = 0;
     size_t n = 0, m = 0, i = 0;
     So snip = so;

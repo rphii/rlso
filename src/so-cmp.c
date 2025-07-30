@@ -6,7 +6,7 @@
 
 /* internal use {{{ */
 
-int _so_cmp(So_Ref a, So_Ref b) {
+int so_cmp(So a, So b) {
     int result;
     //printf("CMP:%.*s:%zu\n    %.*s:%zu\n", a.len, a.str,a.len, b.len, b.str,b.len);
     if(a.len != b.len) result = a.len - b.len;
@@ -14,7 +14,7 @@ int _so_cmp(So_Ref a, So_Ref b) {
     return result;
 }
 
-int _so_cmp_s(So_Ref a, So_Ref b) {
+int so_cmp_s(So a, So b) {
     int result;
     if(a.len != b.len) {
         size_t less = a.len < b.len ? a.len : b.len;
@@ -28,7 +28,7 @@ int _so_cmp_s(So_Ref a, So_Ref b) {
     return result;
 }
 
-int _so_cmp_c(So_Ref a, So_Ref b) {
+int so_cmp_c(So a, So b) {
     if(a.len != b.len) return a.len - b.len;
     for(size_t i = 0; i < a.len; ++i) {
         char ca = a.str[i];
@@ -38,7 +38,7 @@ int _so_cmp_c(So_Ref a, So_Ref b) {
     return 0;
 }
 
-int _so_cmp_cs(So_Ref a, So_Ref b) {
+int so_cmp_cs(So a, So b) {
     size_t less;
     if(a.len != b.len) less = a.len < b.len ? a.len : b.len;
     else less = a.len;
@@ -54,51 +54,32 @@ int _so_cmp_cs(So_Ref a, So_Ref b) {
 
 /* compare {{{ */
 
-int so_cmp(So a, So b) {
-    return _so_cmp(so_ref(a), so_ref(b));
-}
-
-int so_cmp_s(So a, So b) {
-    So_Ref ra = so_ref(a), rb = so_ref(b);
-    return _so_cmp_s(ra, rb);
-}
-
-int so_cmp_c(So a, So b) {
-    So_Ref ra = so_ref(a), rb = so_ref(b);
-    return _so_cmp_c(ra, rb);
-}
-
-int so_cmp_cs(So a, So b) {
-    So_Ref ra = so_ref(a), rb = so_ref(b);
-    return _so_cmp_cs(ra, rb);
-}
-
 int so_cmp_p(So *a, So *b) {
     if(!a && !b) return 0;
     if(!a) return so_len(*b);
     if(!b) return so_len(*a);
-    return _so_cmp(_so_ref(a), _so_ref(b));
+    return so_cmp(*a, *b);
 }
 
 int so_cmp_sp(So *a, So *b) {
     if(!a && !b) return 0;
     if(!a) return so_len(*b);
     if(!b) return so_len(*a);
-    return _so_cmp_s(_so_ref(a), _so_ref(b));
+    return so_cmp_s(*a, *b);
 }
 
 int so_cmp_cp(So *a, So *b) {
     if(!a && !b) return 0;
     if(!a) return so_len(*b);
     if(!b) return so_len(*a);
-    return _so_cmp_c(_so_ref(a), _so_ref(b));
+    return so_cmp_c(*a, *b);
 }
 
 int so_cmp_csp(So *a, So *b) {
     if(!a && !b) return 0;
     if(!a) return so_len(*b);
     if(!b) return so_len(*a);
-    return _so_cmp_cs(_so_ref(a), _so_ref(b));
+    return so_cmp_cs(*a, *b);
 }
 
 /*}}}*/
@@ -106,31 +87,27 @@ int so_cmp_csp(So *a, So *b) {
 /* compare begin {{{ */
 
 int so_cmp0(So a, So b) {
-    So_Ref ra = so_ref(a), rb = so_ref(b);
-    if(ra.len < rb.len) return ra.len - rb.len;
-    ra.len = rb.len;
-    return _so_cmp(ra, rb);
+    if(a.len < b.len) return a.len - b.len;
+    a.len = b.len;
+    return so_cmp(a, b);
 }
 
 int so_cmp0_c(So a, So b) {
-    So_Ref ra = so_ref(a), rb = so_ref(b);
-    if(ra.len < rb.len) return ra.len - rb.len;
-    ra.len = rb.len;
-    return _so_cmp_c(ra, rb);
+    if(a.len < b.len) return a.len - b.len;
+    a.len = b.len;
+    return so_cmp_c(a, b);
 }
 
 int so_cmp0_s(So a, So b) {
-    So_Ref ra = so_ref(a), rb = so_ref(b);
-    if(ra.len < rb.len) return ra.len - rb.len;
-    ra.len = rb.len;
-    return _so_cmp_c(ra, rb);
+    if(a.len < b.len) return a.len - b.len;
+    a.len = b.len;
+    return so_cmp_c(a, b);
 }
 
 int so_cmp0_cs(So a, So b) {
-    So_Ref ra = so_ref(a), rb = so_ref(b);
-    if(ra.len < rb.len) return ra.len - rb.len;
-    ra.len = rb.len;
-    return _so_cmp_cs(ra, rb);
+    if(a.len < b.len) return a.len - b.len;
+    a.len = b.len;
+    return so_cmp_cs(a, b);
 }
 
 int so_cmp0_p(So *a, So *b) {
@@ -166,35 +143,31 @@ int so_cmp0_csp(So *a, So *b) {
 /* compare end {{{ */
 
 int so_cmpE(So a, So b) {
-    So_Ref ra = so_ref(a), rb = so_ref(b);
-    if(ra.len < rb.len) return ra.len - rb.len;
-    size_t delta = ra.len - rb.len;
-    so_ref_shift(&ra, delta);
-    return _so_cmp(ra, rb);
+    if(a.len < b.len) return a.len - b.len;
+    size_t delta = a.len - b.len;
+    so_shift(&a, delta);
+    return so_cmp(a, b);
 }
 
 int so_cmpE_c(So a, So b) {
-    So_Ref ra = so_ref(a), rb = so_ref(b);
-    if(ra.len < rb.len) return ra.len - rb.len;
-    size_t delta = ra.len - rb.len;
-    so_ref_shift(&ra, delta);
-    return _so_cmp_c(ra, rb);
+    if(a.len < b.len) return a.len - b.len;
+    size_t delta = a.len - b.len;
+    so_shift(&a, delta);
+    return so_cmp_c(a, b);
 }
 
 int so_cmpE_s(So a, So b) {
-    So_Ref ra = so_ref(a), rb = so_ref(b);
-    if(ra.len < rb.len) return ra.len - rb.len;
-    size_t delta = ra.len - rb.len;
-    so_ref_shift(&ra, delta);
-    return _so_cmp_s(ra, rb);
+    if(a.len < b.len) return a.len - b.len;
+    size_t delta = a.len - b.len;
+    so_shift(&a, delta);
+    return so_cmp_s(a, b);
 }
 
 int so_cmpE_cs(So a, So b) {
-    So_Ref ra = so_ref(a), rb = so_ref(b);
-    if(ra.len < rb.len) return ra.len - rb.len;
-    size_t delta = ra.len - rb.len;
-    so_ref_shift(&ra, delta);
-    return _so_cmp_cs(ra, rb);
+    if(a.len < b.len) return a.len - b.len;
+    size_t delta = a.len - b.len;
+    so_shift(&a, delta);
+    return so_cmp_cs(a, b);
 }
 
 int so_cmpE_p(So *a, So *b) {

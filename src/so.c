@@ -9,7 +9,6 @@
 static bool _so_is_heap(So *s);
 static void so_resize_known(So *s, size_t len_old, size_t len_new);
 
-static char *so_grow_by_stack(So *so, size_t len_add);
 static char *so_grow_by_heap(So *so, size_t len_add);
 static char *so_grow_by_ref(So *so, size_t len_add);
 static char *so_grow_by(So *so, size_t len_add);
@@ -75,6 +74,7 @@ void so_change_len(So *so, size_t len) {
 
 void so_copy(So *so, So b) {
     so_clear(so);
+    if(!b.len) return;
     //so_resize_known(s, 0, ref.len);
     memcpy(so_grow_by(so, b.len), b.str, so->len);
 }
@@ -83,9 +83,9 @@ void so_copy(So *so, So b) {
 
 So so_clone(So b) {
     So result = {0};
-    size_t len = so_len(b);
-    //printff("CLONE:[%.*s]", SO_F(b));
-    memcpy(so_grow_by(&result, len), so_it0(b), len);
+    if(b.len) {
+        memcpy(so_grow_by(&result, b.len), so_it0(b), b.len);
+    }
     //so_printdbg(result);
     return result;
 }

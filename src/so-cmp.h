@@ -7,11 +7,6 @@ typedef struct So_Ref So_Ref;
 typedef int (*So_Cmp_Func)(So, So);
 typedef int (*So_Cmp_Func_p)(So *, So *);
 
-int _so_cmp(So_Ref ra, So_Ref b);
-int _so_cmp_s(So_Ref ra, So_Ref b);
-int _so_cmp_c(So_Ref ra, So_Ref b);
-int _so_cmp_cs(So_Ref ra, So_Ref b);
-
 int so_cmp(So a, So b);
 int so_cmp_s(So a, So b);
 int so_cmp_c(So a, So b);

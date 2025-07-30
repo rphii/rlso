@@ -11,7 +11,7 @@
 
 /* find ::: ref {{{ */
 
-size_t _so_find_ch(So_Ref ref, char c) { /*{{{*/
+size_t so_find_ch(So ref, char c) { /*{{{*/
 #if 1
     char *s = memchr(ref.str, c, ref.len);
     if(!s) return ref.len;
@@ -24,28 +24,28 @@ size_t _so_find_ch(So_Ref ref, char c) { /*{{{*/
 #endif
 } /*}}}*/
 
-size_t _so_find_nch(So_Ref ref, char c) { /*{{{*/
+size_t so_find_nch(So ref, char c) { /*{{{*/
     for(size_t i = 0; i < ref.len; ++i) {
         if(ref.str[i] != c) return i;
     }
     return ref.len;
 } /*}}}*/
 
-size_t _so_find_ws(So_Ref ref) { /*{{{*/
+size_t so_find_ws(So ref) { /*{{{*/
     for(size_t i = 0; i < ref.len; ++i) {
         if(isspace(ref.str[i])) return i;
     }
     return ref.len;
 } /*}}}*/
 
-size_t _so_find_nws(So_Ref ref) { /*{{{*/
+size_t so_find_nws(So ref) { /*{{{*/
     for(size_t i = 0; i < ref.len; ++i) {
         if(!isspace(ref.str[i])) return i;
     }
     return ref.len;
 } /*}}}*/
 
-size_t _so_find_any(So_Ref ref, So_Ref any) { /*{{{*/
+size_t so_find_any(So ref, So any) { /*{{{*/
     for(size_t i = 0; i < ref.len; ++i) {
         char c = ref.str[i];
         if(memchr(any.str, c, any.len)) {
@@ -55,7 +55,7 @@ size_t _so_find_any(So_Ref ref, So_Ref any) { /*{{{*/
     return ref.len;
 } /*}}}*/
 
-size_t _so_find_nany(So_Ref ref, So_Ref nany) { /*{{{*/
+size_t so_find_nany(So ref, So nany) { /*{{{*/
     for(size_t i = 0; i < ref.len; ++i) {
         char c = ref.str[i];
         if(!memchr(nany.str, c, nany.len)) {
@@ -65,7 +65,7 @@ size_t _so_find_nany(So_Ref ref, So_Ref nany) { /*{{{*/
     return ref.len;
 } /*}}}*/
 
-size_t _so_find_sub(So_Ref ref, So_Ref sub, bool ignorecase) { /*{{{*/
+size_t so_find_sub(So ref, So sub, bool ignorecase) { /*{{{*/
     /* basic checks */
     if(!sub.len) return 0;
     if(sub.len > ref.len) return ref.len;
@@ -73,55 +73,23 @@ size_t _so_find_sub(So_Ref ref, So_Ref sub, bool ignorecase) { /*{{{*/
     /* check for substring */
     size_t i = 0, shift = 0, overlap = 0;
     while(ref.len >= sub.len) {
-        overlap = _so_count_overlapx(ref, sub, ignorecase ? SO_CMP_CASE_INSENSITIVE : SO_CMP);
+        overlap = so_count_overlapx(ref, sub, ignorecase ? SO_CMP_CASE_INSENSITIVE : SO_CMP);
         if(overlap == sub.len) return i;
         i += overlap;
-        so_ref_shift(&ref, overlap);
-        shift = _so_find_ch(ref, sub.str[0]);
+        so_shift(&ref, overlap);
+        shift = so_find_ch(ref, sub.str[0]);
         /*if(!shift && ref.len) ++shift;//don't think I need this?*/
         i += shift;
-        so_ref_shift(&ref, shift);
+        so_shift(&ref, shift);
     }
     return len;
 } /*}}}*/
 
 /*}}}*/
 
-/* find ::: regular {{{ */
-
-size_t so_find_ch(So so, char c) { /*{{{*/
-    return _so_find_ch(so_ref(so), c);
-} /*}}}*/
-
-size_t so_find_nch(So so, char c) { /*{{{*/
-    return _so_find_nch(so_ref(so), c);
-} /*}}}*/
-
-size_t so_find_ws(So so) { /*{{{*/
-    return _so_find_ws(so_ref(so));
-} /*}}}*/
-
-size_t so_find_nws(So so) { /*{{{*/
-    return _so_find_nws(so_ref(so));
-} /*}}}*/
-
-size_t so_find_any(So so, So any) { /*{{{*/
-    return _so_find_any(so_ref(so), so_ref(any));
-} /*}}}*/
-
-size_t so_find_nany(So so, So any) { /*{{{*/
-    return _so_find_nany(so_ref(so), so_ref(any));
-} /*}}}*/
-
-size_t so_find_sub(So so, So sub, bool ignorecase) { /*{{{*/
-    return _so_find_sub(so_ref(so), so_ref(sub), ignorecase ? SO_CMP_CASE_INSENSITIVE : SO_CMP);
-} /*}}}*/
-
-/*}}}*/
-
 /* rfind ::: ref {{{ */
 
-size_t _so_rfind_ch(So_Ref ref, char c) { /*{{{*/
+size_t so_rfind_ch(So ref, char c) { /*{{{*/
 #if 1
     char *s = memrchr(ref.str, c, ref.len);
     if(!s) return ref.len;
@@ -134,28 +102,28 @@ size_t _so_rfind_ch(So_Ref ref, char c) { /*{{{*/
 #endif
 } /*}}}*/
 
-size_t _so_rfind_nch(So_Ref ref, char c) { /*{{{*/
+size_t so_rfind_nch(So ref, char c) { /*{{{*/
     for(size_t i = ref.len; i > 0; --i) {
         if(ref.str[i - 1] != c) return i;
     }
     return 0;
 } /*}}}*/
 
-size_t _so_rfind_ws(So_Ref ref) { /*{{{*/
+size_t so_rfind_ws(So ref) { /*{{{*/
     for(size_t i = ref.len; i > 0; --i) {
         if(isspace(ref.str[i - 1])) return i - 1;
     }
     return ref.len;
 } /*}}}*/
 
-size_t _so_rfind_nws(So_Ref ref) { /*{{{*/
+size_t so_rfind_nws(So ref) { /*{{{*/
     for(size_t i = ref.len; i > 0; --i) {
         if(!isspace(ref.str[i - 1])) return i;
     }
     return 0;
 } /*}}}*/
 
-size_t _so_rfind_any(So_Ref ref, So_Ref any) { /*{{{*/
+size_t so_rfind_any(So ref, So any) { /*{{{*/
     for(size_t i = ref.len; i > 0; --i) {
         char c = ref.str[i - 1];
         if(memchr(any.str, c, any.len)) {
@@ -165,7 +133,7 @@ size_t _so_rfind_any(So_Ref ref, So_Ref any) { /*{{{*/
     return ref.len;
 } /*}}}*/
 
-size_t _so_rfind_nany(So_Ref ref, So_Ref nany) { /*{{{*/
+size_t so_rfind_nany(So ref, So nany) { /*{{{*/
     for(size_t i = ref.len; i > 0; --i) {
         char c = ref.str[i - 1];
         if(!memchr(nany.str, c, nany.len)) {
@@ -175,57 +143,25 @@ size_t _so_rfind_nany(So_Ref ref, So_Ref nany) { /*{{{*/
     return 0;
 } /*}}}*/
 
-size_t _so_rfind_sub(So_Ref ref, So_Ref sub, bool ignorecase) {
+size_t so_rfind_sub(So ref, So sub, bool ignorecase) { /*{{{*/
     /* basic checks */
     if(!sub.len) return ref.len;
     if(sub.len > ref.len) return ref.len;
-    So_Ref sweep = ref;
+    So sweep = ref;
     size_t len = ref.len;
     sweep.len = sub.len;
     /* check for substring */
     size_t shift = 0, overlap = 0;
     while(ref.len >= sub.len) {
         sweep.str = ref.str + ref.len - sub.len;
-        overlap = _so_count_overlapx(sweep, sub, ignorecase ? SO_CMP_CASE_INSENSITIVE : SO_CMP);
+        overlap = so_count_overlapx(sweep, sub, ignorecase ? SO_CMP_CASE_INSENSITIVE : SO_CMP);
         if(overlap == sub.len) return ref.len - sweep.len;
         ref.len -= overlap;
-        shift = _so_rfind_ch(ref, sub.str[0]);
+        shift = so_rfind_ch(ref, sub.str[0]);
         if(shift < ref.len) shift -= sub.len;
         ref.len -= shift;
     }
     return len;
-}
-
-/*}}}*/
-
-/* rfind ::: regular {{{ */
-
-size_t so_rfind_ch(So so, char c) { /*{{{*/
-    return _so_rfind_ch(so_ref(so), c);
-} /*}}}*/
-
-size_t so_rfind_nch(So so, char c) { /*{{{*/
-    return _so_rfind_nch(so_ref(so), c);
-} /*}}}*/
-
-size_t so_rfind_ws(So so) { /*{{{*/
-    return _so_rfind_ws(so_ref(so));
-} /*}}}*/
-
-size_t so_rfind_nws(So so) { /*{{{*/
-    return _so_rfind_nws(so_ref(so));
-} /*}}}*/
-
-size_t so_rfind_any(So so, So any) { /*{{{*/
-    return _so_rfind_any(so_ref(so), so_ref(any));
-} /*}}}*/
-
-size_t so_rfind_nany(So so, So nany) { /*{{{*/
-    return _so_rfind_nany(so_ref(so), so_ref(nany));
-} /*}}}*/
-
-size_t so_rfind_sub(So so, So sub, bool ignorecase) { /*{{{*/
-    return _so_rfind_sub(so_ref(so), so_ref(sub), ignorecase ? SO_CMP_CASE_INSENSITIVE : SO_CMP);
 } /*}}}*/
 
 /*}}}*/

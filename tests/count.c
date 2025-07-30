@@ -21,7 +21,6 @@ int main(void) {
     /* stacked */
     So so = SO;
     so_extend(&so, so("abcxyz"));
-    NEXPECT(so_is_stack(so), 0);
     EXPECT(so_count_ch(so, 'x'), 1);
     EXPECT(so_count_nch(so, 'x'), 5);
     EXPECT(so_count_any(so, so), 6);

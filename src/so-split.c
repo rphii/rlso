@@ -2,50 +2,50 @@
 #include "so-find.h"
 #include "so-split.h"
 
-So _so_split(So_Ref ref, size_t i, So *right) {
-    if(right) *right = _so_i0(ref, i);
-    So left = _so_iE(ref, i);
+So so_split(So ref, size_t i, So *right) {
+    if(right) *right = so_i0(ref, i);
+    So left = so_iE(ref, i);
     return left;
 }
 
-So _so_split_ext(So_Ref ref, size_t i, size_t n, So *right) {
+So so_split_ext(So ref, size_t i, size_t n, So *right) {
     if(right) {
-        if(i + n <= ref.len) *right = _so_i0(ref, i + n);
-        else *right = _so_i0(ref, i);
+        if(i + n <= ref.len) *right = so_i0(ref, i + n);
+        else *right = so_i0(ref, i);
     }
-    So left = _so_iE(ref, i);
+    So left = so_iE(ref, i);
     return left;
 }
 
-So _so_split_ch(So_Ref ref, char c, So *right) {
-    size_t i = _so_find_ch(ref, c);
-    return _so_split_ext(ref, i, 1, right);
+So so_split_ch(So ref, char c, So *right) {
+    size_t i = so_find_ch(ref, c);
+    return so_split_ext(ref, i, 1, right);
 }
 
-So _so_split_nch(So_Ref ref, char c, So *right) {
-    size_t i = _so_find_nch(ref, c);
-    return _so_split_ext(ref, i, 0, right);
+So so_split_nch(So ref, char c, So *right) {
+    size_t i = so_find_nch(ref, c);
+    return so_split_ext(ref, i, 0, right);
 }
 
-So _so_split_sub(So_Ref ref, So_Ref sub, So *right, So_Cmp_Attr attr) {
-    size_t i = _so_find_sub(ref, sub, attr);
-    return _so_split_ext(ref, i, sub.len, right);
+So so_split_sub(So ref, So sub, So *right, So_Cmp_Attr attr) {
+    size_t i = so_find_sub(ref, sub, attr);
+    return so_split_ext(ref, i, sub.len, right);
 }
 
 
-So _so_rsplit_ch(So_Ref ref, char c, So *right) {
-    size_t i = _so_rfind_ch(ref, c);
-    return _so_split_ext(ref, i, 1, right);
+So so_rsplit_ch(So ref, char c, So *right) {
+    size_t i = so_rfind_ch(ref, c);
+    return so_split_ext(ref, i, 1, right);
 }
 
-So _so_rsplit_nch(So_Ref ref, char c, So *right) {
-    size_t i = _so_rfind_nch(ref, c);
-    return _so_split_ext(ref, i, 0, right);
+So so_rsplit_nch(So ref, char c, So *right) {
+    size_t i = so_rfind_nch(ref, c);
+    return so_split_ext(ref, i, 0, right);
 }
 
-So _so_rsplit_sub(So_Ref ref, So_Ref sub, So *right, So_Cmp_Attr attr) {
-    size_t i = _so_rfind_sub(ref, sub, attr);
-    return _so_split_ext(ref, i, sub.len, right);
+So so_rsplit_sub(So ref, So sub, So *right, So_Cmp_Attr attr) {
+    size_t i = so_rfind_sub(ref, sub, attr);
+    return so_split_ext(ref, i, sub.len, right);
 }
 
 

@@ -17,26 +17,26 @@ void so_path_join(So *out, So a, So b) {
 }
 
 
-const So _so_get_ext(So_Ref ref) { /*{{{*/
+const So so_get_ext(So ref) { /*{{{*/
     /* also handles: file.dir/filename -> / is after . */
     So result = SO;
-    size_t i = _so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
-    size_t j = _so_rfind_ch(ref, '.');
+    size_t i = so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
+    size_t j = so_rfind_ch(ref, '.');
     if(j > i) {
-        result = _so_i0(ref, j);
+        result = so_i0(ref, j);
     }
     return result;
 } /*}}}*/
 
-const So _so_get_noext(So_Ref ref) { /*{{{*/
+const So so_get_noext(So ref) { /*{{{*/
 #if 1
     /* also handles: file.dir/filename -> / is after . */
-    size_t i = _so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
-    size_t j = _so_rfind_ch(ref, '.');
+    size_t i = so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
+    size_t j = so_rfind_ch(ref, '.');
     size_t sp = (j < i || j == ref.len) ? ref.len : j;
-    So result = _so_iE(ref, sp);
+    So result = so_iE(ref, sp);
 #else
-    So_Ref ref = _so_ref(str);
+    So ref = so_ref(str);
     So result = { .ref = ref };
     if(ref.len) {
         size_t i = so_rfind_ch(result, '.');
@@ -52,12 +52,12 @@ const So _so_get_noext(So_Ref ref) { /*{{{*/
     return result;
 } /*}}}*/
 
-const So _so_get_dir(So_Ref ref) { /*{{{*/
+const So so_get_dir(So ref) { /*{{{*/
 #if 1
-    size_t i = _so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
-    So result = i < ref.len ? _so_iE(ref, i) : SO;
+    size_t i = so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
+    So result = i < ref.len ? so_iE(ref, i) : SO;
 #else
-    So_Ref ref = _so_ref(str);
+    So ref = so_ref(str);
     So result = { .ref = ref };
     if(ref.len) {
         size_t i0 = so_rfind_ch(result, '/');
@@ -72,12 +72,12 @@ const So _so_get_dir(So_Ref ref) { /*{{{*/
     return result;
 } /*}}}*/
 
-const So _so_get_nodir(So_Ref ref) { /*{{{*/
+const So so_get_nodir(So ref) { /*{{{*/
 #if 1
-    size_t i = _so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
-    So result = i < ref.len ? _so_i0(ref, i + 1) : so_rev(ref);
+    size_t i = so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
+    So result = i < ref.len ? so_i0(ref, i + 1) : ref;
 #else
-    So_Ref ref = _so_ref(str);
+    So ref = so_ref(str);
     So result = { .ref = ref };
     if(ref.len) {
         size_t i0 = so_rfind_ch(result, '/');
@@ -93,14 +93,14 @@ const So _so_get_nodir(So_Ref ref) { /*{{{*/
     return result;
 } /*}}}*/
 
-const So _so_get_basename(So_Ref ref) { /*{{{*/
+const So so_get_basename(So ref) { /*{{{*/
 #if 1
     So result = SO;
-    _so_rsplit_ch(ref, PLATFORM_CH_SUBDIR, &result);
-    if(!so_len(result)) result = so_rev(ref);
+    so_rsplit_ch(ref, PLATFORM_CH_SUBDIR, &result);
+    if(!so_len(result)) result = ref;
     result = so_rsplit_ch(result, '.', 0);
 #else
-    So_Ref ref = _so_ref(str);
+    So ref = so_ref(str);
     So result = { .ref = ref };
     if(ref.len) {
         size_t iE = so_rfind_ch(result, '.');

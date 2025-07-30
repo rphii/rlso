@@ -17,7 +17,6 @@ int main(void) {
         EXPECT(so_len(so), i + 1);
         EXPECT(so_at(so, i), c);
         EXPECT(so_is_empty(so), false);
-        EXPECT(_so_len(&so), i + 1);
         EXPECT(so_at0(so), first);
         /* ref */
         r = so_ll(so_it0(so), i);
@@ -26,7 +25,6 @@ int main(void) {
         EXPECT(so_len(r), i + 1);
         EXPECT(so_at(r, i), c);
         EXPECT(so_is_empty(r), false);
-        EXPECT(_so_len(&r), i + 1);
         EXPECT(so_at0(r), first);
         /* clone */
         EXPECT(so_len(clone), i);
@@ -34,7 +32,6 @@ int main(void) {
         EXPECT(so_len(clone), i + 1);
         EXPECT(so_at(clone, i), c);
         EXPECT(so_is_empty(clone), false);
-        EXPECT(_so_len(&clone), i + 1);
         EXPECT(so_at0(clone), first);
         /* copy */
         EXPECT(so_len(copy), i);
@@ -42,7 +39,6 @@ int main(void) {
         EXPECT(so_len(copy), i + 1);
         EXPECT(so_at(copy, i), c);
         EXPECT(so_is_empty(copy), false);
-        EXPECT(_so_len(&copy), i + 1);
         EXPECT(so_at0(copy), first);
         /* clean */
         so_free(&clone);

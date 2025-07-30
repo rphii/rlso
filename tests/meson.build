@@ -1,5 +1,4 @@
 examples = [
-  'endian.c',
   'len-0.c',
   'len-0.2.c',
   'len-a.c',

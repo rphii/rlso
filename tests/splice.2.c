@@ -3,7 +3,6 @@
 int main(void) {
     So in = so("ab, ,, de,  xy");
     so_push(&in, ' ');
-    EXPECT(so_is_stack(in), true);
     So exp[] = { so("ab"), so(""), so(""), so("de"), so("xy") };
     size_t n = 0;
     for(So splice = {0}; so_splice(in, &splice, ','); ++n) {

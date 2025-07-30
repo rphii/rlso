@@ -2,29 +2,28 @@
 #include "so-uc.h"
 
 ErrDecl so_uc_point(So so, So_Uc_Point *point) {
-    So_Ref ref = so_ref(so);
     ASSERT_ARG(point); /* LCOV_EXCL_LINE */
     So_Uc_Point tinker = {0};
     // figure out how many bytes we need
-    if((*ref.str & 0x80) == 0) point->bytes = 1;
-    else if((*ref.str & 0xE0) == 0xC0) point->bytes = 2;
-    else if((*ref.str & 0xF0) == 0xE0) point->bytes = 3;
-    else if((*ref.str & 0xF8) == 0xF0) point->bytes = 4;
-    else if((*ref.str & 0xFC) == 0xF8) point->bytes = 5;
-    else if((*ref.str & 0xFE) == 0xFC) point->bytes = 6;
-    else return -1; //THROW("unknown utf-8 pattern [%02x,%02x,%02x,%02x,%02x,%02x,%02x,%02x]", (unsigned char )ref.str[0], (unsigned char )ref.str[1], (unsigned char )ref.str[2], (unsigned char )ref.str[3], (unsigned char )ref.str[4], (unsigned char )ref.str[5], (unsigned char )ref.str[6], (unsigned char )ref.str[7]);
+    if((*so.str & 0x80) == 0) point->bytes = 1;
+    else if((*so.str & 0xE0) == 0xC0) point->bytes = 2;
+    else if((*so.str & 0xF0) == 0xE0) point->bytes = 3;
+    else if((*so.str & 0xF8) == 0xF0) point->bytes = 4;
+    else if((*so.str & 0xFC) == 0xF8) point->bytes = 5;
+    else if((*so.str & 0xFE) == 0xFC) point->bytes = 6;
+    else return -1; //THROW("unknown utf-8 pattern [%02x,%02x,%02x,%02x,%02x,%02x,%02x,%02x]", (unsigned char )so.str[0], (unsigned char )so.str[1], (unsigned char )so.str[2], (unsigned char )so.str[3], (unsigned char )so.str[4], (unsigned char )so.str[5], (unsigned char )so.str[6], (unsigned char )so.str[7]);
     // magical mask shifting
     size_t shift = (point->bytes - 1) * 6;
     int mask = 0x7F;
-    if(ref.len < point->bytes) return -1;
+    if(so.len < point->bytes) return -1;
     if(point->bytes > 1) mask >>= point->bytes;
     // extract info from bytes
     for(int i = 0; i < point->bytes; i++) {
         // add number to point
-        if(!ref.str[i]) return -1; // THROW(ERR_CSTR_INVALID);
-        tinker.val |= (uint32_t)((ref.str[i] & mask) << shift);
+        if(!so.str[i]) return -1; // THROW(ERR_CSTR_INVALID);
+        tinker.val |= (uint32_t)((so.str[i] & mask) << shift);
         if(mask == 0x3F) {
-            if((unsigned char)(ref.str[i] & ~mask) != 0x80) {
+            if((unsigned char)(so.str[i] & ~mask) != 0x80) {
                 return -1; //THROW("encountered invalid bytes in utf-8 sequence");
                 point->bytes = 0;
                 break;
@@ -37,7 +36,7 @@ ErrDecl so_uc_point(So so, So_Uc_Point *point) {
     }
     // one final check, unicode doesn't go that far, wth unicode, TODO check ?!
     /////if(tinker.val > 0x10FFFF || !point->bytes) {
-    /////    point->val = (unsigned char)*ref.str;
+    /////    point->val = (unsigned char)*so.str;
     /////    point->bytes = 1;
     /////} else {
         point->val = tinker.val;

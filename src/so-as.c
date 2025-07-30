@@ -14,7 +14,7 @@ static int static_so_as_unbase_char(char c) {
 
 void so_as_cstr(So so, char *buf, size_t cap) {
     ASSERT_ARG(buf);
-    So_Ref ref = so_ref(so);
+    So ref = so;
     if(ref.len && cap) {
         size_t less = ref.len < cap - 1 ? ref.len : cap - 1;
         memcpy(buf, ref.str, less);
@@ -24,7 +24,7 @@ void so_as_cstr(So so, char *buf, size_t cap) {
     }
 }
 
-ErrDecl _so_as_size(So_Ref ref, size_t *out, int base) {
+ErrDecl _so_as_size(So ref, size_t *out, int base) {
     if(!ref.len) return -1;
     if(base > SO_AS_SIZE_BASE_MAX) return -1;
     size_t result = 0;
@@ -45,15 +45,15 @@ ErrDecl _so_as_size(So_Ref ref, size_t *out, int base) {
 }
 
 ErrDecl so_as_size(So so, size_t *out, int base) {
-    So_Ref ref = so_ref(so);
+    So ref = so;
     size_t base_use = base ? base : 10;
     if(ref.len >= 2 && ref.str[0] == '0') {
-        so_ref_shift(&ref, 1);
+        so_shift(&ref, 1);
         if(ref.str[0] == 'x' || ref.str[0] == 'X') {
-            so_ref_shift(&ref, 1);
+            so_shift(&ref, 1);
             base_use = base ? base : 16;
         } else if(ref.str[0] == 'b' || ref.str[0] == 'b') {
-            so_ref_shift(&ref, 1);
+            so_shift(&ref, 1);
             base_use = base ? base : 2;
         } else {
             base_use = base ? base : 8;

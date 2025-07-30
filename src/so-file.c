@@ -29,7 +29,7 @@ ErrDecl so_file_read_fp(FILE *file, So *content) {
     /* allocate memory */
     so_resize(content, bytes_file);
     /* read file */
-    size_t bytes_read = fread(content->ref.str, 1, bytes_file, file);
+    size_t bytes_read = fread(content->str, 1, bytes_file, file);
     if(bytes_file != bytes_read) ERR(SO_FILE_ERR_BYTES);
     //content->ref.str[bytes_read] = 0;
 clean:
@@ -41,11 +41,10 @@ ErrDecl so_file_write_fp(FILE *file, So content) {
     ASSERT_ARG(file);
     int err = 0;
     /* write file */
-    So_Ref ref = so_ref(content);
 #if SO_File_CHECK_BYTES_WRITTEN
     size_t bytes_written = 
 #endif
-        fwrite(ref.str, 1, ref.len, file);
+        fwrite(content.str, 1, content.len, file);
 #if SO_File_CHECK_BYTES_WRITTEN
     if(bytes_written != ref.len) ERR(SO_FILE_ERR_BYTES);
 clean:
@@ -61,10 +60,9 @@ ErrDecl so_file_read(So filename, So *content) {
     FILE *file = 0;
     /* open the file */
     errno = 0;
-    So_Ref ref = so_ref(filename);
-    if(ref.len && (
-                ref.str[ref.len] == PLATFORM_CH_SUBDIR ||
-                ref.str[ref.len] == '/')) {
+    if(filename.len && (
+                filename.str[filename.len] == PLATFORM_CH_SUBDIR ||
+                filename.str[filename.len] == '/')) {
         ERR(SO_FILE_ERR_DIR);
     }
     /* open and read */
@@ -82,10 +80,9 @@ ErrDecl so_file_write(So filename, So content) {
     FILE *file = 0;
     /* open the file */
     errno = 0;
-    So_Ref ref = so_ref(filename);
-    if(ref.len && (
-                ref.str[ref.len] == PLATFORM_CH_SUBDIR ||
-                ref.str[ref.len] == '/')) {
+    if(filename.len && (
+                filename.str[filename.len] == PLATFORM_CH_SUBDIR ||
+                filename.str[filename.len] == '/')) {
         ERR(SO_FILE_ERR_DIR);
     }
     /* open and read */
