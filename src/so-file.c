@@ -31,7 +31,7 @@ ErrDecl so_file_read_fp(FILE *file, So *content) {
     /* read file */
     size_t bytes_read = fread(content->ref.str, 1, bytes_file, file);
     if(bytes_file != bytes_read) ERR(SO_FILE_ERR_BYTES);
-    content->ref.str[bytes_read] = 0;
+    //content->ref.str[bytes_read] = 0;
 clean:
     /* close file outside */
     return err;
@@ -68,7 +68,7 @@ ErrDecl so_file_read(So filename, So *content) {
         ERR(SO_FILE_ERR_DIR);
     }
     /* open and read */
-    file = so_file_fp(filename, "r");
+    file = so_file_fp(filename, "rb");
     if(!file || errno) ERR(SO_FILE_ERR_OPEN);
     err = so_file_read_fp(file, content);
 clean:
@@ -89,7 +89,7 @@ ErrDecl so_file_write(So filename, So content) {
         ERR(SO_FILE_ERR_DIR);
     }
     /* open and read */
-    file = so_file_fp(filename, "w");
+    file = so_file_fp(filename, "wb");
     if(!file || errno) ERR(SO_FILE_ERR_OPEN);
     err = so_file_write_fp(file, content);
 clean:

@@ -157,6 +157,7 @@ void so_extend(So *s, So b) {
     char *s0;
     if(so_is_heap(b) && _so_is_heap(s) && b.ref.str == s->ref.str) {
         s0 = so_grow_by(&heap, ref.len);
+        memcpy(heap.ref.str, s->ref.str, s->ref.len);
     } else {
         s0 = so_grow_by(s, ref.len);
     }
@@ -217,13 +218,14 @@ void so_fmt_va(So *s, const char *fmt, va_list va) {
     size_t len_new = old.len + len_app;
     so_grow_by(s, len_app + 1);
     so_resize(s, len_new);
+    So_Ref new = _so_ref(s);
 
     if(len_new) {
         /* actual append */
         ASSERT_ARG(s);
         //ASSERT_ARG(_so_it(s, old.len));
         //printf("IS_STACK %u, IS_HEAP %u\n", _so_is_stack(s), _so_is_heap(s));
-        int len_chng = vsnprintf(old.str + old.len, len_app + 1, fmt, va);
+        int len_chng = vsnprintf(new.str + old.len, len_app + 1, fmt, va);
     }
 
 #if 0
