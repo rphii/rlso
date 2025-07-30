@@ -34,21 +34,7 @@ int main(int argc, char **argv) {
 
     printf("sizeof So %zu\n", sizeof(So));
 
-    printf("heap max %zu\n", SO_HEAP_MAX);
-    printf("heap bit %zu\n", SO_HEAP_BIT);
-
     printf("is_heap %u\n", so_is_heap(s));
-    printf("is_stack %u\n", so_is_stack(s));
-
-    s.stack.len = 1;
-    printf("simulated stack %zu\n", s.ref.len);
-    printf("is_stack %u\n", so_is_stack(s));
-    printf("is_heap %u\n", so_is_heap(s));
-
-    s.stack.len = 0x80;
-    printf("simulated heap %zu\n", s.ref.len);
-    printf("is_heap %u\n", so_is_heap(s));
-    printf("is_stack %u\n", so_is_stack(s));
 
     s = so("hello!");
     so_printdbg(s);
