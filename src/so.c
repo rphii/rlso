@@ -216,7 +216,6 @@ void so_shift(So *so, size_t shift) {
 
 void so_clear(So *so) {
     so->len = 0;
-    so->is_heap = 0;
 }
 
 void so_free(So *s) {
