@@ -16,6 +16,8 @@ int main(int argc, char **argv) {
     EXPECT_CMP(so, so("b.c"));
     so = so_get_noext(full);
     EXPECT_CMP(so, nodir);
+    so_free(&nodir);
+    so_free(&full);
     return 0;
 }
 

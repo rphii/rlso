@@ -12,5 +12,6 @@ int main(void) {
         EXPECT(so_cmp(splice, exp[n]), 0);
     }
     EXPECT(n, 5);
+    so_free(&in);
 }
 

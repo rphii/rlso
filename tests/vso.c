@@ -32,6 +32,7 @@ int main(void) {
         rand_so(&so, rand() % lenmax);
         EXPECT_CMP(pop, so);
         so_free(&so);
+        so_free(&pop);
     }
     vso_free(&vs);
     vso_free(&v2);

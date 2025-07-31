@@ -25,6 +25,10 @@ int main(int argc, char **argv) {
     printf("v noext\n");
     so = so_get_noext(full);
     EXPECT_CMP(so, noext);
+    so_free(&nodir);
+    so_free(&noext);
+    so_free(&full);
+    so_free(&dir);
     return 0;
 }
 

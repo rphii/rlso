@@ -61,8 +61,8 @@ ErrDecl so_file_read(So filename, So *content) {
     /* open the file */
     errno = 0;
     if(filename.len && (
-                filename.str[filename.len] == PLATFORM_CH_SUBDIR ||
-                filename.str[filename.len] == '/')) {
+                filename.str[filename.len - 1] == PLATFORM_CH_SUBDIR ||
+                filename.str[filename.len - 1] == '/')) {
         ERR(SO_FILE_ERR_DIR);
     }
     /* open and read */
@@ -81,8 +81,8 @@ ErrDecl so_file_write(So filename, So content) {
     /* open the file */
     errno = 0;
     if(filename.len && (
-                filename.str[filename.len] == PLATFORM_CH_SUBDIR ||
-                filename.str[filename.len] == '/')) {
+                filename.str[filename.len - 1] == PLATFORM_CH_SUBDIR ||
+                filename.str[filename.len - 1] == '/')) {
         ERR(SO_FILE_ERR_DIR);
     }
     /* open and read */

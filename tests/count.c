@@ -30,6 +30,7 @@ int main(void) {
     EXPECT(so_count_nany(so, so("eyo")), 5);
     EXPECT(so_count_overlapx(so, so("abc"), 0), 3);
     EXPECT(so_count_overlapx(so("abc"), so, 0), 3);
+    so_free(&so);
     return 0;
 }
 
