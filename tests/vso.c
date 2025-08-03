@@ -12,7 +12,7 @@ int main(void) {
     vso_clear(&vs);
     size_t n = 1024;
     size_t lenmax = 256;
-    srand(time(0));
+    srand(0);
     for(size_t i = 0; i < n; ++i) {
         So so = {0};
         rand_so(&so, rand() % lenmax);
@@ -26,7 +26,7 @@ int main(void) {
     EXPECT(array_len(v2), n);
     vso_clear(&vs);
     EXPECT(array_len(vs), 0);
-    srand(time(0));
+    srand(0);
     for(size_t i = 0; i < n; ++i) {
         So so = {0}, pop = vso_pop(&v2);
         rand_so(&so, rand() % lenmax);
