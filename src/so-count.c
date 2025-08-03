@@ -1,6 +1,7 @@
 #include "so.h"
 #include "so-count.h"
 #include "so-cmp.h"
+#include <ctype.h>
 
 size_t so_count_ch(So ref, char c) { /*{{{*/
     size_t result = 0;
@@ -34,15 +35,17 @@ size_t so_count_nany(So ref, So nany) { /*{{{*/
     return result;
 } /*}}}*/
 
-size_t so_count_overlapx(So ra, So rb, So_Cmp_Attr attr) { /*{{{*/
+size_t so_count_overlapx(So ra, So rb, bool ignorecase) { /*{{{*/
     size_t overlap = 0;
     size_t len = ra.len > rb.len ? rb.len : ra.len;
-    ra.len = 1;
-    rb.len = 1;
     for(overlap = 0; overlap < len; ++overlap) {
-        if(so_cmp(ra, rb)) break;
-        ++ra.str;
-        ++rb.str;
+        char ca = ra.str[overlap];
+        char cb = rb.str[overlap];
+        if(ignorecase) {
+            ca = tolower(ca);
+            cb = tolower(cb);
+        }
+        if(ca != cb) break;
     }
     return overlap;
 } /*}}}*/

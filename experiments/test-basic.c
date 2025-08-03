@@ -116,8 +116,8 @@ int main(int argc, char **argv) {
         .align = &al,
     };
     So sfx = {0};
-    so_fmt_fx(&sfx, fx, "a string with a very long text attached to it that is basically unnecessary!\n");
-    so_print(sfx);
+    so_fmt_fx(&sfx, fx, "a string with a very long text attached to it that is basically unnecessary!");
+    so_println(sfx);
     so_free(&sfx);
 
     so_free(&c);

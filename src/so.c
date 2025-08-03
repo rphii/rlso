@@ -176,8 +176,9 @@ void so_fmt_va(So *s, const char *fmt, va_list va) {
 #endif
 }
 
-const char so_at(So s, size_t i) {
-    return s.str[i];
+const char so_at(So so, size_t i) {
+    ASSERT_ARG(i < so.len);
+    return so.str[i];
 }
 
 const char so_at0(So s) {
@@ -193,22 +194,28 @@ char *so_itE(So so) {
 }
 
 char *so_it(So so, size_t i) {
+    ASSERT_ARG(i <= so.len);
     return so.str + i;
 }
 
 So so_i0(So so, size_t i0) { 
+    ASSERT_ARG(i0 <= so.len);
     return (So){ .str = so.str + i0, .len = so.len - i0 };
 }
 
 So so_iE(So so, size_t iE) {
+    ASSERT_ARG(iE <= so.len);
     return (So){ .str = so.str, .len = iE };
 }
 
 So so_sub(So so, size_t i0, size_t iE) {
+    ASSERT_ARG(i0 <= so.len);
+    ASSERT_ARG(iE <= so.len);
     return (So){ .str = so.str + i0, .len = (iE - i0) };
 }
 
 void so_shift(So *so, size_t shift) {
+    ASSERT_ARG(shift <= so->len);
     so->str += shift;
     so->len = (so->len - shift);
     so->is_heap = false;

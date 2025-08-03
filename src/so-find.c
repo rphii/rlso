@@ -4,10 +4,12 @@
 #include "so-cmp.h"
 #include "so-count.h"
 #include "so-cmp-attr.h"
+#include "so-print.h"
 #include <assert.h>
 #include <ctype.h>
 #include <rl/colorprint.h>
 #include <rl/err.h>
+#include <stdint.h>
 
 /* find ::: ref {{{ */
 
@@ -158,7 +160,10 @@ size_t so_rfind_sub(So ref, So sub, bool ignorecase) { /*{{{*/
         if(overlap == sub.len) return ref.len - sweep.len;
         ref.len -= overlap;
         shift = so_rfind_ch(ref, sub.str[0]);
-        if(shift < ref.len) shift -= sub.len;
+        //if(!shift) break;
+        if(shift < ref.len) {
+            shift = shift >= sub.len ? shift - sub.len : sub.len;
+        }
         ref.len -= shift;
     }
     return len;
@@ -179,6 +184,7 @@ size_t so_find_f(So so, size_t *out_iE) { /*{{{*/
     return i0;
 } /*}}}*/
 
+#if 1
 size_t so_rfind_f0(So str, So *fmt) { /*{{{*/
     size_t i0 = so_rfind_sub(str, so(FS_BEG), false);
     So s = so_i0(str, i0);
@@ -189,7 +195,9 @@ size_t so_rfind_f0(So str, So *fmt) { /*{{{*/
     if(fmt) *fmt = s;
     return i0;
 } /*}}}*/
+#endif
 
+#if 0
 size_t so_rfind_f(So so, size_t *out_iE) { /*{{{*/
     size_t i0 = so_rfind_sub(so, so(FS_BEG), false);
     if(out_iE) {
@@ -200,6 +208,7 @@ size_t so_rfind_f(So so, size_t *out_iE) { /*{{{*/
     }
     return i0;
 } /*}}}*/
+#endif
 
 /*}}}*/
 
