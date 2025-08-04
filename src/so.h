@@ -10,6 +10,7 @@
 #include "so-file.h"
 #include "so-find.h"
 #include "so-fx.h"
+#include "so-hash.h"
 #include "so-heap.h"
 #include "so-input.h"
 #include "so-path.h"
