@@ -15,6 +15,10 @@ typedef struct So_Align {
 void so_extend_al(So *out, So_Align *p, So add);
 void so_fmt_al(So *out, So_Align *p, char *format, ...);
 
+void so_al_rewind(So_Align *al);
+void so_al_clear(So_Align *al);
+void so_al_free(So_Align *al);
+
 #define SO_ALIGN_H
 #endif
 

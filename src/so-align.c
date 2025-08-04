@@ -118,3 +118,24 @@ void so_fmt_al(So *out, So_Align *p, char *format, ...) {
     so_free(&tmp);
     p->i0_prev = i0;
 }
+
+void so_al_rewind(So_Align *al) {
+    ASSERT_ARG(al);
+    al->i0_prev = 0;
+    al->progress = 0;
+    so_clear(&al->fmt);
+}
+
+void so_al_clear(So_Align *al) {
+    ASSERT_ARG(al);
+    so_al_rewind(al);
+    so_clear(&al->fmt);
+}
+
+void so_al_free(So_Align *al) {
+    ASSERT_ARG(al);
+    so_free(&al->fmt);
+    memset(al, 0, sizeof(*al));
+}
+
+
