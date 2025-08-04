@@ -106,11 +106,8 @@ int main(int argc, char **argv) {
     }
 #endif
 
-    So_Align al = {
-        .i0 = 1,
-        .iNL = 2,
-        .iE = 10,
-    };
+    So_Align al = {0};
+    so_al_config(&al, 1, 10, 2, 0);
     So_Fx fx = {
         .bold = true,
         .italic = true,
@@ -123,9 +120,8 @@ int main(int argc, char **argv) {
     so_free(&sfx);
 
     So crazy = SO;
-    al.i0_prev = 0;
-    so_clear(&al.fmt);
-    al.progress = 0;
+    so_al_rewind(&al);
+    so_al_clear(&al);
     for(size_t i = 0; i < 100; ++i) {
         fx.bg.r = rand() % 0x100;
         fx.bg.g = rand() % 0x100;
@@ -141,7 +137,7 @@ int main(int argc, char **argv) {
         so_fmt_fx(&crazy, fx, "%c", c);
         //printff("FMT[%.*s]",SO_F(crazy));
     }
-    so_free(&al.fmt);
+    so_al_free(&al);
     so_println(crazy);
     so_free(&crazy);
 

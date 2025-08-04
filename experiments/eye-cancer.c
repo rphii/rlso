@@ -30,7 +30,8 @@ int main(void) {
     printf("Warning! This program causes eye-cancer (epilleptic warning!). Proceed? Type 'yes': ");
     So user = SO;
     So buf = SO;
-    So_Align al = { .iE = w.ws_col };
+    So_Align al = {0};
+    so_al_config(&al, 0, w.ws_col, 0, 0);
     So_Fx fx = { .align = &al };
     so_input(&user);
     if(so_cmp(user, so("yes"))) goto exit;
