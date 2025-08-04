@@ -19,6 +19,7 @@
 #include "../src/so-print.h"
 #include "../src/so-split.h"
 #include "../src/so-splice.h"
+#include "../src/so-print.h"
 #include "../src/vso.h"
 
 #define EXPECT(expr, val)   do {\

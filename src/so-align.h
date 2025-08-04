@@ -12,6 +12,7 @@ typedef struct So_Align {
     size_t iE;
 } So_Align;
 
+void so_extend_al(So *out, So_Align *p, So add);
 void so_fmt_al(So *out, So_Align *p, char *format, ...);
 
 #define SO_ALIGN_H

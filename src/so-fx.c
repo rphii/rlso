@@ -3,6 +3,7 @@
 #include "so-split.h"
 #include "so-fx.h"
 #include "so-cmp.h"
+#include "so-print.h"
 
 #include <stdlib.h>
 #include <rl/err.h>
@@ -49,27 +50,40 @@ size_t so_nfx_index(So so, size_t index) {
     return ref.len;
 }
 
-void so_fmt_fgbgx(So *out, So text, Color fg, Color bg, bool bold, bool italic, bool underline, bool bashsafe) { /*{{{*/
+void so_extend_fgbgx(So *out, Color fg, Color bg, bool bold, bool italic, bool underline, bool bashsafe, So add) {
     ASSERT_ARG(out);
     bool do_fmt = ((fg.rgba || bg.rgba || bold || italic || underline));
     if(!do_fmt) {
-        so_fmt(out, "%.*s", SO_F(text));
-        return;
+        so_extend(out, add);
+    } else {
+        char cfmt[64] = {0}; /* theoretically 52 would be enough? */
+        int len = sizeof(cfmt)/sizeof(*cfmt);
+        int offs = 0;
+        offs += snprintf(cfmt, len, "%s%s", bashsafe ? "\\[" : "", FS_BEG);
+        if(fg.rgba) offs += snprintf(cfmt + offs, len - offs, "%s", FS_FG3);
+        if(bg.rgba) offs += snprintf(cfmt + offs, len - offs, "%s", FS_BG3);
+        if(bold) offs += snprintf(cfmt + offs, len - offs, "%s", BOLD);
+        if(italic) offs += snprintf(cfmt + offs, len - offs, "%s", IT);
+        if(underline) offs += snprintf(cfmt + offs, len - offs, "%s", UL);
+        snprintf(cfmt + offs, len - offs, "%s", bashsafe ? "m\\]%.*s\\[\033[0m\\]" : FS_END);
+        //printff(">>CFMT[%s]+TMP[%.*s]",cfmt,SO_F(tmp));
+        if(fg.rgba && bg.rgba) { so_fmt(out, cfmt, fg.r, fg.g, fg.b, bg.r, bg.g, bg.b, SO_F(add)); }
+        else if(fg.rgba) {       so_fmt(out, cfmt, fg.r, fg.g, fg.b, SO_F(add)); }
+        else if(bg.rgba) {       so_fmt(out, cfmt, bg.r, bg.g, bg.b, SO_F(add)); }
+        else {                   so_fmt(out, cfmt, SO_F(add)); }
     }
-    char fmt[64] = {0}; /* theoretically 52 would be enough? */
-    int len = sizeof(fmt)/sizeof(*fmt);
-    int offs = 0;
-    offs += snprintf(fmt, len, "%s%s", bashsafe ? "\\[" : "", FS_BEG);
-    if(fg.rgba) offs += snprintf(fmt + offs, len - offs, "%s", FS_FG3);
-    if(bg.rgba) offs += snprintf(fmt + offs, len - offs, "%s", FS_BG3);
-    if(bold) offs += snprintf(fmt + offs, len - offs, "%s", BOLD);
-    if(italic) offs += snprintf(fmt + offs, len - offs, "%s", IT);
-    if(underline) offs += snprintf(fmt + offs, len - offs, "%s", UL);
-    snprintf(fmt + offs, len - offs, "%s", bashsafe ? "m\\]%.*s\\[\033[0m\\]" : FS_END);
-    if(fg.rgba && bg.rgba) { so_fmt(out, fmt, fg.r, fg.g, fg.b, bg.r, bg.g, bg.b, SO_F(text)); }
-    else if(fg.rgba) {       so_fmt(out, fmt, fg.r, fg.g, fg.b, SO_F(text)); }
-    else if(bg.rgba) {       so_fmt(out, fmt, bg.r, bg.g, bg.b, SO_F(text)); }
-    else {                   so_fmt(out, fmt, SO_F(text)); }
+} /*}}}*/
+
+
+void so_fmt_fgbgx(So *out, Color fg, Color bg, bool bold, bool italic, bool underline, bool bashsafe, char *fmt, ...) {
+    //printff("FMT");
+    ASSERT_ARG(out);
+    So tmp = {0};
+    va_list va;
+    va_start(va, fmt);
+    so_fmt_va(&tmp, fmt, va);
+    va_end(va);
+    so_extend_fgbgx(out, fg, bg, bold, italic, underline, bashsafe, tmp);
 } /*}}}*/
 
 void so_fmt_fx(So *out, So_Fx fx, char *fmt, ...) {
@@ -85,14 +99,10 @@ void so_fmt_fx(So *out, So_Fx fx, char *fmt, ...) {
     if(fx.nocolor && *fx.nocolor) {
         so_extend(&str2, str);
     } else {
-        so_fmt_fgbgx(&str2, str, fx.fg, fx.bg, fx.bold, fx.italic, fx.underline, fx.bashsafe);
+        so_extend_fgbgx(&str2, fx.fg, fx.bg, fx.bold, fx.italic, fx.underline, fx.bashsafe, str);
     }
-    //so_1buf_old(out, &onebuf);
-    //so_1buf_new(out, &onebuf);
     if(fx.align) {
-        //so_1buf_old(out, &onebuf);
-        so_fmt_al(out, fx.align, "%.*s", SO_F(str2));
-        //so_1buf_new(out, &onebuf);
+        so_extend_al(out, fx.align, str2);
     }
     so_free(&str);
     so_free(&str2);

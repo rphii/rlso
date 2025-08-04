@@ -34,8 +34,10 @@ static char *so_grow_by_ref(So *so, size_t len_add) {
     so->is_heap = true;
     return so->str + len_was;
 }
+#include "so-print.h"
 
 static char *so_grow_by(So *so, size_t len_add) {
+    ASSERT_ARG(len_add);
     if(_so_is_heap(so)) {
         return so_grow_by_heap(so, len_add);
     } else {
@@ -102,20 +104,29 @@ void so_push(So *s, char c) {
     *so_grow_by(s, 1) = c;
 }
 
-void so_extend(So *s, So b) {
-    So heap = {0};
+void so_extend(So *so, So b) {
     So ref = b;
-    char *s0;
-    if(so_is_heap(b) && _so_is_heap(s) && b.str == s->str) {
-        s0 = so_grow_by(&heap, ref.len);
-        memcpy(heap.str, ref.str, ref.len);
+    if(!ref.len) return;
+    //printff("EXTEND[%.*s]BY[%.*s]",SO_F(*so),SO_F(b));
+    if(_so_is_heap(so) && so_is_heap(b)) {
+        So_Heap *heap = so_heap_base(so);
+        if(b.str >= heap->str && b.str <= heap->str + heap->cap) {
+            /* memory overlaps - just get a new heap and free the old one */
+            So_Heap *neo = so_heap_grow(0, so->len + b.len);
+            memcpy(neo->str, so->str, so->len);
+            memcpy(neo->str + so->len, b.str, b.len);
+            so->len += b.len;
+            so->str = neo->str;
+            so->is_heap = true; /* not needed */
+            free(heap);
+        } else {
+            /* memory does not overlap */
+            char *s0 = so_grow_by_heap(so, b.len);
+            memcpy(s0, b.str, b.len);
+        }
     } else {
-        s0 = so_grow_by(s, ref.len);
-    }
-    memcpy(s0, ref.str, ref.len);
-    if(!so_is_zero(heap)) {
-        so_free(s);
-        *s = heap;
+        char *s0 = so_grow_by(so, b.len);
+        memcpy(s0, b.str, b.len);
     }
 }
 
@@ -234,19 +245,18 @@ void so_free(So *s) {
 void so_1buf_old(So *so, size_t *index) {
     ASSERT_ARG(so);
     ASSERT_ARG(index);
-    *index = _so_len(so);
+    *index = so->len;
 }
 
 void so_1buf_new(So *so, size_t *index) {
     ASSERT_ARG(so);
     ASSERT_ARG(index);
     if(!*index) return;
-    So_Ref ref = _so_ref(so);
     size_t len_old = *index;
-    size_t len_new = ref.len - len_old;
+    size_t len_new = so->len - len_old;
     //printff("onebuf new %zu->%zu (%zu)",len_old,ref.len,len_new);
     //printff("i0 %zu[%.*s] / iBUF %zu[%.*s]", len_old, ref.str, ref.str, len_new, ref.str + len_old, ref.str + len_old);
-    memmove(ref.str, ref.str + len_old, len_new);
+    memmove(so->str, so->str + len_old, len_new);
     //memmove(_so_it0(so), _so_it(so, len_old), len_new);
     so_resize(so, len_new);
     *index = 0;

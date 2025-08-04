@@ -40,6 +40,7 @@ int main(int argc, char **argv) {
     so_printdbg(s);
     so_push(&s, 'a');
     so_printdbg(s);
+    so_free(&s);
     s = so("hello, world!");
     so_printdbg(s);
     so_push(&s, '?');
@@ -95,6 +96,7 @@ int main(int argc, char **argv) {
     so_println(uc);
     so_uc_point(uc, &point);
     printf("point %u / %#x, bytes: %u\n", point.val, point.val, point.bytes);
+    so_free(&uc);
 
 #if 0
     So append = {0};
@@ -119,6 +121,29 @@ int main(int argc, char **argv) {
     so_fmt_fx(&sfx, fx, "a string with a very long text attached to it that is basically unnecessary!");
     so_println(sfx);
     so_free(&sfx);
+
+    So crazy = SO;
+    al.i0_prev = 0;
+    so_clear(&al.fmt);
+    al.progress = 0;
+    for(size_t i = 0; i < 100; ++i) {
+        fx.bg.r = rand() % 0x100;
+        fx.bg.g = rand() % 0x100;
+        fx.bg.b = rand() % 0x100;
+        fx.fg.r = rand() % 0x100;
+        fx.fg.g = rand() % 0x100;
+        fx.fg.b = rand() % 0x100;
+        fx.bold = rand() % 2;
+        fx.italic = rand() % 2;
+        fx.underline = rand() % 2;
+        char c = rand() % ('z'-'A') + 'A';
+        //printff(">>PUSH %u (%c)",c,c);
+        so_fmt_fx(&crazy, fx, "%c", c);
+        //printff("FMT[%.*s]",SO_F(crazy));
+    }
+    so_free(&al.fmt);
+    so_println(crazy);
+    so_free(&crazy);
 
     so_free(&c);
     so_printdbg(c);

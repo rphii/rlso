@@ -31,6 +31,8 @@ examples = [
   'find.c',
   'extend.c',
   'len-nfx.c',
+  'fmt.c',
+  'fmt-fgbgx.c',
   ]
 
 tests = []
