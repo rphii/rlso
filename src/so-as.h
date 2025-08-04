@@ -8,12 +8,12 @@ typedef struct So So;
 
 void so_as_cstr(So so, char *cstr, size_t cap);
 
-ErrDecl so_as_float(So so, float *out); /*TODO*/
-ErrDecl so_as_double(So so, double *out); /*TODO*/
-ErrDecl so_as_longdouble(So so, long double *out); /*TODO*/
+ErrDecl so_as_float(So so, float *out);
+ErrDecl so_as_double(So so, double *out);
+ErrDecl so_as_longdouble(So so, long double *out);
 
 ErrDecl so_as_bool_strict(So so, bool *out);
-ErrDecl so_as_yes_or_no(So so, bool *out); /*TODO*/
+ErrDecl so_as_yes_or_no(So so, bool *out);
 
 ErrDecl so_as_char(So so, char *out, int base);
 ErrDecl so_as_short(So so, short *out, int base);

@@ -4,6 +4,7 @@
 #include <rl/err.h>
 #include <stdint.h>
 #include <limits.h>
+#include <errno.h>
 
 #define SO_AS_SIZE_BASE_MAX     36
 
@@ -25,6 +26,46 @@ void so_as_cstr(So so, char *buf, size_t cap) {
         buf[ref.len] = 0;
     }
 }
+
+ErrDecl so_as_float(So so, float *out) {
+    char str[128];
+    so_as_cstr(so, str, 128);
+    char *endptr = 0;
+    errno = 0;
+    float result = strtof(str, &endptr);
+    if(errno) return -1;
+    if(!endptr) return -1;
+    if(*endptr) return -1;
+    *out = result;
+    return 0;
+}
+
+ErrDecl so_as_double(So so, double *out) {
+    char str[128];
+    so_as_cstr(so, str, 128);
+    char *endptr = 0;
+    errno = 0;
+    float result = strtod(str, &endptr);
+    if(errno) return -1;
+    if(!endptr) return -1;
+    if(*endptr) return -1;
+    *out = result;
+    return 0;
+}
+
+ErrDecl so_as_longdouble(So so, long double *out) {
+    char str[128];
+    so_as_cstr(so, str, 128);
+    char *endptr = 0;
+    errno = 0;
+    float result = strtold(str, &endptr);
+    if(errno) return -1;
+    if(!endptr) return -1;
+    if(*endptr) return -1;
+    *out = result;
+    return 0;
+}
+
 
 void so_as_get_base(So *ref, int *base) {
     int base_use = *base ? *base : 10;
@@ -81,6 +122,27 @@ ErrDecl so_as_bool_strict(So so, bool *out) {
     if(!so_cmp(so, so("true"))) {
         *out = true;
     } else if(!so_cmp(so, so("false"))) {
+        *out = false;
+    } else {
+        return -1;
+    }
+    return 0;
+}
+
+ErrDecl so_as_yes_or_no(So so, bool *out) {
+    if(       !so_cmp_c(so, so("true"))
+            ||!so_cmp_c(so, so("1"))
+            ||!so_cmp_c(so, so("y"))
+            ||!so_cmp_c(so, so("yes"))
+            ||!so_cmp_c(so, so("enable"))
+            ||!so_cmp_c(so, so("enabled"))) {
+        *out = true;
+    } else if(!so_cmp_c(so, so("false"))
+            ||!so_cmp_c(so, so("0"))
+            ||!so_cmp_c(so, so("n"))
+            ||!so_cmp_c(so, so("no"))
+            ||!so_cmp_c(so, so("disable"))
+            ||!so_cmp_c(so, so("disabled"))) {
         *out = false;
     } else {
         return -1;
