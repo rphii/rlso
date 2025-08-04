@@ -17,7 +17,6 @@ typedef struct So_Fx {
     bool italic;
     bool underline;
     bool bashsafe;
-    bool websafe;
 } So_Fx;
 
 size_t so_len_nfx(So str);
