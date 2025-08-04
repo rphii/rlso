@@ -10,6 +10,7 @@ typedef struct So_Align {
     size_t i0;
     size_t iNL;
     size_t iE;
+    size_t n_lines;
 } So_Align;
 
 void so_extend_al(So *out, So_Align *p, So add);
