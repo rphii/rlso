@@ -25,7 +25,7 @@
 #define EXPECT(expr, val)   do {\
     size_t a = ((expr)); \
     printf("==%zu <- %s " F("*", FG_BL_B) " " F("%s:%u", FG_BK_B) "\n=>%zu\n", (size_t)a, ERR_STRINGIFY(expr), __func__, __LINE__, (size_t)(val)); \
-    ASSERT(a == val, "expected true"); } while(0)
+    ASSERT(a == ((val)), "expected true"); } while(0)
 
 #define EXPECT_CMP(a, b)   do {\
     printf("==%.*s\n=>%.*s\n", SO_F((a)), SO_F((b))); \
