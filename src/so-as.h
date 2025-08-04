@@ -3,10 +3,13 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <rl/err.h>
+#include <rl/color.h>
 
 typedef struct So So;
 
 void so_as_cstr(So so, char *cstr, size_t cap);
+
+ErrDecl so_as_color(So so, Color *out);
 
 ErrDecl so_as_float(So so, float *out);
 ErrDecl so_as_double(So so, double *out);

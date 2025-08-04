@@ -27,6 +27,11 @@ void so_as_cstr(So so, char *buf, size_t cap) {
     }
 }
 
+ErrDecl so_as_color(So so, Color *out) {
+    ABORT("implement");
+    return 0;
+}
+
 ErrDecl so_as_float(So so, float *out) {
     char str[128];
     so_as_cstr(so, str, 128);
