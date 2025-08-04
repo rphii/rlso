@@ -23,7 +23,6 @@ void so_extend_al(So *out, So_Align *p, So add) {
     size_t w0 = iE > p->buf.progress ? iE - p->buf.progress : w;
     ////printff("w0 %zu",w0);
     size_t pad = i0 > p->buf.progress ? i0 - p->buf.progress : 0;
-    size_t n_line = 0;
     w0 -= pad;
     //printff(".");getchar();
     ////printff("[%.*s] progress:%zu, pad:%zu, w0:%zu i0prev:%zu i0:%zu",SO_F(add),p->progress,pad,w0,p->i0_prev,i0);
