@@ -16,6 +16,7 @@ void so_extend_al(So *out, So_Align *p, So add) {
     if(iE <= i0) return;
     /* printal */
     if(iE <= i0) return;
+    if(p->config.n_lines && p->buf.lines_done >= p->config.n_lines) return;
     bool first = true;
     size_t len = so_len(add);
     size_t w = iE - i0;
