@@ -38,6 +38,10 @@ void so_extend_al(So *out, So_Align *p, So add) {
     }
     //bool nl_pending = false;
     //printff(".");getchar();
+
+    /* TODO */
+    /* if we broke early because of line, don't even enter here. */
+
     for(size_t j0 = 0; j0 < len; ) {
         So buf0 = so_i0(add, j0);
         if(so_at(buf0, 0) == '\n' || nl_pending) {
@@ -92,7 +96,6 @@ void so_extend_al(So *out, So_Align *p, So add) {
         w = iE - iNL;
         ++n_line;
         if(p->n_lines && n_line >= p->n_lines) {
-            i0 = 0;
             break;
         }
     }
