@@ -1,4 +1,4 @@
-#include "so.h"
+#include "so-core.h"
 #include "so-count.h"
 #include "so-cmp.h"
 #include <ctype.h>

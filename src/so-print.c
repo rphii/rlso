@@ -1,4 +1,4 @@
-#include "so.h"
+#include "so-core.h"
 #include "so-print.h"
 #include "so-heap.h"
 

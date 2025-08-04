@@ -1,4 +1,4 @@
-#include "so.h"
+#include "so-core.h"
 #include "so-input.h"
 #include <stdio.h>
 

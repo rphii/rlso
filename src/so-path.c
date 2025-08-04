@@ -1,6 +1,6 @@
 #include <rl/platform-detect.h>
 
-#include "so.h"
+#include "so-core.h"
 #include "so-find.h"
 #include "so-path.h"
 #include "so-split.h"

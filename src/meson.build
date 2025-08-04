@@ -2,6 +2,7 @@ sources = [
   'so-align.c',
   'so-as.c',
   'so-cmp.c',
+  'so-core.c',
   'so-count.c',
   'so-env.c',
   'so-file.c',
@@ -15,7 +16,6 @@ sources = [
   'so-split.c',
   'so-trim.c',
   'so-uc.c',
-  'so.c',
   'vso.c',
   ]
 
@@ -24,6 +24,7 @@ headers = [
   'so-as.h',
   'so-cmp-attr.h',
   'so-cmp.h',
+  'so-core.h',
   'so-count.h',
   'so-env.h',
   'so-file.h',

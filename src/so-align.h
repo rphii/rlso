@@ -1,6 +1,6 @@
 #ifndef SO_ALIGN_H
 
-#include "so.h"
+#include "so-core.h"
 #include <stddef.h>
 
 typedef struct So_Align {

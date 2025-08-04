@@ -1,5 +1,5 @@
 #include "so-cmp.h"
-#include "so.h"
+#include "so-core.h"
 #include <string.h>
 #include <ctype.h>
 #include<stdio.h>

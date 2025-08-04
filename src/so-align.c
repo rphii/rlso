@@ -1,4 +1,4 @@
-#include "so.h"
+#include "so-core.h"
 #include "so-align.h"
 #include "so-find.h"
 #include "so-fx.h"

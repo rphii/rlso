@@ -1,6 +1,6 @@
 #ifndef VSO_H
 
-#include "so.h"
+#include "so-core.h"
 typedef So *VSo;
 
 void vso_push(VSo *v, So so);

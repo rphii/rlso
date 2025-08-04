@@ -1,4 +1,4 @@
-#include "so.h"
+#include "so-core.h"
 #include "so-uc.h"
 
 ErrDecl so_uc_point(So so, So_Uc_Point *point) {

@@ -1,6 +1,6 @@
 #include "so-heap.h"
 
-#include "so.h"
+#include "so-core.h"
 
 #include <stdlib.h>
 #include <stdio.h>
