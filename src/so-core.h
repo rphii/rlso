@@ -36,7 +36,7 @@ char *      so_itE(So so);
 So          so_i0(So so, size_t i0);
 So          so_iE(So so, size_t iE);
 So          so_sub(So so, size_t i0, size_t iE);
-void        so_shift(So *so, size_t shift);
+size_t      so_shift(So *so, size_t shift);
 void        so_push(So *so, char c);
 void        so_extend(So *so, So b);
 void        so_resize(So *so, size_t len);

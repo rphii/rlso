@@ -6,7 +6,7 @@
 #include <limits.h>
 #include <errno.h>
 
-#define SO_AS_SIZE_BASE_MAX     36
+#define SO_AS_BASE_MAX     36
 
 static int static_so_as_unbase_char(char c) {
     if(c >= '0' && c <= '9') return c - '0';
@@ -25,11 +25,6 @@ void so_as_cstr(So so, char *buf, size_t cap) {
     if(cap) {
         buf[ref.len] = 0;
     }
-}
-
-ErrDecl so_as_color(So so, Color *out) {
-    ABORT("implement");
-    return 0;
 }
 
 ErrDecl so_as_float(So so, float *out) {
@@ -105,7 +100,7 @@ void so_as_get_sign(So *ref, bool *sign) {
 #define SO_AS_WITH_BASE(T, ref, base_use, sign, out, bound) \
     do { \
         if(!ref.len) return -1; \
-        if(base_use > SO_AS_SIZE_BASE_MAX) return -1; \
+        if(base_use > SO_AS_BASE_MAX) return -1; \
         T result = 0; \
         for(size_t i = 0; i < ref.len; ++i) { \
             int val = static_so_as_unbase_char(ref.str[i]); \

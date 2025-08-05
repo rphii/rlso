@@ -76,7 +76,6 @@ void so_extend_fgbgx(So *out, Color fg, Color bg, bool bold, bool italic, bool u
 
 
 void so_fmt_fgbgx(So *out, Color fg, Color bg, bool bold, bool italic, bool underline, bool bashsafe, char *fmt, ...) {
-    //printff("FMT");
     ASSERT_ARG(out);
     So tmp = {0};
     va_list va;
@@ -103,6 +102,8 @@ void so_fmt_fx(So *out, So_Fx fx, char *fmt, ...) {
     }
     if(fx.align) {
         so_extend_al(out, fx.align, str2);
+    } else {
+        so_extend(out, str2);
     }
     so_free(&str);
     so_free(&str2);

@@ -4,6 +4,7 @@
 #include "so-as.h"
 #include "so-cmp-attr.h"
 #include "so-cmp.h"
+#include "so-color.h"
 #include "so-core.h"
 #include "so-count.h"
 #include "so-env.h"

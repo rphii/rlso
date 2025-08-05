@@ -225,11 +225,12 @@ So so_sub(So so, size_t i0, size_t iE) {
     return (So){ .str = so.str + i0, .len = (iE - i0) };
 }
 
-void so_shift(So *so, size_t shift) {
+size_t so_shift(So *so, size_t shift) {
     ASSERT_ARG(shift <= so->len);
     so->str += shift;
     so->len = (so->len - shift);
     so->is_heap = false;
+    return shift;
 }
 
 void so_clear(So *so) {

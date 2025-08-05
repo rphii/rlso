@@ -7,16 +7,22 @@
 
 size_t so_splice(So to_splice, So *prev, char sep) {
     ASSERT_ARG(prev);
-    So result = {0};
-    if(prev && !so_is_zero(*prev)) {
-        size_t from = 1 + prev->len + prev->str - to_splice.str; /* +1 to skip separator */
-        if(from + prev->len >= to_splice.len) return 0;
-        result = so_split_ch(so_i0(to_splice, from), sep, 0);
-    } else {
-        result = so_split_ch(to_splice, sep, 0);
+    size_t len = so_len(to_splice);
+    So result = so_ll(to_splice.str, len);
+    if(prev && prev->str) {
+        size_t from = prev->str - to_splice.str + so_len(*prev);
+        So search = so_i0(to_splice, from);
+        size_t offset = so_find_ch(search, sep) + from;
+        result.str += offset;
+        result.len -= offset;
+        if(result.str - to_splice.str < so_len(to_splice)) {
+            ++result.str;
+            --result.len;
+        }
     }
+    result.len = so_find_ch(result, sep);
     *prev = result;
-    return result.str - to_splice.str - to_splice.len;
+    return result.str - to_splice.str - len;
 } /*}}}*/
 
 
