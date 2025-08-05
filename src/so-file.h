@@ -15,9 +15,13 @@ typedef enum {
 } So_File_Err;
 
 FILE *so_file_fp(So filename, char *mode);
+#define ERR_so_file_read_fp(...) "failed reading file"
 ErrDecl so_file_read_fp(FILE *file, So *content);
+#define ERR_so_file_read(...) "failed reading file"
 ErrDecl so_file_read(So filename, So *content);
+#define ERR_so_file_write_fp(...) "failed writing file"
 ErrDecl so_file_write_fp(FILE *file, So content);
+#define ERR_so_file_write(...) "failed writing file"
 ErrDecl so_file_write(So filename, So content);
 
 #define SO_FILE_H
