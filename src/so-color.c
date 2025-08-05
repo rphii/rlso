@@ -122,7 +122,9 @@ void so_fmt_color(So *so, Color in, So_Color_Attr attr) {
         n_above += (in.r > 0x7f);
         ++n_channels;
     }
-    fx.fg = COLOR_RGB_NEGATIVE(fx.bg);
+    if(n_above == n_channels) {
+        fx.fg = COLOR_BLACK;
+    }
     if(attr & SO_COLOR_HEX) {
         so_fmt_fx(so, fx, "#");
         if(attr & SO_COLOR_R) so_fmt_fx(so, fx, "%02x", in.r);

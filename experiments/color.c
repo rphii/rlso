@@ -9,7 +9,7 @@ int main(void) {
     //So so = so("bg(94, 64)");
     //So so = so("bg(9464)");
     //So so = so("wa(0xff,0xff)");
-    So so = so("aw(0f7f)");
+    So so = so("aw(0f8f)");
     //So so = so("rgb   (      0xff , 0xf1\t, 0x21          )");
     //So so = so("#fff121fa");
     So out = SO;
