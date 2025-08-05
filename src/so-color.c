@@ -12,7 +12,7 @@
 
 ErrDecl so_as_color(So so, Color *out) {
     Color result = COLOR_NONE;
-    if(!so_len(so)) return 0;
+    if(!so_len(so)) return -1;
     if(so_at0(so) == '#') {
         so_shift(&so, 1);
         if(so_len(so) >= 2) {
@@ -100,30 +100,18 @@ ErrDecl so_as_color(So so, Color *out) {
 
 void so_fmt_color(So *so, Color in, So_Color_Attr attr) {
     So_Fx fx = {0};
-    int n_above = 0;
     int n_channels = 0;
-    if(attr & SO_COLOR_R) {
-        fx.bg.r = in.r;
-        n_above += (in.r > 0x7f);
-        ++n_channels;
-    }
-    if(attr & SO_COLOR_G) {
-        fx.bg.g = in.g;
-        n_above += (in.r > 0x7f);
-        ++n_channels;
-    }
-    if(attr & SO_COLOR_B) {
-        fx.bg.b = in.b;
-        n_above += (in.r > 0x7f);
-        ++n_channels;
-    }
-    if(attr & SO_COLOR_A) {
-        fx.bg.a = in.a;
-        n_above += (in.r > 0x7f);
-        ++n_channels;
-    }
-    if(n_above == n_channels) {
+    Color use = COLOR_NONE;
+    if(attr & SO_COLOR_R) { use.r = in.r; }
+    if(attr & SO_COLOR_G) { use.g = in.g; }
+    if(attr & SO_COLOR_B) { use.b = in.b; }
+    if(attr & SO_COLOR_A) { use.a = in.a; } else { use.a = 0xFF; }
+    fx.bg = use;
+    uint8_t bright = color_as_brightness(use, COLOR_GAMMA_DEFAULT);
+    if(bright > 50) {
         fx.fg = COLOR_BLACK;
+    } else {
+        fx.fg = COLOR_WHITE;
     }
     if(attr & SO_COLOR_HEX) {
         so_fmt_fx(so, fx, "#");
