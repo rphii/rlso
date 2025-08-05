@@ -237,9 +237,10 @@ void so_clear(So *so) {
     so->len = 0;
 }
 
-void so_free(So *s) {
-    if(so_is_heap(*s)) free(so_heap_base(s));
-    memset(s, 0, sizeof(*s));
+void so_free(So *so) {
+    if(!so) return;
+    if(so_is_heap(*so)) free(so_heap_base(so));
+    memset(so, 0, sizeof(*so));
 }
 
 #if 0 
