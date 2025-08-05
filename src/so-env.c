@@ -23,22 +23,21 @@ So so_env_get(So so) {
 }
 
 void so_extend_wordexp(So *out, So path, bool only_if_exists) {
-    So clean = {0};
-    so_copy(&clean, path); /* TODO create a str_copy_ro .. read-only copy, where it doesn't extend if end == len ... */
+    char *clean = so_dup(path); /* TODO create a str_copy_ro .. read-only copy, where it doesn't extend if end == len ... */
     wordexp_t word = {0};
-    if(wordexp(clean.str, &word, 0)) {
+    if(wordexp(clean, &word, 0)) {
         goto defer;
     }
     if(!word.we_wordv[0]) {
         goto defer;
     }
-    so_copy(&clean, so_l(word.we_wordv[0]));
-    if(only_if_exists && (!strlen(clean.str) || access(clean.str, R_OK) == -1)) {
+    char *result = word.we_wordv[0];
+    if(only_if_exists && (!strlen(result) || access(result, R_OK) == -1)) {
         goto defer;
     }
-    so_extend(out, clean);
+    so_extend(out, so_l(result));
 defer:
-    so_free(&clean);
+    free(clean);
     wordfree(&word);
 }
 
