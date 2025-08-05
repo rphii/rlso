@@ -53,8 +53,10 @@ int so_cmp_cs(So a, So b) {
 /* }}} */
 
 /* compare {{{ */
+#include <rl/err.h>
 
 int so_cmp_p(So *a, So *b) {
+    printff("ptr %p <> %p",a,b);
     if(!a && !b) return 0;
     if(!a) return so_len(*b);
     if(!b) return so_len(*a);
