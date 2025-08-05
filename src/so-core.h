@@ -48,6 +48,7 @@ So          so_clone(So b);
 char *      so_dup(So so);
 void        so_clear(So *so);
 void        so_free(So *so);
+void        so_free_v(So so);
 void        so_1buf_old(So *so, size_t *index);
 void        so_1buf_new(So *so, size_t *index);
 

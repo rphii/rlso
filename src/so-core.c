@@ -237,6 +237,10 @@ void so_clear(So *so) {
     so->len = 0;
 }
 
+void so_free_v(So so) {
+    so_free(&so);
+}
+
 void so_free(So *so) {
     if(!so) return;
     if(so_is_heap(*so)) free(so_heap_base(so));
