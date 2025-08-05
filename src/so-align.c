@@ -124,7 +124,7 @@ void so_fmt_al(So *out, So_Align *p, char *format, ...) {
     so_free(&tmp);
 }
 
-void so_al_config(So_Align *al, size_t i0, size_t iE, size_t iNL, size_t n_lines) {
+void so_al_config(So_Align *al, size_t i0, size_t iNL, size_t iE, size_t n_lines) {
     al->config.i0 = i0;
     al->config.iE = iE;
     al->config.iNL = iNL;
