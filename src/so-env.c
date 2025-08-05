@@ -2,6 +2,8 @@
 #include "so-as.h"
 #include "so-env.h"
 #include <stdlib.h>
+#include <wordexp.h>
+#include <unistd.h>
 
 #define SO_ENV_STACK_MAX    4096
 
@@ -18,5 +20,25 @@ So so_env_get(So so) {
         free(q);
     }
     return so_l(env);
+}
+
+void so_extend_wordexp(So *out, So path, bool only_if_exists) {
+    So clean = {0};
+    so_copy(&clean, path); /* TODO create a str_copy_ro .. read-only copy, where it doesn't extend if end == len ... */
+    wordexp_t word = {0};
+    if(wordexp(clean.str, &word, 0)) {
+        goto defer;
+    }
+    if(!word.we_wordv[0]) {
+        goto defer;
+    }
+    so_copy(&clean, so_l(word.we_wordv[0]));
+    if(only_if_exists && (!strlen(clean.str) || access(clean.str, R_OK) == -1)) {
+        goto defer;
+    }
+    so_extend(out, clean);
+defer:
+    so_free(&clean);
+    wordfree(&word);
 }
 
