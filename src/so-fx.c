@@ -12,7 +12,6 @@
 #include <wordexp.h>
 
 size_t so_len_nfx(So str) { /*{{{*/
-    size_t len = so_len(str);
     So snip = str;
     So pat = so("\033[");
     size_t len_nof = str.len;
@@ -100,11 +99,7 @@ void so_fmt_fx(So *out, So_Fx fx, char *fmt, ...) {
     } else {
         so_extend_fgbgx(&str2, fx.fg, fx.bg, fx.bold, fx.italic, fx.underline, fx.bashsafe, str);
     }
-    if(fx.align) {
-        so_extend_al(out, fx.align, str2);
-    } else {
-        so_extend(out, str2);
-    }
+    so_extend_al(out, fx.align, str2);
     so_free(&str);
     so_free(&str2);
 }

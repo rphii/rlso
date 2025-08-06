@@ -9,7 +9,7 @@
 typedef struct So So;
 
 typedef struct So_Fx {
-    So_Align *align;
+    So_Align align;
     Color fg;
     Color bg;
     bool *nocolor;

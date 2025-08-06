@@ -106,13 +106,14 @@ int main(int argc, char **argv) {
     }
 #endif
 
-    So_Align al = {0};
-    so_al_config(&al, 1, 10, 2, 0);
+    So_Align_Cache alc = {0};
+    So_Align al = { .cache = &alc };
+    so_al_config(&al, 1, 2, 10, 0);
     So_Fx fx = {
         .bold = true,
         .italic = true,
         .underline = true,
-        .align = &al,
+        .align = al,
     };
     So sfx = {0};
     so_fmt_fx(&sfx, fx, "a string with a very long text attached to it that is basically unnecessary!");
@@ -120,8 +121,8 @@ int main(int argc, char **argv) {
     so_free(&sfx);
 
     So crazy = SO;
-    so_al_rewind(&al);
-    so_al_clear(&al);
+    so_al_cache_rewind(al.cache);
+    so_al_cache_clear(al.cache);
     for(size_t i = 0; i < 100; ++i) {
         fx.bg.r = rand() % 0x100;
         fx.bg.g = rand() % 0x100;
@@ -137,7 +138,7 @@ int main(int argc, char **argv) {
         so_fmt_fx(&crazy, fx, "%c", c);
         //printff("FMT[%.*s]",SO_F(crazy));
     }
-    so_al_free(&al);
+    so_al_cache_free(al.cache);
     so_println(crazy);
     so_free(&crazy);
 

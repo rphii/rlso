@@ -30,15 +30,16 @@ int main(void) {
     printf("Warning! This program causes eye-cancer (epilleptic warning!). Proceed? Type 'yes': ");
     So user = SO;
     So buf = SO;
-    So_Align al = {0};
-    so_al_config(&al, 0, w.ws_col, 0, 0);
-    So_Fx fx = { .align = &al };
+    So_Align_Cache alc = {0};
+    So_Align al = { .cache = &alc };
+    so_al_config(&al, 0, 0, w.ws_col, 0);
+    So_Fx fx = { .align = al };
     so_input(&user);
     if(so_cmp(user, so("yes"))) goto exit;
 
     while(true) {
         so_clear(&buf);
-        so_al_rewind(&al);
+        so_al_cache_rewind(al.cache);
         for(size_t i = 1; i < w.ws_col * w.ws_row; ++i) {
             fx.fg.r = fast_rand();
             fx.fg.g = fast_rand();
@@ -58,7 +59,7 @@ int main(void) {
     }
 
 exit:
-    so_al_free(&al);
+    so_al_cache_free(al.cache);
     so_free(&user);
     so_free(&buf);
     return 0;
