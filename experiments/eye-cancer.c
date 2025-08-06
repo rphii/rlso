@@ -31,8 +31,8 @@ int main(void) {
     So user = SO;
     So buf = SO;
     So_Align_Cache alc = {0};
-    So_Align al = { .cache = &alc };
-    so_al_config(&al, 0, 0, w.ws_col, 0);
+    So_Align al = {0};
+    so_al_config(&al, 0, 0, w.ws_col, 0, &alc);
     So_Fx fx = { .align = al };
     so_input(&user);
     if(so_cmp(user, so("yes"))) goto exit;

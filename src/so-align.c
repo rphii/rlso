@@ -123,11 +123,14 @@ void so_fmt_al(So *out, So_Align al, char *format, ...) {
     so_free(&tmp);
 }
 
-void so_al_config(So_Align *al, size_t i0, size_t iNL, size_t iE, size_t n_lines) {
+void so_al_config(So_Align *al, size_t i0, size_t iNL, size_t iE, size_t n_lines, So_Align_Cache *cache) {
     al->i0 = i0;
     al->iE = iE;
     al->iNL = iNL;
     al->n_lines = n_lines;
+    if(cache) {
+        al->cache = cache;
+    }
 }
 
 void so_al_cache_rewind(So_Align_Cache *c) {
