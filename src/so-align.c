@@ -6,16 +6,16 @@
 
 #include <rl/err.h>
 
-void so_extend_al(So *out, So_Align al, So add) {
+void so_extend_al(So *out, So_Align al, size_t i0_override, So add) {
     ASSERT_ARG(out);
     //printff("CACHE i0prev %zu prog %zu lines %zu",al.cache->i0_prev,al.cache->progress,al.cache->lines_done);
     if(!al.cache) {
         so_extend(out, add);
         return;
     }
-    size_t iE = al.iE;
-    size_t i0 = al.i0;
-    size_t iNL = al.iNL;
+    const size_t iE = al.iE;
+    const size_t i0 = i0_override ? i0_override : al.i0;
+    const size_t iNL = al.iNL;
     if(iE <= i0) return;
     /* printal */
     if(iE <= i0) return;
@@ -28,7 +28,7 @@ void so_extend_al(So *out, So_Align al, So add) {
     size_t pad = i0 > al.cache->progress ? i0 - al.cache->progress : 0;
     w0 -= pad;
     //printff(".");getchar();
-    ////printff("[%.*s] progress:%zu, pad:%zu, w0:%zu i0prev:%zu i0:%zu",SO_F(add),all->progress,pad,w0,al->i0_prev,i0);
+    //printff("[%.*s] progress:%zu, pad:%zu, w0:%zu i0prev:%zu i0:%zu",SO_F(add),al.cache->progress,pad,w0,al.cache->i0_prev,i0);
     so_fmt(out, "%*s", (int)pad, "");
     al.cache->progress += pad;
     bool nl_pending = (i0 && al.cache->i0_prev && i0 > al.cache->i0_prev && al.cache->progress > i0);
@@ -97,6 +97,7 @@ void so_extend_al(So *out, So_Align al, So add) {
         }
         j0 += jE;
         first = false;
+        if(iNL >= iE) break;
         w = iE - iNL;
     }
     if(nl_pending) {
@@ -110,15 +111,22 @@ void so_extend_al(So *out, So_Align al, So add) {
     //so_clear(&al.cache->fmt);
 }
 
+void so_al_nl(So *out, So_Align al, int nl) {
+    while(nl) {
+        so_fmt_al(out, al, 0, "\n");
+        --nl;
+    }
+}
 
-void so_fmt_al(So *out, So_Align al, char *format, ...) {
+
+void so_fmt_al(So *out, So_Align al, size_t i0_override, char *format, ...) {
     ASSERT_ARG(out);
     So tmp = {0};
     va_list va;
     va_start(va, format);
     so_fmt_va(&tmp, format, va);
     va_end(va);
-    so_extend_al(out, al, tmp);
+    so_extend_al(out, al, i0_override, tmp);
     /* done */
     so_free(&tmp);
 }

@@ -7,7 +7,7 @@
 
 #define SO_ENV_STACK_MAX    4096
 
-So so_env_get(So so) {
+int so_env_get(So *out, So so) {
     char *env;
     if(so.len < SO_ENV_STACK_MAX) {
         char q[SO_ENV_STACK_MAX];
@@ -19,7 +19,9 @@ So so_env_get(So so) {
         env = getenv(q);
         free(q);
     }
-    return so_l(env);
+    if(!env) return -1;
+    so_copy(out, so_l(env));
+    return 0;
 }
 
 void so_extend_wordexp(So *out, So path, bool only_if_exists) {

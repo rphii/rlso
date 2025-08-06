@@ -84,7 +84,7 @@ void so_fmt_fgbgx(So *out, Color fg, Color bg, bool bold, bool italic, bool unde
     so_extend_fgbgx(out, fg, bg, bold, italic, underline, bashsafe, tmp);
 } /*}}}*/
 
-void so_fmt_fx(So *out, So_Fx fx, char *fmt, ...) {
+void so_fmt_fx(So *out, So_Fx fx, size_t i0_override, char *fmt, ...) {
     ASSERT_ARG(out);
     ASSERT_ARG(fmt);
     //size_t len_old = out->len;
@@ -99,7 +99,7 @@ void so_fmt_fx(So *out, So_Fx fx, char *fmt, ...) {
     } else {
         so_extend_fgbgx(&str2, fx.fg, fx.bg, fx.bold, fx.italic, fx.underline, fx.bashsafe, str);
     }
-    so_extend_al(out, fx.align, str2);
+    so_extend_al(out, fx.align, i0_override, str2);
     so_free(&str);
     so_free(&str2);
 }
