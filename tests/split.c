@@ -12,6 +12,11 @@ int main(void) {
     EXPECT_CMP(right, so("xxx"));
     EXPECT_CMP(so_split_sub(so("abca-stringa-stringxxx"), so("a-string"), &right, SO_CMP), so("abc"));
     EXPECT_CMP(right, so("a-stringxxx"));
+    So r,l=so_rsplit_sub(so("abca-stringa-stringxx"),so("a-string"),&r,false);
+    printff("RIGHT");
+    so_println(r);
+    printff("LEFT");
+    so_println(l);
     EXPECT_CMP(so_rsplit_sub(so("abca-stringa-stringxxx"), so("a-string"), &right, SO_CMP), so("abca-string"));
     EXPECT_CMP(right, so("xxx"));
     return 0;

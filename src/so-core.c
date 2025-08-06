@@ -196,6 +196,11 @@ const char so_at0(So s) {
     return *s.str;
 }
 
+const char so_atE(So s) {
+    ASSERT_ARG(s.len);
+    return s.str[s.len - 1];
+}
+
 char *so_it0(So so) {
     return so.str;
 }

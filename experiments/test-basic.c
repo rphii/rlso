@@ -107,8 +107,8 @@ int main(int argc, char **argv) {
 #endif
 
     So_Align_Cache alc = {0};
-    So_Align al = { .cache = &alc };
-    so_al_config(&al, 1, 2, 10, 0);
+    So_Align al = {0};
+    so_al_config(&al, 1, 2, 10, 0, &alc);
     So_Fx fx = {
         .bold = true,
         .italic = true,
@@ -116,7 +116,7 @@ int main(int argc, char **argv) {
         .align = al,
     };
     So sfx = {0};
-    so_fmt_fx(&sfx, fx, "a string with a very long text attached to it that is basically unnecessary!");
+    so_fmt_fx(&sfx, fx, "a " F("string xx", BG_RD) " with a very long text attached to it that is basically unnecessary!");
     so_println(sfx);
     so_free(&sfx);
 

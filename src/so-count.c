@@ -50,3 +50,18 @@ size_t so_count_overlapx(So ra, So rb, bool ignorecase) { /*{{{*/
     return overlap;
 } /*}}}*/
 
+size_t so_count_overlapE(So ra, So rb, bool ignorecase) { /*{{{*/
+    size_t overlap = 0;
+    size_t len = ra.len > rb.len ? rb.len : ra.len;
+    for(overlap = 0; overlap < len; ++overlap) {
+        char ca = ra.str[ra.len - 1 - overlap];
+        char cb = rb.str[rb.len - 1 - overlap];
+        if(ignorecase) {
+            ca = tolower(ca);
+            cb = tolower(cb);
+        }
+        if(ca != cb) break;
+    }
+    return overlap;
+} /*}}}*/
+

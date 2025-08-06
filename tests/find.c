@@ -13,7 +13,7 @@ int main(void) {
     EXPECT(so_rfind_sub(SO, SO, false), 0);
     EXPECT(so_rfind_any(so("abcd"), SO), 4);
     EXPECT(so_rfind_nany(so("abcd"), SO), 4);
-    EXPECT(so_rfind_sub(so("abcd"), SO, false), 4);
+    EXPECT(so_rfind_sub(so("abcd"), SO, false), 0);
     /* actual finds */
     EXPECT(so_find_ch(so("abcd"), 'c'), 2);
     EXPECT(so_find_nch(so("abcd"), 'a'), 1);

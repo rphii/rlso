@@ -30,6 +30,7 @@ bool        so_is_heap(So so);
 
 const char  so_at(So so, size_t i);
 const char  so_at0(So so);
+const char  so_atE(So so);
 char *      so_it(So so, size_t i);
 char *      so_it0(So so);
 char *      so_itE(So so);

@@ -75,7 +75,7 @@ size_t so_find_sub(So ref, So sub, bool ignorecase) { /*{{{*/
     /* check for substring */
     size_t i = 0, shift = 0, overlap = 0;
     while(ref.len >= sub.len) {
-        overlap = so_count_overlapx(ref, sub, ignorecase ? SO_CMP_CASE_INSENSITIVE : SO_CMP);
+        overlap = so_count_overlapx(ref, sub, ignorecase);
         if(overlap == sub.len) return i;
         i += overlap;
         so_shift(&ref, overlap);
@@ -147,24 +147,22 @@ size_t so_rfind_nany(So ref, So nany) { /*{{{*/
 
 size_t so_rfind_sub(So ref, So sub, bool ignorecase) { /*{{{*/
     /* basic checks */
-    if(!sub.len) return ref.len;
+    if(!sub.len) return 0;
     if(sub.len > ref.len) return ref.len;
-    So sweep = ref;
     size_t len = ref.len;
-    sweep.len = sub.len;
     /* check for substring */
-    size_t shift = 0, overlap = 0;
+    size_t i = len - sub.len, shift = 0, overlap = 0;
     while(ref.len >= sub.len) {
-        sweep.str = ref.str + ref.len - sub.len;
-        overlap = so_count_overlapx(sweep, sub, ignorecase ? SO_CMP_CASE_INSENSITIVE : SO_CMP);
-        if(overlap == sub.len) return ref.len - sweep.len;
+        overlap = so_count_overlapE(ref, sub, ignorecase);
+        if(overlap == sub.len) return i;
+        i -= overlap;
         ref.len -= overlap;
-        shift = so_rfind_ch(ref, sub.str[0]);
-        //if(!shift) break;
-        if(shift < ref.len) {
-            shift = shift >= sub.len ? shift - sub.len : sub.len;
-        }
+        shift = so_rfind_ch(ref, so_atE(sub));
+        if(shift < ref.len) shift = ref.len - shift - 1;
+        /*if(!shift && ref.len) ++shift;//don't think I need this?*/
+        i -= shift;
         ref.len -= shift;
+        //printff("overlap %u, shift %zu",overlap,shift);getchar();
     }
     return len;
 } /*}}}*/

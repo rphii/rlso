@@ -27,8 +27,8 @@ So so_split_nch(So ref, char c, So *right) {
     return so_split_ext(ref, i, 0, right);
 }
 
-So so_split_sub(So ref, So sub, So *right, So_Cmp_Attr attr) {
-    size_t i = so_find_sub(ref, sub, attr);
+So so_split_sub(So ref, So sub, So *right, bool ignorecase) {
+    size_t i = so_find_sub(ref, sub, ignorecase);
     return so_split_ext(ref, i, sub.len, right);
 }
 
@@ -43,8 +43,8 @@ So so_rsplit_nch(So ref, char c, So *right) {
     return so_split_ext(ref, i, 0, right);
 }
 
-So so_rsplit_sub(So ref, So sub, So *right, So_Cmp_Attr attr) {
-    size_t i = so_rfind_sub(ref, sub, attr);
+So so_rsplit_sub(So ref, So sub, So *right, bool ignorecase) {
+    size_t i = so_rfind_sub(ref, sub, ignorecase);
     return so_split_ext(ref, i, sub.len, right);
 }
 
