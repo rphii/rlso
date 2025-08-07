@@ -77,8 +77,7 @@ void so_change_len(So *so, size_t len) {
 void so_copy(So *so, So b) {
     so_clear(so);
     if(!b.len) return;
-    //so_resize_known(s, 0, ref.len);
-    memcpy(so_grow_by(so, b.len), b.str, so->len);
+    so_extend(so, b);
 }
 
 So so_clone(So b) {
@@ -104,7 +103,6 @@ void so_push(So *s, char c) {
 void so_extend(So *so, So b) {
     So ref = b;
     if(!ref.len) return;
-    //printff("EXTEND[%.*s]BY[%.*s]",SO_F(*so),SO_F(b));
     if(_so_is_heap(so) && so_is_heap(b)) {
         So_Heap *heap = so_heap_base(so);
         if(b.str >= heap->str && b.str <= heap->str + heap->cap) {

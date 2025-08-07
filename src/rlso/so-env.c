@@ -8,14 +8,14 @@
 #define SO_ENV_STACK_MAX    4096
 
 int so_env_get(So *out, So so) {
-    char *env;
+    char *env = 0;
+    so_clear(out);
     if(so.len < SO_ENV_STACK_MAX) {
         char q[SO_ENV_STACK_MAX];
         so_as_cstr(so, q, SO_ENV_STACK_MAX);
         env = getenv(q);
     } else {
-        char *q = malloc(so.len + 1);
-        so_as_cstr(so, q, so.len + 1);
+        char *q = so_dup(so);
         env = getenv(q);
         free(q);
     }
@@ -30,14 +30,19 @@ void so_extend_wordexp(So *out, So path, bool only_if_exists) {
     if(wordexp(clean, &word, 0)) {
         goto defer;
     }
-    if(!word.we_wordv[0]) {
+    char *result = word.we_wordv[0];
+    if(!result) {
         goto defer;
     }
-    char *result = word.we_wordv[0];
     if(only_if_exists && (!strlen(result) || access(result, R_OK) == -1)) {
         goto defer;
     }
+    //printff("RESULT %p",result);
+    //printff("RESULS %s",result);
+    //getchar();
+#if 1
     so_extend(out, so_l(result));
+#endif
 defer:
     free(clean);
     wordfree(&word);
