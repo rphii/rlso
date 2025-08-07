@@ -47,10 +47,7 @@ headers = [
   'rlso/vso.h',
   ]
 
-rlc_dep = dependency('rlc',
-  fallback : ['rlc', 'rlc_dep'],
-  #default_options: ['default_library=static']
-)
+rlc_dep = dependency('rlc', fallback : ['rlc', 'rlc_dep'], default_options: ['default_library=static'])
 
 install_headers(headers, subdir: 'rlso')
 install_headers('rlso.h')
