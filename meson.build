@@ -11,4 +11,6 @@ pkg.generate(
   description: 'Small String Optimized and Dynamically Allocatable String',
   )
 
+dep_rlso = declare_dependency(link_with: rlso)
+
 
