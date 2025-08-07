@@ -46,7 +46,11 @@ headers = [
   'vso.h',
   ]
 
-dep_rlc = dependency('rlc', required: true)
+dep_rlc = dependency('rlc', required: false)
+if not dep_rlc.found()
+  prj_rlc = subproject('rlc')
+  dep_rlc = prj_rlc.get_variable('dep_rlc')
+endif
 
 install_headers(headers, subdir: 'rl')
 rlso = library('rlso',
@@ -54,7 +58,5 @@ rlso = library('rlso',
   dependencies: [dep_rlc],
   install: true,
   )
-
-
 
 
