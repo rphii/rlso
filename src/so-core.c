@@ -81,14 +81,11 @@ void so_copy(So *so, So b) {
     memcpy(so_grow_by(so, b.len), b.str, so->len);
 }
 
-//#include "so-print.h"
-
 So so_clone(So b) {
     So result = {0};
     if(b.len) {
         memcpy(so_grow_by(&result, b.len), so_it0(b), b.len);
     }
-    //so_printdbg(result);
     return result;
 }
 
