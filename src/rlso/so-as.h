@@ -2,8 +2,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
-#include <rl/err.h>
-#include <rl/color.h>
+#include <rlc.h>
 
 typedef struct So So;
 

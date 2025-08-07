@@ -1,11 +1,11 @@
-#include <rl/platform-detect.h>
+#include <rlc/platform-detect.h>
+#include <rlc/err.h>
 
 #include "so-core.h"
 #include "so-find.h"
 #include "so-path.h"
 #include "so-split.h"
 #include "so-print.h"
-#include<rl/err.h>
 
 void so_path_join(So *out, So a, So b) {
     So tmp = so_clone(b);

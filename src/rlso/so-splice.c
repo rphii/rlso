@@ -2,7 +2,7 @@
 #include "so-find.h"
 #include "so-split.h"
 #include "so-splice.h"
-#include <rl/err.h>
+#include <rlc.h>
 #include <stdlib.h>
 
 size_t so_splice(So to_splice, So *prev, char sep) {

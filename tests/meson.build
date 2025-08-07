@@ -42,7 +42,7 @@ dep_rlc = dependency('rlc', required: true)
 if get_option('tests').enabled()
 
   foreach ex : examples
-    tests += executable(ex, ex, link_with: rlso, dependencies: [dep_rlc])
+    tests += executable(ex, ex, link_with: librlso, dependencies: [dep_rlc])
   endforeach
 
   foreach ex : tests

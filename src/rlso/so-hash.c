@@ -1,5 +1,5 @@
 #include "so-hash.h"
-#include <rl/err.h>
+#include <rlc/err.h>
 
 size_t so_hash(const So str) { /*{{{*/
     size_t hash = 5381;

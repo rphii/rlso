@@ -7,8 +7,8 @@
 #include "so-print.h"
 #include <assert.h>
 #include <ctype.h>
-#include <rl/colorprint.h>
-#include <rl/err.h>
+#include <rlc/colorprint.h>
+#include <rlc/err.h>
 #include <stdint.h>
 
 /* find ::: ref {{{ */

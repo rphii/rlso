@@ -1,26 +1,9 @@
 #ifndef TEST_H
 
-#include <rl/err.h>
-#include <rl/array.h>
-#include <rl/platform-detect.h>
-#include "../src/so.h"
-#include "../src/so-as.h"
-#include "../src/so-fx.h"
-#include "../src/so-uc.h"
-#include "../src/so-cmp.h"
-#include "../src/so-cmp-attr.h"
-#include "../src/so-env.h"
-#include "../src/so-trim.h"
-#include "../src/so-find.h"
-#include "../src/so-file.h"
-#include "../src/so-path.h"
-#include "../src/so-count.h"
-#include "../src/so-input.h"
-#include "../src/so-print.h"
-#include "../src/so-split.h"
-#include "../src/so-splice.h"
-#include "../src/so-print.h"
-#include "../src/vso.h"
+#include <rlc/err.h>
+#include <rlc/array.h>
+#include <rlc/platform-detect.h>
+#include "../src/rlso.h"
 
 #define EXPECT(expr, val)   do {\
     size_t a = ((expr)); \

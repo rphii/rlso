@@ -1,7 +1,7 @@
 #include "so-core.h"
 #include "so-cmp.h"
 #include "so-as.h"
-#include <rl/err.h>
+#include <rlc/err.h>
 #include <stdint.h>
 #include <limits.h>
 #include <errno.h>

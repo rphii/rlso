@@ -6,7 +6,7 @@
 #include "so-print.h"
 
 #include <stdlib.h>
-#include <rl/err.h>
+#include <rlc/err.h>
 
 #include <unistd.h>
 #include <wordexp.h>

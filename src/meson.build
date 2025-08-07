@@ -1,3 +1,5 @@
+prj = meson.project_name()
+
 sources = [
   'rlso/so-align.c',
   'rlso/so-as.c',
@@ -22,7 +24,6 @@ sources = [
   ]
 
 headers = [
-  'rlso.h',
   'rlso/so-align.h',
   'rlso/so-as.h',
   'rlso/so-cmp-attr.h',
@@ -51,7 +52,8 @@ rlc_dep = dependency('rlc',
   default_options: ['default_library=static']
 )
 
-install_headers(headers)
+install_headers(headers, subdir: 'rlso')
+install_headers('rlso.h')
 librlso = library('rlso',
   sources,
   dependencies: [rlc_dep],

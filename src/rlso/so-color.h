@@ -1,7 +1,6 @@
 #ifndef SO_COLOR_H
 
-#include <rl/err.h>
-#include <rl/color.h>
+#include <rlc.h>
 
 typedef enum {
     SO_COLOR_R = 0x1,

@@ -4,7 +4,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <rl/err.h>
+#include <rlc/err.h>
 
 So_Heap *so_heap_grow(So_Heap *heap, size_t cap) {
     size_t cap_old = heap ? heap->cap : 0;

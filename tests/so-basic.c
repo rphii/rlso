@@ -1,6 +1,5 @@
-#include <rl/err.h>
-#include "../src/so.h"
-#include "../src/so-print.h"
+#include <rlc/err.h>
+#include "test.h"
 
 #define EXPECT(expr, val)   \
     ASSERT(expr == val, "expected true")

@@ -1,5 +1,4 @@
-#include <rl/err.h>
-#include <rl/array.h>
+#include <rlc.h>
 #include <stdlib.h>
 #include "vso.h"
 

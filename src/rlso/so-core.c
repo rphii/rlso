@@ -4,7 +4,7 @@
 #include <string.h>
 #include <assert.h>
 #include <stdlib.h>
-#include <rl/err.h>
+#include <rlc.h>
 
 static bool _so_is_heap(So *s);
 static void so_resize_known(So *s, size_t len_old, size_t len_new);

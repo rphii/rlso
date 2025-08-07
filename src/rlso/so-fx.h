@@ -2,7 +2,7 @@
 
 #include <stdbool.h>
 #include <stddef.h>
-#include <rl/color.h>
+#include <rlc/color.h>
 
 #include "so-align.h"
 

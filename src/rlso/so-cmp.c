@@ -2,7 +2,8 @@
 #include "so-core.h"
 #include <string.h>
 #include <ctype.h>
-#include<stdio.h>
+#include <stdio.h>
+#include <rlc/err.h>
 
 /* internal use {{{ */
 
@@ -53,7 +54,6 @@ int so_cmp_cs(So a, So b) {
 /* }}} */
 
 /* compare {{{ */
-#include <rl/err.h>
 
 int so_cmp_p(So *a, So *b) {
     printff("ptr %p <> %p",a,b);

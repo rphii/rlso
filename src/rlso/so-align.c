@@ -4,7 +4,7 @@
 #include "so-fx.h"
 #include "so-print.h"
 
-#include <rl/err.h>
+#include <rlc.h>
 
 void so_extend_al(So *out, So_Align al, size_t i0_override, So add) {
     ASSERT_ARG(out);
