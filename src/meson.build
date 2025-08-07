@@ -68,5 +68,8 @@ pkg.generate(
   description: 'Small String Optimized and Dynamically Allocatable String',
   )
 
-rlso_dep = declare_dependency(link_with: librlso)
+rlso_dep = declare_dependency(
+  link_with: librlso,
+  include_directories: '.',
+  )
 
