@@ -59,4 +59,5 @@ rlso = library('rlso',
   install: true,
   )
 
+dep_rlso = declare_dependency(link_with: rlso)
 

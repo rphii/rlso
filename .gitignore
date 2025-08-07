@@ -12,4 +12,6 @@ temp
 build
 *.cache
 *_old
+subprojects/*
+!subprojects/*.wrap
 
