@@ -1,7 +1,5 @@
 #ifndef SO_CORE_H
 
-#include <rl/endian-detect.h>
-
 #include "so-heap.h"
 #include <stddef.h>
 #include <stdbool.h>
