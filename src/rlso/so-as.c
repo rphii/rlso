@@ -133,6 +133,7 @@ ErrDecl so_as_yes_or_no(So so, bool *out) {
     if(       !so_cmp_c(so, so("true"))
             ||!so_cmp_c(so, so("1"))
             ||!so_cmp_c(so, so("y"))
+            ||!so_cmp_c(so, so("on"))
             ||!so_cmp_c(so, so("yes"))
             ||!so_cmp_c(so, so("enable"))
             ||!so_cmp_c(so, so("enabled"))) {
@@ -141,6 +142,7 @@ ErrDecl so_as_yes_or_no(So so, bool *out) {
             ||!so_cmp_c(so, so("0"))
             ||!so_cmp_c(so, so("n"))
             ||!so_cmp_c(so, so("no"))
+            ||!so_cmp_c(so, so("off"))
             ||!so_cmp_c(so, so("disable"))
             ||!so_cmp_c(so, so("disabled"))) {
         *out = false;
