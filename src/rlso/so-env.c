@@ -9,7 +9,7 @@
 
 int so_env_get(So *out, So so) {
     char *env = 0;
-    so_clear(out);
+    so_free(out);
     if(so.len < SO_ENV_STACK_MAX) {
         char q[SO_ENV_STACK_MAX];
         so_as_cstr(so, q, SO_ENV_STACK_MAX);
@@ -20,7 +20,7 @@ int so_env_get(So *out, So so) {
         free(q);
     }
     if(!env) return -1;
-    so_copy(out, so_l(env));
+    *out = so_l(env);
     return 0;
 }
 
