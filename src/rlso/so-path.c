@@ -119,3 +119,20 @@ const So so_get_basename(So ref) { /*{{{*/
     return result;
 } /*}}}*/
 
+
+const So so_ensure_dir(So str) { /*{{{*/
+    // !!! str = so_trim(str);
+    size_t len = so_len(str);
+    So result = so_ll(str.str, len);
+    if(len > 1) {
+        size_t nch = so_rfind_nch(str, PLATFORM_CH_SUBDIR);
+        if(!nch && len) ++nch;
+        else if(nch < len && so_at(str, nch) != PLATFORM_CH_SUBDIR) ++nch;
+        result.len = nch;
+        //if(so_at(result, so_len_raw(result) - 1) == PLATFORM_CH_SUBDIR) {
+        //    --result.len;
+        //}
+    }
+    return result;
+} /*}}}*/
+

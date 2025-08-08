@@ -9,6 +9,7 @@ const So so_get_noext(So ref);
 const So so_get_dir(So ref);
 const So so_get_nodir(So ref);
 const So so_get_basename(So ref);
+const So so_ensure_dir(So str);
 
 #define SO_PATH_H
 #endif
