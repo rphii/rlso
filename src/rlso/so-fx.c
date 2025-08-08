@@ -104,3 +104,15 @@ void so_fmt_fx(So *out, So_Fx fx, size_t i0_override, char *fmt, ...) {
     so_free(&str2);
 }
 
+void so_fmt_websafe(So *out, So text) { /*{{{*/
+    So escape = so(" <>#%+{}|\\^~[]';/?:@=&$");
+    for(size_t i = 0; i < so_len(text); ++i) {
+        unsigned char c = so_at(text, i);
+        if(so_find_ch(escape, c) < so_len(escape)) {
+            so_fmt(out, "%%%02x", c);
+        } else {
+            so_push(out, c);
+        }
+    }
+} /*}}}*/
+

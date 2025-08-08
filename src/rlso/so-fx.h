@@ -23,6 +23,7 @@ size_t so_len_nfx(So str);
 size_t so_nfx_index(So so, size_t index);
 void so_fmt_fx(So *out, So_Fx fx, size_t i0_override, char *fmt, ...);
 void so_fmt_fgbgx(So *out, Color fg, Color bg, bool bold, bool italic, bool underline, bool bashsafe, char *fmt, ...);
+void so_fmt_websafe(So *out, So text);
 
 #define SO_FX_H
 #endif
