@@ -247,6 +247,12 @@ void so_free(So *so) {
     memset(so, 0, sizeof(*so));
 }
 
+
+size_t so_writefunc(void *ptr, size_t size, size_t nmemb, So *str) { /*{{{*/
+    so_fmt(str, "%.*s", size * nmemb, ptr);
+    return size * nmemb;
+} /*}}}*/
+
 #if 0 
 void so_1buf_old(So *so, size_t *index) {
     ASSERT_ARG(so);

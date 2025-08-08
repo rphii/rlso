@@ -48,6 +48,7 @@ char *      so_dup(So so);
 void        so_clear(So *so);
 void        so_free(So *so);
 void        so_free_v(So so);
+size_t      so_writefunc(void *ptr, size_t size, size_t nmemb, So *str);
 void        so_1buf_old(So *so, size_t *index);
 void        so_1buf_new(So *so, size_t *index);
 
