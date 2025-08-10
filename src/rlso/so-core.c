@@ -244,6 +244,10 @@ void so_free_v(So so) {
 void so_free(So *so) {
     if(!so) return;
     if(so_is_heap(*so)) free(so_heap_base(so));
+    so_zero(so);
+}
+
+void so_zero(So *so) {
     memset(so, 0, sizeof(*so));
 }
 

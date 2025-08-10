@@ -1,6 +1,8 @@
 #include "so-core.h"
 #include "so-file.h"
 #include "so-as.h"
+#include "so-path.h"
+#include "so-cmp.h"
 
 #include <stdint.h>
 #include <rlc.h>
@@ -94,4 +96,75 @@ clean:
     return err;
 }
 
+
+#include <sys/stat.h>
+#include <dirent.h>
+
+So_File_Type_List file_get_type(So filename) {
+    struct stat s;
+    char path[SO_FILE_PATH_MAX];
+    so_as_cstr(filename, path, SO_FILE_PATH_MAX);
+    int r = lstat(path, &s);
+    if(r) return SO_FILE_TYPE_ERROR;
+    if(S_ISREG(s.st_mode)) return SO_FILE_TYPE_FILE;
+    if(S_ISDIR(s.st_mode)) return SO_FILE_TYPE_DIR;
+    return SO_FILE_TYPE_ERROR;
+}
+
+ErrDecl so_file_exec(So file_or_dir, bool hidden, bool recursive, So_File_Exec_Callback cb_file, So_File_Exec_Callback cb_dir, void *user) {
+    //printf("path: %.*s\n", SO_F(path));
+    int err = 0;
+    DIR *dir = 0;
+    int fails = 0;
+    So dot = so(".");
+    So dotdot = so("..");
+    if(!so_len(file_or_dir)) return 0;
+    So_File_Type_List type = file_get_type(file_or_dir);
+    So filename = {0};
+    if(type == SO_FILE_TYPE_DIR) {
+        if(!recursive) {
+            ERR(SO_FILE_ERR_RECURSIVE);
+        }
+        struct dirent *dp = 0;
+        So direns = so_ensure_dir(file_or_dir);
+        char cdir[SO_FILE_PATH_MAX];
+        so_as_cstr(direns, cdir, SO_FILE_PATH_MAX);
+        if((dir = opendir(cdir)) == NULL) {
+            ERR(SO_FILE_ERR_CANT_OPEN);
+        }
+        while((dp = readdir(dir)) != NULL) {
+            So dname = so_l(dp->d_name);
+            if(!so_cmp(dname, dot)) continue;
+            if(!so_cmp(dname, dotdot)) continue;
+            if(!hidden && !so_cmp0(dname, dot)) continue;
+            so_extend(&filename, direns);
+            if(so_len(direns) > 1) so_push(&filename, PLATFORM_CH_SUBDIR);
+            so_extend(&filename, dname);
+            if(!so_len(filename)) {
+                so_clear(&filename);
+                continue;
+            }
+            So_File_Type_List type2 = file_get_type(filename);
+            if(cb_dir && type2 == SO_FILE_TYPE_DIR) {
+                cb_dir(filename, user);
+            } else if(cb_file && type2 == SO_FILE_TYPE_FILE) {
+                cb_file(filename, user);
+            } else {
+                //info(INFO_skipping_nofile_nodir, "skipping '%.*s' since no regular file nor directory", SO_F(*file_or_dir));
+            }
+            so_clear(&filename);
+        }
+    } else if(type == SO_FILE_TYPE_FILE) {
+        fails += (bool)cb_file(file_or_dir, user);
+    } else if(type == SO_FILE_TYPE_ERROR) {
+        fails += (bool)SO_FILE_ERR_TYPE_CHECK;
+    } else {
+        //info(INFO_skipping_nofile_nodir, "skipping '%.*s' since no regular file nor directory", SO_F(*file_or_dir));
+    }
+clean:
+    so_free(&filename);
+    if(dir) closedir(dir);
+    return err;
+error: ERR_CLEAN;
+}
 
