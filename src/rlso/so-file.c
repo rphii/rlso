@@ -100,7 +100,7 @@ clean:
 #include <sys/stat.h>
 #include <dirent.h>
 
-So_File_Type_List file_get_type(So filename) {
+So_File_Type_List so_file_get_type(So filename) {
     struct stat s;
     char path[SO_FILE_PATH_MAX];
     so_as_cstr(filename, path, SO_FILE_PATH_MAX);
@@ -112,14 +112,13 @@ So_File_Type_List file_get_type(So filename) {
 }
 
 ErrDecl so_file_exec(So file_or_dir, bool hidden, bool recursive, So_File_Exec_Callback cb_file, So_File_Exec_Callback cb_dir, void *user) {
-    //printf("path: %.*s\n", SO_F(path));
     int err = 0;
     DIR *dir = 0;
     int fails = 0;
     So dot = so(".");
     So dotdot = so("..");
     if(!so_len(file_or_dir)) return 0;
-    So_File_Type_List type = file_get_type(file_or_dir);
+    So_File_Type_List type = so_file_get_type(file_or_dir);
     So filename = {0};
     if(type == SO_FILE_TYPE_DIR) {
         if(!recursive) {
@@ -144,17 +143,23 @@ ErrDecl so_file_exec(So file_or_dir, bool hidden, bool recursive, So_File_Exec_C
                 so_clear(&filename);
                 continue;
             }
-            So_File_Type_List type2 = file_get_type(filename);
+            So_File_Type_List type2 = so_file_get_type(filename);
             if(cb_dir && type2 == SO_FILE_TYPE_DIR) {
-                cb_dir(filename, user);
+                fails += (bool)cb_dir(filename, user);
+                so_zero(&filename);
             } else if(cb_file && type2 == SO_FILE_TYPE_FILE) {
-                cb_file(filename, user);
+                fails += (bool)cb_file(filename, user);
+                so_zero(&filename);
             } else {
+                so_clear(&filename);
                 //info(INFO_skipping_nofile_nodir, "skipping '%.*s' since no regular file nor directory", SO_F(*file_or_dir));
             }
-            so_clear(&filename);
         }
-    } else if(type == SO_FILE_TYPE_FILE) {
+        if(dir) {
+            closedir(dir);
+            dir = 0;
+        }
+    } else if(cb_file && type == SO_FILE_TYPE_FILE) {
         fails += (bool)cb_file(file_or_dir, user);
     } else if(type == SO_FILE_TYPE_ERROR) {
         fails += (bool)SO_FILE_ERR_TYPE_CHECK;
@@ -164,7 +169,6 @@ ErrDecl so_file_exec(So file_or_dir, bool hidden, bool recursive, So_File_Exec_C
 clean:
     so_free(&filename);
     if(dir) closedir(dir);
-    return err;
-error: ERR_CLEAN;
+    return fails + err;
 }
 
