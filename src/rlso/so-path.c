@@ -6,12 +6,15 @@
 #include "so-path.h"
 #include "so-split.h"
 #include "so-print.h"
+#include "so-cmp.h"
 
 void so_path_join(So *out, So a, So b) {
     So tmp = so_clone(b);
     so_clear(out);
     so_extend(out, a);
-    so_push(out, PLATFORM_CH_SUBDIR);
+    if(so_cmp(a, so(PLATFORM_S_SUBDIR))) {
+        so_push(out, PLATFORM_CH_SUBDIR);
+    }
     so_extend(out, tmp);
     so_free(&tmp);
 }
