@@ -10,11 +10,10 @@
 
 void so_path_join(So *out, So a, So b) {
     So tmp = so_clone(b);
+    bool non_root = (so_cmp(a, so(PLATFORM_S_SUBDIR)));
     so_clear(out);
     so_extend(out, a);
-    if(so_cmp(a, so(PLATFORM_S_SUBDIR))) {
-        so_push(out, PLATFORM_CH_SUBDIR);
-    }
+    if(non_root) so_push(out, PLATFORM_CH_SUBDIR);
     so_extend(out, tmp);
     so_free(&tmp);
 }
