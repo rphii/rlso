@@ -55,6 +55,20 @@ clean:
 }
 
 
+size_t so_file_get_size(So filename) {/*{{{*/
+    char path[SO_FILE_PATH_MAX];
+    so_as_cstr(filename, path, SO_FILE_PATH_MAX);
+    FILE *fp = fopen(path, "rb");
+    size_t result = SIZE_MAX;
+    if(fp) {
+        if(!fseek(fp, 0L, SEEK_END)) {
+            result = ftell(fp);
+        }
+        fclose(fp);
+    }
+    return result;
+}/*}}}*/
+
 ErrDecl so_file_read(So filename, So *content) {
     ASSERT_ARG(content);
     int err = 0;

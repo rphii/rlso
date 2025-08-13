@@ -25,6 +25,7 @@ typedef enum {
     SO_FILE_TYPE_ERROR,
 } So_File_Type_List;
 
+size_t so_file_get_size(So filename);
 So_File_Type_List so_file_get_type(So filename);
 
 FILE *so_file_fp(So filename, char *mode);
