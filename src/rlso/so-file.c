@@ -160,14 +160,10 @@ ErrDecl so_file_exec(So file_or_dir, bool hidden, bool recursive, So_File_Exec_C
             So_File_Type_List type2 = so_file_get_type(filename);
             if(cb_dir && type2 == SO_FILE_TYPE_DIR) {
                 fails += (bool)cb_dir(filename, user);
-                so_zero(&filename);
             } else if(cb_file && type2 == SO_FILE_TYPE_FILE) {
                 fails += (bool)cb_file(filename, user);
-                so_zero(&filename);
-            } else {
-                so_clear(&filename);
-                //info(INFO_skipping_nofile_nodir, "skipping '%.*s' since no regular file nor directory", SO_F(*file_or_dir));
             }
+            so_clear(&filename);
         }
         if(dir) {
             closedir(dir);
