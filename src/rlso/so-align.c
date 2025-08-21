@@ -90,6 +90,10 @@ void so_extend_al(So *out, So_Align al, size_t i0_override, So add) {
         ////printff("al->progress %zu += lnof %zu", al->progress, lnof);
         al.cache->progress += lnof;
         if(al.cache->progress >= iE) {
+            if(al.n_lines && al.cache->lines_done + 1 >= al.n_lines) {
+                ++al.cache->lines_done;
+                break;
+            }
             nl_pending = true;
         }
         if(x < so_len(buf)) {
