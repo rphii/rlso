@@ -201,17 +201,17 @@ ErrDecl so_as_uchar(So so, unsigned char *out, int base) {
     SO_AS_WITH_BASE(unsigned char, so, base, false, out, UCHAR_MAX);
 }
 
-ErrDecl so_as_ushort(So so, ushort *out, int base) {
+ErrDecl so_as_ushort(So so, unsigned short *out, int base) {
     so_as_get_base(&so, &base);
-    SO_AS_WITH_BASE(ushort, so, base, false, out, USHRT_MAX);
+    SO_AS_WITH_BASE(unsigned short, so, base, false, out, USHRT_MAX);
 }
 
-ErrDecl so_as_uint(So so, uint *out, int base) {
+ErrDecl so_as_uint(So so, unsigned int *out, int base) {
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(ulong, so, base, false, out, UINT_MAX);
 }
 
-ErrDecl so_as_ulong(So so, ulong *out, int base) {
+ErrDecl so_as_ulong(So so, unsigned long *out, int base) {
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(ulong, so, base, false, out, ULONG_MAX);
 }

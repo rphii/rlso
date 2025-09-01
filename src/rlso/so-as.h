@@ -39,11 +39,11 @@ ErrDecl so_as_ssize(So so, ssize_t *out, int base);
 #define ERR_so_as_uchar(...) "failed parsing unsigned char"
 ErrDecl so_as_uchar(So so, unsigned char *out, int base);
 #define ERR_so_as_ushort(...) "failed parsing unsigned short"
-ErrDecl so_as_ushort(So so, ushort *out, int base);
+ErrDecl so_as_ushort(So so, unsigned short *out, int base);
 #define ERR_so_as_uint(...) "failed parsing unsigned int"
-ErrDecl so_as_uint(So so, uint *out, int base);
+ErrDecl so_as_uint(So so, unsigned int *out, int base);
 #define ERR_so_as_ulong(...) "failed parsing unsigned long"
-ErrDecl so_as_ulong(So so, ulong *out, int base);
+ErrDecl so_as_ulong(So so, unsigned long *out, int base);
 #define ERR_so_as_ulonglong(...) "failed parsing unsigned long long"
 ErrDecl so_as_ulonglong(So so, unsigned long long *out, int base);
 #define ERR_so_as_size(...) "failed parsing size"
