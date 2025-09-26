@@ -55,7 +55,7 @@ void so_extend_al(So *out, So_Align al, size_t i0_override, So add) {
             ////printff("NEWLINE! [%.*s] %u", SO_F(buf0), nl_pending);
             nl_pending = false;
             continue;
-        } else if(so_at(buf0, 0) == ' ' || so_at(buf0, 0) == '\t') {
+        } else if(al.cache->lines_done && (so_at(buf0, 0) == ' ' || so_at(buf0, 0) == '\t')) {
             if((first && !al.cache->progress) || !first) {
                 ++j0;
                 continue;
