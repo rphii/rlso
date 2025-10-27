@@ -208,12 +208,12 @@ ErrDecl so_as_ushort(So so, unsigned short *out, int base) {
 
 ErrDecl so_as_uint(So so, unsigned int *out, int base) {
     so_as_get_base(&so, &base);
-    SO_AS_WITH_BASE(ulong, so, base, false, out, UINT_MAX);
+    SO_AS_WITH_BASE(unsigned long, so, base, false, out, UINT_MAX);
 }
 
 ErrDecl so_as_ulong(So so, unsigned long *out, int base) {
     so_as_get_base(&so, &base);
-    SO_AS_WITH_BASE(ulong, so, base, false, out, ULONG_MAX);
+    SO_AS_WITH_BASE(unsigned long, so, base, false, out, ULONG_MAX);
 }
 
 ErrDecl so_as_ulonglong(So so, unsigned long long *out, int base) {

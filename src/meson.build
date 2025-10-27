@@ -47,13 +47,15 @@ headers = [
   'rlso/vso.h',
   ]
 
+
+android_wordexp_dep = dependency('android-wordexp', required: false)
 rlc_dep = dependency('rlc', fallback : ['rlc', 'rlc_dep'], default_options: ['default_library=static'])
 
 install_headers(headers, subdir: 'rlso')
 install_headers('rlso.h')
 librlso = library('rlso',
   sources,
-  dependencies: [rlc_dep],
+  dependencies: [rlc_dep, android_wordexp_dep],
   install: true,
   )
 
