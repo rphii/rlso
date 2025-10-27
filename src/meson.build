@@ -47,8 +47,9 @@ headers = [
   'rlso/vso.h',
   ]
 
+cc = meson.get_compiler('c')
+android_wordexp_dep = cc.find_library('android-wordexp', required : false)
 
-android_wordexp_dep = dependency('android-wordexp', required: false)
 rlc_dep = dependency('rlc', fallback : ['rlc', 'rlc_dep'], default_options: ['default_library=static'])
 
 install_headers(headers, subdir: 'rlso')
