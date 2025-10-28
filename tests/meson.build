@@ -4,6 +4,7 @@ examples = [
   'len-a.c',
   'len-1000.c',
   'push-len.c',
+  'base64.c',
   'uc.c',
   'uc2.c',
   'uc3.c',

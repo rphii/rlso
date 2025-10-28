@@ -2,6 +2,7 @@
 
 #include "rlso/so-align.h"
 #include "rlso/so-as.h"
+#include "rlso/so-base64.h"
 #include "rlso/so-cmp-attr.h"
 #include "rlso/so-cmp.h"
 #include "rlso/so-color.h"

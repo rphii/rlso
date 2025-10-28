@@ -3,6 +3,7 @@ prj = meson.project_name()
 sources = [
   'rlso/so-align.c',
   'rlso/so-as.c',
+  'rlso/so-base64.c',
   'rlso/so-cmp.c',
   'rlso/so-color.c',
   'rlso/so-core.c',
@@ -26,6 +27,7 @@ sources = [
 headers = [
   'rlso/so-align.h',
   'rlso/so-as.h',
+  'rlso/so-base64.h',
   'rlso/so-cmp-attr.h',
   'rlso/so-cmp.h',
   'rlso/so-color.h',
