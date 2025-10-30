@@ -17,22 +17,34 @@ FILE *so_file_fp(So filename, char *mode) {
     return file;
 }
 
-ErrDecl so_file_read_fp(FILE *file, So *content) {
+ErrDecl so_file_read_fp_ext(FILE *file, So *content, size_t n, size_t size, size_t *at) {
     ASSERT_ARG(file);
     ASSERT_ARG(content);
     int err = 0;
-    /* get file length */
-    fseek(file, 0, SEEK_END);
-    size_t bytes_file = (size_t)ftell(file);
-    fseek(file, 0, SEEK_SET);
-    if(bytes_file == (SIZE_MAX>>1)) ERR(SO_FILE_ERR_INVALID);
-    if(SIZE_IS_NEG(bytes_file)) ERR(SO_FILE_ERR_INVALID);
+    size_t att = 0;
+    if(!at) at = &att;
+    if(*at > size) ERR(SO_FILE_ERR_INVALID);
+    if(*at + n > size) n = size - *at;
     /* allocate memory */
-    so_resize(content, bytes_file);
+    so_resize(content, n);
     /* read file */
-    size_t bytes_read = fread(content->str, 1, bytes_file, file);
-    if(bytes_file != bytes_read) ERR(SO_FILE_ERR_BYTES);
+    size_t bytes_read = fread(content->str, 1, n, file);
+    if(n != bytes_read) ERR(SO_FILE_ERR_BYTES);
     //content->ref.str[bytes_read] = 0;
+clean:
+    /* close file outside */
+    return err;
+}
+
+ErrDecl so_file_read_fp(FILE *file, So *content) {
+    ASSERT_ARG(file);
+    ASSERT_ARG(content);
+    /* get file length */
+    size_t bytes_file;
+    int err = so_file_get_size_fp(file, &bytes_file);
+    if(err) ERR(err);
+    err = so_file_read_fp_ext(file, content, bytes_file, bytes_file, 0);
+    if(err) ERR(err);
 clean:
     /* close file outside */
     return err;
@@ -54,19 +66,29 @@ clean:
     return err;
 }
 
+ErrDecl so_file_get_size_fp(FILE *file, size_t *size) {
+    ASSERT_ARG(file);
+    int err = 0;
+    fseek(file, 0, SEEK_END);
+    size_t bytes_file = (size_t)ftell(file);
+    fseek(file, 0, SEEK_SET);
+    if(bytes_file == (SIZE_MAX>>1)) ERR(SO_FILE_ERR_INVALID);
+    if(SIZE_IS_NEG(bytes_file)) ERR(SO_FILE_ERR_INVALID);
+    *size = bytes_file;
+clean:
+    return err;
+}
 
-size_t so_file_get_size(So filename) {/*{{{*/
+ErrDecl so_file_get_size(So filename, size_t *size) {
     char path[SO_FILE_PATH_MAX];
+    int err = 0;
     so_as_cstr(filename, path, SO_FILE_PATH_MAX);
     FILE *fp = fopen(path, "rb");
-    size_t result = SIZE_MAX;
-    if(fp) {
-        if(!fseek(fp, 0L, SEEK_END)) {
-            result = ftell(fp);
-        }
-        fclose(fp);
-    }
-    return result;
+    if(!fp) ERR(SO_FILE_ERR_OPEN);
+    err = so_file_get_size_fp(fp, size);
+    fclose(fp);
+clean:
+    return err;
 }/*}}}*/
 
 ErrDecl so_file_read(So filename, So *content) {

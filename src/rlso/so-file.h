@@ -25,8 +25,12 @@ typedef enum {
     SO_FILE_TYPE_ERROR,
 } So_File_Type_List;
 
-size_t so_file_get_size(So filename);
+ErrDecl so_file_get_size(So filename, size_t *size);
+ErrDecl so_file_get_size_fp(FILE *file, size_t *size);
+
 So_File_Type_List so_file_get_type(So filename);
+
+ErrDecl so_file_read_fp_ext(FILE *file, So *content, size_t n, size_t size, size_t *at);
 
 FILE *so_file_fp(So filename, char *mode);
 #define ERR_so_file_read_fp(...) "failed reading file"
