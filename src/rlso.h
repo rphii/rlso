@@ -10,6 +10,7 @@
 #include "rlso/so-count.h"
 #include "rlso/so-env.h"
 #include "rlso/so-file.h"
+#include "rlso/so-filesig.h"
 #include "rlso/so-find.h"
 #include "rlso/so-fx.h"
 #include "rlso/so-hash.h"
