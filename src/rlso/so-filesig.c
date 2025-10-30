@@ -3,6 +3,14 @@
 
 typedef bool (*So_Filesig_Callback)(So extension, So content, bool *uncertain);
 
+bool so_filesig_cb_script(So extension, So content, bool *uncertain) {
+    if (!so_cmp0(content, so("#!"))) {
+        *uncertain = false;
+        return true;
+    }
+    return false;
+}
+
 bool so_filesig_cb_gif(So extension, So content, bool *uncertain) {
     if (!so_cmp0(content, so("GIF87")) || !so_cmp0(content, so("GIF89a"))) {
         *uncertain = true;
@@ -16,7 +24,7 @@ bool so_filesig_cb_tiff(So extension, So content, bool *uncertain) {
         *uncertain = !(!so_cmp(extension, so(".tif")) || !so_cmp(extension, so(".tiff")));
         return true;
     }
-    return true;
+    return false;
 }
 
 bool so_filesig_cb_bigtiff(So extension, So content, bool *uncertain) {
@@ -45,8 +53,9 @@ bool so_filesig_cb_bpg(So extension, So content, bool *uncertain) {
 
 bool so_filesig_cb_jpeg(So extension, So content, bool *uncertain) {
     bool result = false;
-    if (!so_cmp0(content, so("\xFF\xD8\xFF\xDB")) || !so_cmp0(content, so("\xFF\xD8\xFF\xE0\x00\x10JFIF\x00\x01")) ||
-        !so_cmp0(content, so("\xFF\xD8\xFF\xEE")) || !so_cmp0(content, so("\xFF\xD8\xFF\xE0"))) {
+    //if (!so_cmp0(content, so("\xFF\xD8\xFF\xDB")) || !so_cmp0(content, so("\xFF\xD8\xFF\xE0\x00\x10JFIF\x00\x01")) ||
+    //    !so_cmp0(content, so("\xFF\xD8\xFF\xEE")) || !so_cmp0(content, so("\xFF\xD8\xFF\xE0"))) {
+    if (!so_cmp0(content, so("\xFF\xD8\xFF"))) {
         result = true;
     }
     if (!so_cmp0(content, so("\xFF\xD8\xFF\xE1"))) {
@@ -142,6 +151,14 @@ bool so_filesig_cb_png(So extension, So content, bool *uncertain) {
     return false;
 }
 
+bool so_filesig_cb_heic(So extension, So content, bool *uncertain) {
+    if (so_len(content) > 4 && !so_cmp0(so_i0(content, 4), so("ftypheic"))) {
+        *uncertain = true;
+        return true;
+    }
+    return false;
+}
+
 bool so_filesig_cb_pdf(So extension, So content, bool *uncertain) {
     if (!so_cmp0(content, so("%PDF-"))) {
         *uncertain = true;
@@ -188,6 +205,17 @@ bool so_filesig_cb_mp3(So extension, So content, bool *uncertain) {
     return false;
 }
 
+bool so_filesig_cb_lzh(So extension, So content, bool *uncertain) {
+    if (so_len(content) > 2) {
+        if (!so_cmp0(content, so("-lh0-")) ||
+            !so_cmp0(content, so("-lh5-"))) {
+            *uncertain = true;
+            return true;
+        }
+    }
+    return false;
+}
+
 bool so_filesig_cb_bmp(So extension, So content, bool *uncertain) {
     if (!so_cmp0(content, so("BM"))) {
         *uncertain = !(
@@ -215,10 +243,12 @@ bool so_filesig_cb_xar(So extension, So content, bool *uncertain) {
 }
 
 bool so_filesig_cb_tar(So extension, So content, bool *uncertain) {
-    if (!so_cmp0(so_i0(content, 257), so("ustar\x00\x30\x30")) ||
-        !so_cmp0(so_i0(content, 257), so("ustar\x20\x20\x00"))) {
-        *uncertain = so_cmp(extension, so(".tar"));
-        return true;
+    if(so_len(content) > 257) {
+        if (!so_cmp0(so_i0(content, 257), so("ustar\x00\x30\x30")) ||
+            !so_cmp0(so_i0(content, 257), so("ustar\x20\x20\x00"))) {
+            *uncertain = so_cmp(extension, so(".tar"));
+            return true;
+        }
     }
     return false;
 }
@@ -287,10 +317,12 @@ bool so_filesig_cb_mkv(So extension, So content, bool *uncertain) {
 }
 
 bool so_filesig_cb_mpeg4(So extension, So content, bool *uncertain) {
-    if (!so_cmp0(content, so("ftypisom")) ||
-        !so_cmp0(content, so("ftypMSNV"))) {
-        *uncertain = so_cmp(extension, so(".mp4"));
-        return true;
+    if (so_len(content) > 4) {
+        if (!so_cmp0(so_i0(content, 4), so("ftypisom")) ||
+            !so_cmp0(so_i0(content, 4), so("ftypMSNV"))) {
+            *uncertain = true;
+            return true;
+        }
     }
     return false;
 }
@@ -327,6 +359,7 @@ bool so_filesig_cb_qcow(So extension, So content, bool *uncertain) {
 }
 
 static So_Filesig_Callback so_filesig_callbacks[SO_FILESIG__COUNT] = {
+    [SO_FILESIG_SCRIPT] = so_filesig_cb_script,
     [SO_FILESIG_GIF] = so_filesig_cb_gif,
     [SO_FILESIG_TIFF] = so_filesig_cb_tiff,
     [SO_FILESIG_BIGTIFF] = so_filesig_cb_bigtiff,
@@ -339,11 +372,13 @@ static So_Filesig_Callback so_filesig_callbacks[SO_FILESIG__COUNT] = {
     [SO_FILESIG_RAR] = so_filesig_cb_rar,
     [SO_FILESIG_ELF] = so_filesig_cb_elf,
     [SO_FILESIG_PNG] = so_filesig_cb_png,
+    [SO_FILESIG_HEIC] = so_filesig_cb_heic,
     [SO_FILESIG_PDF] = so_filesig_cb_pdf,
     [SO_FILESIG_OGG] = so_filesig_cb_ogg,
     [SO_FILESIG_WAV] = so_filesig_cb_wav,
     [SO_FILESIG_AVI] = so_filesig_cb_avi,
     [SO_FILESIG_MP3] = so_filesig_cb_mp3,
+    [SO_FILESIG_LZH] = so_filesig_cb_lzh,
     [SO_FILESIG_BMP] = so_filesig_cb_bmp,
     [SO_FILESIG_FLAC] = so_filesig_cb_flac,
     [SO_FILESIG_XAR] = so_filesig_cb_xar,
@@ -370,7 +405,7 @@ ErrDecl so_filesig_fp(FILE *file, So extension, bool *uncertain, So_Filesig_List
     So content = SO;
     err = so_file_get_size_fp(file, &file_len);
     if(err) ERR(err);
-    so_file_read_fp_ext(file, &content, 6, file_len, 0);
+    so_file_read_fp_ext(file, &content, 276, file_len, 0);
 
     for(size_t i = SO_FILESIG_NONE + 1; i < SO_FILESIG__COUNT; ++i) {
         So_Filesig_Callback cb = so_filesig_callbacks[i];
@@ -379,10 +414,57 @@ ErrDecl so_filesig_fp(FILE *file, So extension, bool *uncertain, So_Filesig_List
             *sig = i;
             break;
         }
+        if(i + 1 >= SO_FILESIG__COUNT) {
+            *sig = SO_FILESIG_NONE;
+        }
     }
 
 clean:
     so_free(&content);
     return err;
+}
+
+void so_filesig_fmt(So *out, So_Filesig_List sig) {
+    switch(sig) {
+    
+        case SO_FILESIG_NONE: so_extend(out, so("none")); break;
+        case SO_FILESIG_SCRIPT: so_extend(out, so("script")); break;
+        case SO_FILESIG_GIF: so_extend(out, so("gif")); break;
+        case SO_FILESIG_TIFF: so_extend(out, so("tiff")); break;
+        case SO_FILESIG_BIGTIFF: so_extend(out, so("bigtiff")); break;
+        case SO_FILESIG_OPENEXR: so_extend(out, so("openexr")); break;
+        case SO_FILESIG_BPG: so_extend(out, so("bpg")); break;
+        case SO_FILESIG_JPEG: so_extend(out, so("jpeg")); break;
+        case SO_FILESIG_JPEG2K: so_extend(out, so("jpeg2k")); break;
+        case SO_FILESIG_QOI: so_extend(out, so("qoi")); break;
+        case SO_FILESIG_ZIPLIKE: so_extend(out, so("ziplike")); break;
+        case SO_FILESIG_RAR: so_extend(out, so("rar")); break;
+        case SO_FILESIG_ELF: so_extend(out, so("elf")); break;
+        case SO_FILESIG_PNG: so_extend(out, so("png")); break;
+        case SO_FILESIG_HEIC: so_extend(out, so("heic")); break;
+        case SO_FILESIG_PDF: so_extend(out, so("pdf")); break;
+        case SO_FILESIG_OGG: so_extend(out, so("ogg")); break;
+        case SO_FILESIG_WAV: so_extend(out, so("wav")); break;
+        case SO_FILESIG_AVI: so_extend(out, so("avi")); break;
+        case SO_FILESIG_MP3: so_extend(out, so("mp3")); break;
+        case SO_FILESIG_LZH: so_extend(out, so("lzh")); break;
+        case SO_FILESIG_BMP: so_extend(out, so("bmp")); break;
+        case SO_FILESIG_FLAC: so_extend(out, so("flac")); break;
+        case SO_FILESIG_XAR: so_extend(out, so("xar")); break;
+        case SO_FILESIG_TAR: so_extend(out, so("tar")); break;
+        case SO_FILESIG_TOX: so_extend(out, so("tox")); break;
+        case SO_FILESIG_7Z: so_extend(out, so("7z")); break;
+        case SO_FILESIG_GZ: so_extend(out, so("gz")); break;
+        case SO_FILESIG_XZ: so_extend(out, so("xz")); break;
+        case SO_FILESIG_LZ4: so_extend(out, so("lz4")); break;
+        case SO_FILESIG_FLIF: so_extend(out, so("flif")); break;
+        case SO_FILESIG_MKV: so_extend(out, so("mkv")); break;
+        case SO_FILESIG_MPEG4: so_extend(out, so("mpeg4")); break;
+        case SO_FILESIG_ZLIB: so_extend(out, so("zlib")); break;
+        case SO_FILESIG_LZFSE: so_extend(out, so("lzfse")); break;
+        case SO_FILESIG_QCOW: so_extend(out, so("qcow")); break;
+        default: so_extend(out, so("other")); break;
+
+    }
 }
 

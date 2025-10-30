@@ -7,6 +7,7 @@
 typedef enum So_Filesig_List {
     SO_FILESIG_NONE,
     /* keep signatures below */
+    SO_FILESIG_SCRIPT,
     SO_FILESIG_GIF,
     SO_FILESIG_TIFF,
     SO_FILESIG_BIGTIFF,
@@ -19,11 +20,13 @@ typedef enum So_Filesig_List {
     SO_FILESIG_RAR,
     SO_FILESIG_ELF,
     SO_FILESIG_PNG,
+    SO_FILESIG_HEIC,
     SO_FILESIG_PDF,
     SO_FILESIG_OGG,
     SO_FILESIG_WAV,
     SO_FILESIG_AVI,
     SO_FILESIG_MP3,
+    SO_FILESIG_LZH,
     SO_FILESIG_BMP,
     SO_FILESIG_FLAC,
     SO_FILESIG_XAR,
@@ -44,6 +47,7 @@ typedef enum So_Filesig_List {
 } So_Filesig_List;
 
 ErrDecl so_filesig_fp(FILE *file, So extension, bool *uncertain, So_Filesig_List *sig);
+void so_filesig_fmt(So *out, So_Filesig_List sig);
 
 #define SO_FILESIG_H
 #endif // SO_FILESIG_H

@@ -95,6 +95,7 @@ ErrDecl so_file_read(So filename, So *content) {
     ASSERT_ARG(content);
     int err = 0;
     FILE *file = 0;
+    if(!filename.len) ERR(SO_FILE_ERR_INVALID);
     /* open the file */
     errno = 0;
     if(filename.len && (
