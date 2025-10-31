@@ -424,6 +424,14 @@ clean:
     return err;
 }
 
+ErrDecl so_filesig(So path, bool *uncertain, So_Filesig_List *sig) {
+    FILE *fp = so_file_fp(path, "r");
+    if(!fp) return SO_FILE_ERR_INVALID;
+    so_filesig_fp(fp, so_get_ext(path), uncertain, sig);
+    fclose(fp);
+    return 0;
+}
+
 void so_filesig_fmt(So *out, So_Filesig_List sig) {
     switch(sig) {
     

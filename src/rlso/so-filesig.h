@@ -47,6 +47,7 @@ typedef enum So_Filesig_List {
 } So_Filesig_List;
 
 ErrDecl so_filesig_fp(FILE *file, So extension, bool *uncertain, So_Filesig_List *sig);
+ErrDecl so_filesig(So path, bool *uncertain, So_Filesig_List *sig);
 void so_filesig_fmt(So *out, So_Filesig_List sig);
 
 #define SO_FILESIG_H
