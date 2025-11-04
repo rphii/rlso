@@ -7,6 +7,7 @@
 typedef struct So So;
 
 size_t  so_find_ch(So so, char c);
+size_t  so_find_chi(So so, char c);
 size_t  so_find_nch(So so, char c);
 size_t  so_find_ws(So so);
 size_t  so_find_nws(So so);
@@ -15,6 +16,7 @@ size_t  so_find_nany(So so, So nany);
 size_t  so_find_sub(So so, So sub, bool ignorecase);
 
 size_t  so_rfind_ch(So so, char c);
+size_t  so_rfind_chi(So so, char c);
 size_t  so_rfind_nch(So so, char c);
 size_t  so_rfind_ws(So so);
 size_t  so_rfind_nws(So so);

@@ -27,6 +27,7 @@ int main(void) {
     EXPECT(so_rfind_nany(so("abcd"), so("dc")), 2);
     EXPECT(so_rfind_ws(so("ab cd")), 2);
     EXPECT(so_rfind_nws(so("abcd  ")), 4);
+    EXPECT(so_find_sub(so("README.md"), so("me"), true), 4);
     EXPECT(so_find_sub(so("abcbcd"), so("bc"), false), 1);
     EXPECT(so_find_sub(so("abcbcd"), so("x"), false), 6);
     EXPECT(so_rfind_sub(so("abcbcd"), so("bc"), false), 3);

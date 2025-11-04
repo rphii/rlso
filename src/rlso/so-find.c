@@ -26,6 +26,14 @@ size_t so_find_ch(So ref, char c) { /*{{{*/
 #endif
 } /*}}}*/
 
+size_t so_find_chi(So ref, char c) { /*{{{*/
+    size_t len = so_len(ref);
+    for(size_t i = 0; i < len; ++i) {
+        if(tolower(ref.str[i]) == tolower(c)) return i;
+    }
+    return len;
+} /*}}}*/
+
 size_t so_find_nch(So ref, char c) { /*{{{*/
     for(size_t i = 0; i < ref.len; ++i) {
         if(ref.str[i] != c) return i;
@@ -79,7 +87,11 @@ size_t so_find_sub(So ref, So sub, bool ignorecase) { /*{{{*/
         if(overlap == sub.len) return i;
         i += overlap;
         so_shift(&ref, overlap);
-        shift = so_find_ch(ref, sub.str[0]);
+        if(ignorecase) {
+            shift = so_find_chi(ref, sub.str[0]);
+        } else {
+            shift = so_find_ch(ref, sub.str[0]);
+        }
         /*if(!shift && ref.len) ++shift;//don't think I need this?*/
         i += shift;
         so_shift(&ref, shift);
@@ -102,6 +114,14 @@ size_t so_rfind_ch(So ref, char c) { /*{{{*/
     }
     return ref.len;
 #endif
+} /*}}}*/
+
+size_t so_rfind_chi(So ref, char c) { /*{{{*/
+    size_t len = so_len(ref);
+    for(size_t i = len; i > 0; --i) {
+        if(tolower(ref.str[i - 1]) == tolower(c)) return i - 1;
+    }
+    return ref.len;
 } /*}}}*/
 
 size_t so_rfind_nch(So ref, char c) { /*{{{*/
@@ -157,7 +177,11 @@ size_t so_rfind_sub(So ref, So sub, bool ignorecase) { /*{{{*/
         if(overlap == sub.len) return i;
         i -= overlap;
         ref.len -= overlap;
-        shift = so_rfind_ch(ref, so_atE(sub));
+        if(ignorecase) {
+            shift = so_rfind_chi(ref, so_atE(sub));
+        } else {
+            shift = so_rfind_ch(ref, so_atE(sub));
+        }
         if(shift < ref.len) shift = ref.len - shift - 1;
         /*if(!shift && ref.len) ++shift;//don't think I need this?*/
         i -= shift;
