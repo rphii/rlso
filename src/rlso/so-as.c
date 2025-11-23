@@ -8,6 +8,9 @@
 
 #define SO_AS_BASE_MAX     36
 
+void so_as_get_base(So *ref, int *base);
+void so_as_get_sign(So *ref, bool *sign);
+
 inline static int static_so_as_unbase_char(char c) {
     if(c >= '0' && c <= '9') return c - '0';
     if(c >= 'a' && c <= 'z') return c - 'a' + 10;
@@ -65,7 +68,6 @@ ErrImpl so_as_longdouble(So so, long double *out) {
     *out = result;
     return 0;
 }
-
 
 inline void so_as_get_base(So *ref, int *base) {
     int base_use = *base ? *base : 10;
