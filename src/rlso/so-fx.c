@@ -11,6 +11,8 @@
 #include <unistd.h>
 #include <wordexp.h>
 
+void so_extend_fgbgx(So *out, Color fg, Color bg, bool bold, bool italic, bool underline, bool bashsafe, So add);
+
 inline size_t so_len_nfx(So str) { /*{{{*/
     So snip = str;
     So pat = so("\033[");
