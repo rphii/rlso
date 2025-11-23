@@ -7,6 +7,12 @@ typedef struct So_Ref So_Ref;
 typedef int (*So_Cmp_Func)(So, So);
 typedef int (*So_Cmp_Func_p)(So *, So *);
 
+/* suffix explanation:
+ *   s = sortable
+ *   c = case ignore/insensitive
+ *   p = pointer
+ */
+
 int so_cmp(So a, So b);
 int so_cmp_s(So a, So b);
 int so_cmp_c(So a, So b);

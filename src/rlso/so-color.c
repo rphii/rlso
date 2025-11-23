@@ -10,7 +10,7 @@
 #include "so-fx.h"
 #include "so-find.h"
 
-ErrDecl so_as_color(So so, Color *out) {
+ErrImpl so_as_color(So so, Color *out) {
     Color result = COLOR_NONE;
     if(!so_len(so)) return -1;
     if(so_at0(so) == '#') {
@@ -98,7 +98,7 @@ ErrDecl so_as_color(So so, Color *out) {
     return 0;
 }
 
-void so_fmt_color(So *so, Color in, So_Color_Attr attr) {
+inline void so_fmt_color(So *so, Color in, So_Color_Attr attr) {
     So_Fx fx = {0};
     Color use = COLOR_NONE;
     if(attr & SO_COLOR_R) { use.r = in.r; }

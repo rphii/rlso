@@ -5,7 +5,7 @@
 #include <rlc.h>
 #include <stdlib.h>
 
-size_t so_splice(So to_splice, So *prev, char sep) {
+inline size_t so_splice(So to_splice, So *prev, char sep) {
     ASSERT_ARG(prev);
     size_t len = so_len(to_splice);
     So result = so_ll(to_splice.str, len);

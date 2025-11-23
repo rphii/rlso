@@ -13,7 +13,7 @@
 
 /* find ::: ref {{{ */
 
-size_t so_find_ch(So ref, char c) { /*{{{*/
+inline size_t so_find_ch(So ref, char c) { /*{{{*/
 #if 1
     char *s = memchr(ref.str, c, ref.len);
     if(!s) return ref.len;
@@ -26,7 +26,7 @@ size_t so_find_ch(So ref, char c) { /*{{{*/
 #endif
 } /*}}}*/
 
-size_t so_find_chi(So ref, char c) { /*{{{*/
+inline size_t so_find_chi(So ref, char c) { /*{{{*/
     size_t len = so_len(ref);
     for(size_t i = 0; i < len; ++i) {
         if(tolower(ref.str[i]) == tolower(c)) return i;
@@ -34,28 +34,28 @@ size_t so_find_chi(So ref, char c) { /*{{{*/
     return len;
 } /*}}}*/
 
-size_t so_find_nch(So ref, char c) { /*{{{*/
+inline size_t so_find_nch(So ref, char c) { /*{{{*/
     for(size_t i = 0; i < ref.len; ++i) {
         if(ref.str[i] != c) return i;
     }
     return ref.len;
 } /*}}}*/
 
-size_t so_find_ws(So ref) { /*{{{*/
+inline size_t so_find_ws(So ref) { /*{{{*/
     for(size_t i = 0; i < ref.len; ++i) {
         if(isspace(ref.str[i])) return i;
     }
     return ref.len;
 } /*}}}*/
 
-size_t so_find_nws(So ref) { /*{{{*/
+inline size_t so_find_nws(So ref) { /*{{{*/
     for(size_t i = 0; i < ref.len; ++i) {
         if(!isspace(ref.str[i])) return i;
     }
     return ref.len;
 } /*}}}*/
 
-size_t so_find_any(So ref, So any) { /*{{{*/
+inline size_t so_find_any(So ref, So any) { /*{{{*/
     for(size_t i = 0; i < ref.len; ++i) {
         char c = ref.str[i];
         if(memchr(any.str, c, any.len)) {
@@ -65,7 +65,7 @@ size_t so_find_any(So ref, So any) { /*{{{*/
     return ref.len;
 } /*}}}*/
 
-size_t so_find_nany(So ref, So nany) { /*{{{*/
+inline size_t so_find_nany(So ref, So nany) { /*{{{*/
     for(size_t i = 0; i < ref.len; ++i) {
         char c = ref.str[i];
         if(!memchr(nany.str, c, nany.len)) {
@@ -75,7 +75,7 @@ size_t so_find_nany(So ref, So nany) { /*{{{*/
     return ref.len;
 } /*}}}*/
 
-size_t so_find_sub(So ref, So sub, bool ignorecase) { /*{{{*/
+inline size_t so_find_sub(So ref, So sub, bool ignorecase) { /*{{{*/
     /* basic checks */
     if(!sub.len) return 0;
     if(sub.len > ref.len) return ref.len;
@@ -103,7 +103,7 @@ size_t so_find_sub(So ref, So sub, bool ignorecase) { /*{{{*/
 
 /* rfind ::: ref {{{ */
 
-size_t so_rfind_ch(So ref, char c) { /*{{{*/
+inline size_t so_rfind_ch(So ref, char c) { /*{{{*/
 #if 1
     char *s = memrchr(ref.str, c, ref.len);
     if(!s) return ref.len;
@@ -116,7 +116,7 @@ size_t so_rfind_ch(So ref, char c) { /*{{{*/
 #endif
 } /*}}}*/
 
-size_t so_rfind_chi(So ref, char c) { /*{{{*/
+inline size_t so_rfind_chi(So ref, char c) { /*{{{*/
     size_t len = so_len(ref);
     for(size_t i = len; i > 0; --i) {
         if(tolower(ref.str[i - 1]) == tolower(c)) return i - 1;
@@ -124,28 +124,28 @@ size_t so_rfind_chi(So ref, char c) { /*{{{*/
     return ref.len;
 } /*}}}*/
 
-size_t so_rfind_nch(So ref, char c) { /*{{{*/
+inline size_t so_rfind_nch(So ref, char c) { /*{{{*/
     for(size_t i = ref.len; i > 0; --i) {
         if(ref.str[i - 1] != c) return i;
     }
     return 0;
 } /*}}}*/
 
-size_t so_rfind_ws(So ref) { /*{{{*/
+inline size_t so_rfind_ws(So ref) { /*{{{*/
     for(size_t i = ref.len; i > 0; --i) {
         if(isspace(ref.str[i - 1])) return i - 1;
     }
     return ref.len;
 } /*}}}*/
 
-size_t so_rfind_nws(So ref) { /*{{{*/
+inline size_t so_rfind_nws(So ref) { /*{{{*/
     for(size_t i = ref.len; i > 0; --i) {
         if(!isspace(ref.str[i - 1])) return i;
     }
     return 0;
 } /*}}}*/
 
-size_t so_rfind_any(So ref, So any) { /*{{{*/
+inline size_t so_rfind_any(So ref, So any) { /*{{{*/
     for(size_t i = ref.len; i > 0; --i) {
         char c = ref.str[i - 1];
         if(memchr(any.str, c, any.len)) {
@@ -155,7 +155,7 @@ size_t so_rfind_any(So ref, So any) { /*{{{*/
     return ref.len;
 } /*}}}*/
 
-size_t so_rfind_nany(So ref, So nany) { /*{{{*/
+inline size_t so_rfind_nany(So ref, So nany) { /*{{{*/
     for(size_t i = ref.len; i > 0; --i) {
         char c = ref.str[i - 1];
         if(!memchr(nany.str, c, nany.len)) {
@@ -165,7 +165,7 @@ size_t so_rfind_nany(So ref, So nany) { /*{{{*/
     return 0;
 } /*}}}*/
 
-size_t so_rfind_sub(So ref, So sub, bool ignorecase) { /*{{{*/
+inline size_t so_rfind_sub(So ref, So sub, bool ignorecase) { /*{{{*/
     /* basic checks */
     if(!sub.len) return 0;
     if(sub.len > ref.len) return ref.len;
@@ -195,7 +195,7 @@ size_t so_rfind_sub(So ref, So sub, bool ignorecase) { /*{{{*/
 
 /* weird stuff {{{*/
 
-size_t so_find_f(So so, size_t *out_iE) { /*{{{*/
+inline size_t so_find_f(So so, size_t *out_iE) { /*{{{*/
     size_t i0 = so_find_sub(so, so(FS_BEG), false);
     if(out_iE) {
         So s = so_i0(so, i0);
@@ -207,7 +207,7 @@ size_t so_find_f(So so, size_t *out_iE) { /*{{{*/
 } /*}}}*/
 
 #if 1
-size_t so_rfind_f0(So str, So *fmt) { /*{{{*/
+inline size_t so_rfind_f0(So str, So *fmt) { /*{{{*/
     size_t i0 = so_rfind_sub(str, so(FS_BEG), false);
     So s = so_i0(str, i0);
     size_t iE = so_find_ch(s, 'm');
@@ -220,7 +220,7 @@ size_t so_rfind_f0(So str, So *fmt) { /*{{{*/
 #endif
 
 #if 0
-size_t so_rfind_f(So so, size_t *out_iE) { /*{{{*/
+inline size_t so_rfind_f(So so, size_t *out_iE) { /*{{{*/
     size_t i0 = so_rfind_sub(so, so(FS_BEG), false);
     if(out_iE) {
         So s = so_i0(so, i0);

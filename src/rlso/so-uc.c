@@ -1,7 +1,7 @@
 #include "so-core.h"
 #include "so-uc.h"
 
-ErrDecl so_uc_point(So so, So_Uc_Point *point) {
+ErrImpl so_uc_point(So so, So_Uc_Point *point) {
     ASSERT_ARG(point); /* LCOV_EXCL_LINE */
     So_Uc_Point tinker = {0};
     // figure out how many bytes we need
@@ -44,7 +44,7 @@ ErrDecl so_uc_point(So so, So_Uc_Point *point) {
     return 0;
 }
 
-ErrDecl so_uc_fmt_point(So *out, So_Uc_Point *point) {
+ErrImpl so_uc_fmt_point(So *out, So_Uc_Point *point) {
     ASSERT_ARG(out);
     ASSERT_ARG(point);
     int bytes = 0;

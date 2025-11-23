@@ -2,28 +2,28 @@
 #include "so-print.h"
 #include "so-heap.h"
 
-void so_print(So so) {
+inline void so_print(So so) {
     so_fprint(stdout, so);
 }
 
-void so_println(So so) {
+inline void so_println(So so) {
     so_fprintln(stdout, so);
 }
 
-void so_printdbg(So so) {
+inline void so_printdbg(So so) {
     so_fprintdbg(stdout, so);
 }
 
 
-void so_fprint(FILE *fp, So so) {
+inline void so_fprint(FILE *fp, So so) {
     fprintf(fp, "%.*s", SO_F(so));
 }
 
-void so_fprintln(FILE *fp, So so) {
+inline void so_fprintln(FILE *fp, So so) {
     fprintf(fp, "%.*s\n", SO_F(so));
 }
 
-void so_fprintdbg(FILE *fp, So so) {
+inline void so_fprintdbg(FILE *fp, So so) {
     fprintf(stdout, "%c[%.*s]%zu", so_is_heap(so) ? 'h' : 'r',
             SO_F(so), so_len(so));
     if(so_is_heap(so)) {

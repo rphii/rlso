@@ -13,7 +13,7 @@ static char *so_grow_by_heap(So *so, size_t len_add);
 static char *so_grow_by_ref(So *so, size_t len_add);
 static char *so_grow_by(So *so, size_t len_add);
 
-static char *so_grow_by_heap(So *so, size_t len_add) {
+inline static char *so_grow_by_heap(So *so, size_t len_add) {
     size_t len_was = so->len;
     So_Heap *heap = so_heap_base(so);
     if(len_was + len_add >= heap->cap) {
@@ -25,7 +25,7 @@ static char *so_grow_by_heap(So *so, size_t len_add) {
     return so->str + len_was;
 }
 
-static char *so_grow_by_ref(So *so, size_t len_add) {
+inline static char *so_grow_by_ref(So *so, size_t len_add) {
     size_t len_was = so->len;
     So_Heap *heap = so_heap_grow(0, len_was + len_add);
     memcpy(heap->str, so->str, len_was);
@@ -36,7 +36,7 @@ static char *so_grow_by_ref(So *so, size_t len_add) {
 }
 #include "so-print.h"
 
-static char *so_grow_by(So *so, size_t len_add) {
+inline static char *so_grow_by(So *so, size_t len_add) {
     ASSERT_ARG(len_add);
     if(_so_is_heap(so)) {
         return so_grow_by_heap(so, len_add);
@@ -45,42 +45,42 @@ static char *so_grow_by(So *so, size_t len_add) {
     }
 }
 
-bool so_is_empty(So s) {
+inline bool so_is_empty(So s) {
     return !so_len(s);
 }
 
-bool so_is_zero(So s) {
+inline bool so_is_zero(So s) {
     return !s.str && !s.len;
 }
 
-bool so_is_heap(So so) {
+inline bool so_is_heap(So so) {
     return so.is_heap;
 }
 
-static bool _so_is_heap(So *so) {
+inline static bool _so_is_heap(So *so) {
     return so->is_heap;
 }
 
-size_t so_len(So s) {
+inline size_t so_len(So s) {
     return s.len;
 }
 
-void so_set_len(So *so, size_t len) {
+inline void so_set_len(So *so, size_t len) {
     so->len = len;
 }
 
-void so_change_len(So *so, size_t len) {
+inline void so_change_len(So *so, size_t len) {
     so->len += len;
 }
 
 
-void so_copy(So *so, So b) {
+inline void so_copy(So *so, So b) {
     so_clear(so);
     if(!b.len) return;
     so_extend(so, b);
 }
 
-So so_clone(So b) {
+inline So so_clone(So b) {
     So result = {0};
     if(b.len) {
         memcpy(so_grow_by(&result, b.len), so_it0(b), b.len);
@@ -88,7 +88,7 @@ So so_clone(So b) {
     return result;
 }
 
-char *so_dup(So so) {
+inline char *so_dup(So so) {
     So ref = so;
     char *result = malloc(ref.len + 1);
     memcpy(result, ref.str, ref.len);
@@ -96,11 +96,11 @@ char *so_dup(So so) {
     return result;
 }
 
-void so_push(So *s, char c) {
+inline void so_push(So *s, char c) {
     *so_grow_by(s, 1) = c;
 }
 
-void so_extend(So *so, So b) {
+inline void so_extend(So *so, So b) {
     So ref = b;
     if(!ref.len) return;
     if(_so_is_heap(so) && so_is_heap(b)) {
@@ -125,7 +125,7 @@ void so_extend(So *so, So b) {
     }
 }
 
-void so_resize_known(So *s, size_t len_old, size_t len_new) {
+inline void so_resize_known(So *s, size_t len_old, size_t len_new) {
     bool is_heap = so_is_heap(*s);
     if(len_new > len_old) {
         //// TODO? if(len_new >= SO_HEAP_MAX) exit(1);
@@ -135,19 +135,19 @@ void so_resize_known(So *s, size_t len_old, size_t len_new) {
     }
 }
 
-void so_resize(So *s, size_t len_new) {
+inline void so_resize(So *s, size_t len_new) {
     size_t len_old = so_len(*s);
     so_resize_known(s, len_old, len_new);
 }
 
-void so_fmt(So *s, const char *fmt, ...) {
+inline void so_fmt(So *s, const char *fmt, ...) {
     va_list va;
     va_start(va, fmt);
     so_fmt_va(s, fmt, va);
     va_end(va);
 }
 
-void so_fmt_va(So *s, const char *fmt, va_list va) {
+inline void so_fmt_va(So *s, const char *fmt, va_list va) {
     va_list argp2;
     va_copy(argp2, va);
     size_t len_app = (size_t)vsnprintf(0, 0, fmt, argp2);
@@ -182,50 +182,50 @@ void so_fmt_va(So *s, const char *fmt, va_list va) {
 #endif
 }
 
-const char so_at(So so, size_t i) {
+inline const char so_at(So so, size_t i) {
     ASSERT_ARG(i < so.len);
     return so.str[i];
 }
 
-const char so_at0(So s) {
+inline const char so_at0(So s) {
     return *s.str;
 }
 
-const char so_atE(So s) {
+inline const char so_atE(So s) {
     ASSERT_ARG(s.len);
     return s.str[s.len - 1];
 }
 
-char *so_it0(So so) {
+inline char *so_it0(So so) {
     return so.str;
 }
 
-char *so_itE(So so) {
+inline char *so_itE(So so) {
     return so.str + so.len;
 }
 
-char *so_it(So so, size_t i) {
+inline char *so_it(So so, size_t i) {
     ASSERT_ARG(i <= so.len);
     return so.str + i;
 }
 
-So so_i0(So so, size_t i0) { 
+inline So so_i0(So so, size_t i0) { 
     ASSERT_ARG(i0 <= so.len);
     return (So){ .str = so.str + i0, .len = so.len - i0 };
 }
 
-So so_iE(So so, size_t iE) {
+inline So so_iE(So so, size_t iE) {
     ASSERT_ARG(iE <= so.len);
     return (So){ .str = so.str, .len = iE };
 }
 
-So so_sub(So so, size_t i0, size_t iE) {
+inline So so_sub(So so, size_t i0, size_t iE) {
     ASSERT_ARG(i0 <= so.len);
     ASSERT_ARG(iE <= so.len);
     return (So){ .str = so.str + i0, .len = (iE - i0) };
 }
 
-size_t so_shift(So *so, size_t shift) {
+inline size_t so_shift(So *so, size_t shift) {
     ASSERT_ARG(shift <= so->len);
     so->str += shift;
     so->len = (so->len - shift);
@@ -233,26 +233,26 @@ size_t so_shift(So *so, size_t shift) {
     return shift;
 }
 
-void so_clear(So *so) {
+inline void so_clear(So *so) {
     so->len = 0;
 }
 
-void so_free_v(So so) {
+inline void so_free_v(So so) {
     so_free(&so);
 }
 
-void so_free(So *so) {
+inline void so_free(So *so) {
     if(!so) return;
     if(so_is_heap(*so)) free(so_heap_base(so));
     so_zero(so);
 }
 
-void so_zero(So *so) {
+inline void so_zero(So *so) {
     memset(so, 0, sizeof(*so));
 }
 
 
-size_t so_writefunc(void *ptr, size_t size, size_t nmemb, So *str) { /*{{{*/
+inline size_t so_writefunc(void *ptr, size_t size, size_t nmemb, So *str) { /*{{{*/
     so_fmt(str, "%.*s", size * nmemb, ptr);
     return size * nmemb;
 } /*}}}*/

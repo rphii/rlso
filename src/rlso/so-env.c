@@ -7,7 +7,7 @@
 
 #define SO_ENV_STACK_MAX    4096
 
-int so_env_get(So *out, So so) {
+inline int so_env_get(So *out, So so) {
     char *env = 0;
     so_free(out);
     if(so.len < SO_ENV_STACK_MAX) {
@@ -24,7 +24,7 @@ int so_env_get(So *out, So so) {
     return 0;
 }
 
-void so_extend_wordexp(So *out, So path, bool only_if_exists) {
+inline void so_extend_wordexp(So *out, So path, bool only_if_exists) {
     char *clean = so_dup(path); /* TODO create a str_copy_ro .. read-only copy, where it doesn't extend if end == len ... */
     wordexp_t word = {0};
     if(wordexp(clean, &word, 0)) {

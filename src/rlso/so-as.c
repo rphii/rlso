@@ -8,14 +8,14 @@
 
 #define SO_AS_BASE_MAX     36
 
-static int static_so_as_unbase_char(char c) {
+inline static int static_so_as_unbase_char(char c) {
     if(c >= '0' && c <= '9') return c - '0';
     if(c >= 'a' && c <= 'z') return c - 'a' + 10;
     if(c >= 'A' && c <= 'Z') return c - 'A' + 10;
     return -1;
 }
 
-void so_as_cstr(So so, char *buf, size_t cap) {
+inline void so_as_cstr(So so, char *buf, size_t cap) {
     ASSERT_ARG(buf);
     So ref = so;
     if(ref.len && cap) {
@@ -27,7 +27,7 @@ void so_as_cstr(So so, char *buf, size_t cap) {
     }
 }
 
-ErrDecl so_as_float(So so, float *out) {
+ErrImpl so_as_float(So so, float *out) {
     char str[128];
     so_as_cstr(so, str, 128);
     char *endptr = 0;
@@ -40,7 +40,7 @@ ErrDecl so_as_float(So so, float *out) {
     return 0;
 }
 
-ErrDecl so_as_double(So so, double *out) {
+ErrImpl so_as_double(So so, double *out) {
     char str[128];
     so_as_cstr(so, str, 128);
     char *endptr = 0;
@@ -53,7 +53,7 @@ ErrDecl so_as_double(So so, double *out) {
     return 0;
 }
 
-ErrDecl so_as_longdouble(So so, long double *out) {
+ErrImpl so_as_longdouble(So so, long double *out) {
     char str[128];
     so_as_cstr(so, str, 128);
     char *endptr = 0;
@@ -67,7 +67,7 @@ ErrDecl so_as_longdouble(So so, long double *out) {
 }
 
 
-void so_as_get_base(So *ref, int *base) {
+inline void so_as_get_base(So *ref, int *base) {
     int base_use = *base ? *base : 10;
     if(ref->len >= 2 && ref->str[0] == '0') {
         so_shift(ref, 1);
@@ -84,7 +84,7 @@ void so_as_get_base(So *ref, int *base) {
     *base = base_use;
 }
 
-void so_as_get_sign(So *ref, bool *sign) {
+inline void so_as_get_sign(So *ref, bool *sign) {
     if(ref->len >= 1) {
         if(ref->str[0] == '-') {
             *sign = true;
@@ -118,7 +118,7 @@ void so_as_get_sign(So *ref, bool *sign) {
         return 0; \
     } while(0)
 
-ErrDecl so_as_bool_strict(So so, bool *out) {
+ErrImpl so_as_bool_strict(So so, bool *out) {
     if(!so_cmp(so, so("true"))) {
         *out = true;
     } else if(!so_cmp(so, so("false"))) {
@@ -129,7 +129,7 @@ ErrDecl so_as_bool_strict(So so, bool *out) {
     return 0;
 }
 
-ErrDecl so_as_yes_or_no(So so, bool *out) {
+ErrImpl so_as_yes_or_no(So so, bool *out) {
     if(       !so_cmp_c(so, so("true"))
             ||!so_cmp_c(so, so("1"))
             ||!so_cmp_c(so, so("y"))
@@ -152,35 +152,35 @@ ErrDecl so_as_yes_or_no(So so, bool *out) {
     return 0;
 }
 
-ErrDecl so_as_char(So so, char *out, int base) {
+ErrImpl so_as_char(So so, char *out, int base) {
     bool sign = false;
     so_as_get_sign(&so, &sign);
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(ssize_t, so, base, sign, out, sign ? CHAR_MIN : CHAR_MAX);
 }
 
-ErrDecl so_as_short(So so, short *out, int base) {
+ErrImpl so_as_short(So so, short *out, int base) {
     bool sign = false;
     so_as_get_sign(&so, &sign);
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(ssize_t, so, base, sign, out, sign ? SHRT_MIN : SHRT_MAX);
 }
 
-ErrDecl so_as_int(So so, int *out, int base) {
+ErrImpl so_as_int(So so, int *out, int base) {
     bool sign = false;
     so_as_get_sign(&so, &sign);
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(ssize_t, so, base, sign, out, sign ? INT_MIN : INT_MAX);
 }
 
-ErrDecl so_as_long(So so, long *out, int base) {
+ErrImpl so_as_long(So so, long *out, int base) {
     bool sign = false;
     so_as_get_sign(&so, &sign);
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(ssize_t, so, base, sign, out, sign ? LONG_MIN : LONG_MAX);
 }
 
-ErrDecl so_as_longlong(So so, long long *out, int base) {
+ErrImpl so_as_longlong(So so, long long *out, int base) {
     bool sign = false;
     so_as_get_sign(&so, &sign);
     so_as_get_base(&so, &base);
@@ -188,7 +188,7 @@ ErrDecl so_as_longlong(So so, long long *out, int base) {
 }
 
 
-ErrDecl so_as_ssize(So so, ssize_t *out, int base) {
+ErrImpl so_as_ssize(So so, ssize_t *out, int base) {
     bool sign = false;
     so_as_get_sign(&so, &sign);
     so_as_get_base(&so, &base);
@@ -196,59 +196,59 @@ ErrDecl so_as_ssize(So so, ssize_t *out, int base) {
 }
 
 
-ErrDecl so_as_uchar(So so, unsigned char *out, int base) {
+ErrImpl so_as_uchar(So so, unsigned char *out, int base) {
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(unsigned char, so, base, false, out, UCHAR_MAX);
 }
 
-ErrDecl so_as_ushort(So so, unsigned short *out, int base) {
+ErrImpl so_as_ushort(So so, unsigned short *out, int base) {
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(unsigned short, so, base, false, out, USHRT_MAX);
 }
 
-ErrDecl so_as_uint(So so, unsigned int *out, int base) {
+ErrImpl so_as_uint(So so, unsigned int *out, int base) {
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(unsigned int, so, base, false, out, UINT_MAX);
 }
 
-ErrDecl so_as_ulong(So so, unsigned long *out, int base) {
+ErrImpl so_as_ulong(So so, unsigned long *out, int base) {
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(unsigned long, so, base, false, out, ULONG_MAX);
 }
 
-ErrDecl so_as_ulonglong(So so, unsigned long long *out, int base) {
+ErrImpl so_as_ulonglong(So so, unsigned long long *out, int base) {
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(unsigned long long, so, base, false, out, ULLONG_MAX);
 }
 
-ErrDecl so_as_size(So so, size_t *out, int base) {
+ErrImpl so_as_size(So so, size_t *out, int base) {
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(size_t, so, base, false, out, SIZE_MAX);
 }
 
 
-ErrDecl so_as_i8(So so, int8_t *out, int base) {
+ErrImpl so_as_i8(So so, int8_t *out, int base) {
     bool sign = false;
     so_as_get_sign(&so, &sign);
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(int8_t, so, base, sign, out, sign ? INT8_MIN : INT8_MAX);
 }
 
-ErrDecl so_as_i16(So so, int16_t *out, int base) {
+ErrImpl so_as_i16(So so, int16_t *out, int base) {
     bool sign = false;
     so_as_get_sign(&so, &sign);
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(int16_t, so, base, sign, out, sign ? INT16_MIN : INT16_MAX);
 }
 
-ErrDecl so_as_i32(So so, int32_t *out, int base) {
+ErrImpl so_as_i32(So so, int32_t *out, int base) {
     bool sign = false;
     so_as_get_sign(&so, &sign);
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(int32_t, so, base, sign, out, sign ? INT32_MIN : INT32_MAX);
 }
 
-ErrDecl so_as_i64(So so, int64_t *out, int base) {
+ErrImpl so_as_i64(So so, int64_t *out, int base) {
     bool sign = false;
     so_as_get_sign(&so, &sign);
     so_as_get_base(&so, &base);
@@ -256,22 +256,22 @@ ErrDecl so_as_i64(So so, int64_t *out, int base) {
 }
 
 
-ErrDecl so_as_u8(So so, uint8_t *out, int base) {
+ErrImpl so_as_u8(So so, uint8_t *out, int base) {
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(uint8_t, so, base, false, out, UINT8_MAX);
 }
 
-ErrDecl so_as_u16(So so, uint16_t *out, int base) {
+ErrImpl so_as_u16(So so, uint16_t *out, int base) {
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(uint16_t, so, base, false, out, UINT16_MAX);
 }
 
-ErrDecl so_as_u32(So so, uint32_t *out, int base) {
+ErrImpl so_as_u32(So so, uint32_t *out, int base) {
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(uint32_t, so, base, false, out, UINT32_MAX);
 }
 
-ErrDecl so_as_u64(So so, uint64_t *out, int base) {
+ErrImpl so_as_u64(So so, uint64_t *out, int base) {
     so_as_get_base(&so, &base);
     SO_AS_WITH_BASE(uint64_t, so, base, false, out, UINT64_MAX);
 }

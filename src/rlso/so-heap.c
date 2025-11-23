@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <rlc/err.h>
 
-So_Heap *so_heap_grow(So_Heap *heap, size_t cap) {
+inline So_Heap *so_heap_grow(So_Heap *heap, size_t cap) {
     size_t cap_old = heap ? heap->cap : 0;
     if(cap <= cap_old) return heap;
     size_t cap_new = 2 * sizeof(So_Heap);
@@ -18,7 +18,7 @@ So_Heap *so_heap_grow(So_Heap *heap, size_t cap) {
     return result;
 }
 
-So_Heap *so_heap_base(struct So *s) {
+inline So_Heap *so_heap_base(struct So *s) {
     So_Heap *result = (So_Heap *)((char *)s->str - offsetof(So_Heap, str) - sizeof(So_Heap));
     return result;
 }

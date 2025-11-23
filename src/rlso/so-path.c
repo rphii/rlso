@@ -8,7 +8,7 @@
 #include "so-print.h"
 #include "so-cmp.h"
 
-void so_path_join(So *out, So a, So b) {
+inline void so_path_join(So *out, So a, So b) {
     So tmp = so_clone(b);
     bool non_root = (so_cmp(a, so(PLATFORM_S_SUBDIR)));
     so_clear(out);
@@ -19,7 +19,7 @@ void so_path_join(So *out, So a, So b) {
 }
 
 
-const So so_get_ext(So ref) { /*{{{*/
+inline const So so_get_ext(So ref) { /*{{{*/
     /* also handles: file.dir/filename -> / is after . */
     So result = SO;
     size_t i = so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
@@ -30,7 +30,7 @@ const So so_get_ext(So ref) { /*{{{*/
     return result;
 } /*}}}*/
 
-const So so_get_noext(So ref) { /*{{{*/
+inline const So so_get_noext(So ref) { /*{{{*/
 #if 1
     /* also handles: file.dir/filename -> / is after . */
     size_t i = so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
@@ -54,7 +54,7 @@ const So so_get_noext(So ref) { /*{{{*/
     return result;
 } /*}}}*/
 
-const So so_get_dir(So ref) { /*{{{*/
+inline const So so_get_dir(So ref) { /*{{{*/
 #if 1
     size_t i = so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
     So result = i < ref.len ? so_iE(ref, i) : SO;
@@ -74,7 +74,7 @@ const So so_get_dir(So ref) { /*{{{*/
     return result;
 } /*}}}*/
 
-const So so_get_nodir(So ref) { /*{{{*/
+inline const So so_get_nodir(So ref) { /*{{{*/
 #if 1
     size_t i = so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
     So result = i < ref.len ? so_i0(ref, i + 1) : ref;
@@ -95,7 +95,7 @@ const So so_get_nodir(So ref) { /*{{{*/
     return result;
 } /*}}}*/
 
-const So so_get_basename(So ref) { /*{{{*/
+inline const So so_get_basename(So ref) { /*{{{*/
 #if 1
     So result = SO;
     so_rsplit_ch(ref, PLATFORM_CH_SUBDIR, &result);
@@ -122,7 +122,7 @@ const So so_get_basename(So ref) { /*{{{*/
 } /*}}}*/
 
 
-const So so_ensure_dir(So str) { /*{{{*/
+inline const So so_ensure_dir(So str) { /*{{{*/
     // !!! str = so_trim(str);
     size_t len = so_len(str);
     So result = so_ll(str.str, len);

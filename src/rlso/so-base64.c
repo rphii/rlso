@@ -1,7 +1,7 @@
 #include "so-base64.h"
 #include <rlc/err.h>
 
-char so_ch_as_base64(unsigned char c, char c62, char c63) {
+inline char so_ch_as_base64(unsigned char c, char c62, char c63) {
     if(c <= 25) return c + 'A';
     if(c <= 51) return c - 26 + 'a';
     if(c <= 61) return c - 52 + '0';
@@ -10,7 +10,7 @@ char so_ch_as_base64(unsigned char c, char c62, char c63) {
     ABORT("invalid base64 as-code: %u", c);
 }
 
-char so_ch_un_base64(unsigned char c, char c62, char c63) {
+inline char so_ch_un_base64(unsigned char c, char c62, char c63) {
     if(c >= 'A' && c <= 'Z') return c - 'A';
     if(c >= 'a' && c <= 'z') return c - 'a' + 26;
     if(c >= '0' && c <= '9') return c - '0' + 52;
@@ -19,11 +19,11 @@ char so_ch_un_base64(unsigned char c, char c62, char c63) {
     ABORT("invalid base64 un-code: %u", c);
 }
 
-void so_base64_fmt_encode(So *out, So in) {
+inline void so_base64_fmt_encode(So *out, So in) {
     so_base64_fmt_encode_ext(out, in, '+', '/', '=');
 }
 
-void so_base64_fmt_encode_ext(So *out, So in, char c62, char c63, char cpad) {
+inline void so_base64_fmt_encode_ext(So *out, So in, char c62, char c63, char cpad) {
     size_t len = so_len(in);
     size_t pad = len % 3 ? 3 - len % 3 : 0;
     unsigned int j = 0;
@@ -67,7 +67,7 @@ void so_base64_fmt_encode_ext(So *out, So in, char c62, char c63, char cpad) {
     } else if(pad) ABORT("unreachable code");
 }
 
-int so_base64_fmt_decode_ext(So *out, So in_base64, char c62, char c63, char pad) {
+inline int so_base64_fmt_decode_ext(So *out, So in_base64, char c62, char c63, char pad) {
     size_t len = so_len(in_base64);
     if(len % 4) return 1;
     for(size_t i = 0; i < len; i += 4) {
@@ -90,7 +90,7 @@ int so_base64_fmt_decode_ext(So *out, So in_base64, char c62, char c63, char pad
     return 0;
 }
 
-int so_base64_fmt_decode(So *out, So in_base64) {
+inline int so_base64_fmt_decode(So *out, So in_base64) {
     int result = so_base64_fmt_decode_ext(out, in_base64, '+', '/', '=');
     return result;
 }

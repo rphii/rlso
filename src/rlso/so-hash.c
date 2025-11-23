@@ -2,7 +2,7 @@
 #include <rlc/err.h>
 #include <rlc/platform-detect.h>
 
-size_t so_hash(const So str) { /*{{{*/
+inline size_t so_hash(const So str) { /*{{{*/
     /* FNV-1a */
     /* TODO check if we are actually on 64 bit */
     char *c = so_it0(str);
@@ -15,7 +15,7 @@ size_t so_hash(const So str) { /*{{{*/
     return hash;
 } /*}}}*/
 
-size_t so_hash_p(const So *str) { /*{{{*/
+inline size_t so_hash_p(const So *str) { /*{{{*/
     ASSERT_ARG(str);
     return so_hash(*str);
 }

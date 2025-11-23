@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include <wordexp.h>
 
-size_t so_len_nfx(So str) { /*{{{*/
+inline size_t so_len_nfx(So str) { /*{{{*/
     So snip = str;
     So pat = so("\033[");
     size_t len_nof = str.len;
@@ -30,7 +30,7 @@ size_t so_len_nfx(So str) { /*{{{*/
 } /*}}}*/
 
 
-size_t so_nfx_index(So so, size_t index) {
+inline size_t so_nfx_index(So so, size_t index) {
     So ref = so;
     size_t len_nof = 0;
     size_t n = 0, m = 0, i = 0;
@@ -49,7 +49,7 @@ size_t so_nfx_index(So so, size_t index) {
     return ref.len;
 }
 
-void so_extend_fgbgx(So *out, Color fg, Color bg, bool bold, bool italic, bool underline, bool bashsafe, So add) {
+inline void so_extend_fgbgx(So *out, Color fg, Color bg, bool bold, bool italic, bool underline, bool bashsafe, So add) {
     ASSERT_ARG(out);
     bool do_fmt = ((fg.rgba || bg.rgba || bold || italic || underline));
     if(!do_fmt) {
@@ -74,7 +74,7 @@ void so_extend_fgbgx(So *out, Color fg, Color bg, bool bold, bool italic, bool u
 } /*}}}*/
 
 
-void so_fmt_fgbgx(So *out, Color fg, Color bg, bool bold, bool italic, bool underline, bool bashsafe, char *fmt, ...) {
+inline void so_fmt_fgbgx(So *out, Color fg, Color bg, bool bold, bool italic, bool underline, bool bashsafe, char *fmt, ...) {
     ASSERT_ARG(out);
     So tmp = {0};
     va_list va;
@@ -84,7 +84,7 @@ void so_fmt_fgbgx(So *out, Color fg, Color bg, bool bold, bool italic, bool unde
     so_extend_fgbgx(out, fg, bg, bold, italic, underline, bashsafe, tmp);
 } /*}}}*/
 
-void so_fmt_fx(So *out, So_Fx fx, size_t i0_override, char *fmt, ...) {
+inline void so_fmt_fx(So *out, So_Fx fx, size_t i0_override, char *fmt, ...) {
     ASSERT_ARG(out);
     ASSERT_ARG(fmt);
     //size_t len_old = out->len;
@@ -104,7 +104,7 @@ void so_fmt_fx(So *out, So_Fx fx, size_t i0_override, char *fmt, ...) {
     so_free(&str2);
 }
 
-void so_fmt_websafe(So *out, So text) { /*{{{*/
+inline void so_fmt_websafe(So *out, So text) { /*{{{*/
     So escape = so(" <>#%+{}|\\^~[]';/?:@=&$");
     for(size_t i = 0; i < so_len(text); ++i) {
         unsigned char c = so_at(text, i);

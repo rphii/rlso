@@ -6,7 +6,7 @@
 
 #include <rlc.h>
 
-void so_extend_al(So *out, So_Align al, size_t i0_override, So add) {
+inline void so_extend_al(So *out, So_Align al, size_t i0_override, So add) {
     ASSERT_ARG(out);
     //printff("CACHE i0prev %zu prog %zu lines %zu",al.cache->i0_prev,al.cache->progress,al.cache->lines_done);
     if(!al.cache) {
@@ -115,7 +115,7 @@ void so_extend_al(So *out, So_Align al, size_t i0_override, So add) {
     //so_clear(&al.cache->fmt);
 }
 
-void so_al_nl(So *out, So_Align al, int nl) {
+inline void so_al_nl(So *out, So_Align al, int nl) {
     while(nl) {
         so_fmt_al(out, al, 0, "\n");
         --nl;
@@ -123,7 +123,7 @@ void so_al_nl(So *out, So_Align al, int nl) {
 }
 
 
-void so_fmt_al(So *out, So_Align al, size_t i0_override, char *format, ...) {
+inline void so_fmt_al(So *out, So_Align al, size_t i0_override, char *format, ...) {
     ASSERT_ARG(out);
     So tmp = {0};
     va_list va;
@@ -135,7 +135,7 @@ void so_fmt_al(So *out, So_Align al, size_t i0_override, char *format, ...) {
     so_free(&tmp);
 }
 
-void so_al_config(So_Align *al, size_t i0, size_t iNL, size_t iE, size_t n_lines, So_Align_Cache *cache) {
+inline void so_al_config(So_Align *al, size_t i0, size_t iNL, size_t iE, size_t n_lines, So_Align_Cache *cache) {
     al->i0 = i0;
     al->iE = iE;
     al->iNL = iNL;
@@ -145,7 +145,7 @@ void so_al_config(So_Align *al, size_t i0, size_t iNL, size_t iE, size_t n_lines
     }
 }
 
-void so_al_cache_rewind(So_Align_Cache *c) {
+inline void so_al_cache_rewind(So_Align_Cache *c) {
     ASSERT_ARG(c);
     c->i0_prev = 0;
     c->progress = 0;
@@ -153,13 +153,13 @@ void so_al_cache_rewind(So_Align_Cache *c) {
     so_clear(&c->fmt);
 }
 
-void so_al_cache_clear(So_Align_Cache *c) {
+inline void so_al_cache_clear(So_Align_Cache *c) {
     ASSERT_ARG(c);
     so_al_cache_rewind(c);
     so_clear(&c->fmt);
 }
 
-void so_al_cache_free(So_Align_Cache *c) {
+inline void so_al_cache_free(So_Align_Cache *c) {
     ASSERT_ARG(c);
     so_free(&c->fmt);
     memset(c, 0, sizeof(*c));

@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <errno.h>
 
-FILE *so_file_fp(So filename, char *mode) {
+inline FILE *so_file_fp(So filename, char *mode) {
     /* get clean C string */
     char path[SO_FILE_PATH_MAX];
     so_as_cstr(filename, path, SO_FILE_PATH_MAX);
@@ -17,7 +17,7 @@ FILE *so_file_fp(So filename, char *mode) {
     return file;
 }
 
-ErrDecl so_file_read_fp_ext(FILE *file, So *content, size_t n, size_t size, size_t *at) {
+ErrImpl so_file_read_fp_ext(FILE *file, So *content, size_t n, size_t size, size_t *at) {
     ASSERT_ARG(file);
     ASSERT_ARG(content);
     int err = 0;
@@ -36,7 +36,7 @@ clean:
     return err;
 }
 
-ErrDecl so_file_read_fp(FILE *file, So *content) {
+ErrImpl so_file_read_fp(FILE *file, So *content) {
     ASSERT_ARG(file);
     ASSERT_ARG(content);
     /* get file length */
@@ -50,7 +50,7 @@ clean:
     return err;
 }
 
-ErrDecl so_file_write_fp(FILE *file, So content) {
+ErrImpl so_file_write_fp(FILE *file, So content) {
     ASSERT_ARG(file);
     int err = 0;
     /* write file */
@@ -66,7 +66,7 @@ clean:
     return err;
 }
 
-ErrDecl so_file_get_size_fp(FILE *file, size_t *size) {
+ErrImpl so_file_get_size_fp(FILE *file, size_t *size) {
     ASSERT_ARG(file);
     int err = 0;
     fseek(file, 0, SEEK_END);
@@ -79,7 +79,7 @@ clean:
     return err;
 }
 
-ErrDecl so_file_get_size(So filename, size_t *size) {
+ErrImpl so_file_get_size(So filename, size_t *size) {
     char path[SO_FILE_PATH_MAX];
     int err = 0;
     so_as_cstr(filename, path, SO_FILE_PATH_MAX);
@@ -91,7 +91,7 @@ clean:
     return err;
 }/*}}}*/
 
-ErrDecl so_file_read(So filename, So *content) {
+ErrImpl so_file_read(So filename, So *content) {
     ASSERT_ARG(content);
     int err = 0;
     FILE *file = 0;
@@ -113,7 +113,7 @@ clean:
     return err;
 }
 
-ErrDecl so_file_write(So filename, So content) {
+ErrImpl so_file_write(So filename, So content) {
     int err = 0;
     FILE *file = 0;
     /* open the file */
@@ -137,7 +137,7 @@ clean:
 #include <sys/stat.h>
 #include <dirent.h>
 
-So_File_Type_List so_file_get_type(So filename) {
+inline So_File_Type_List so_file_get_type(So filename) {
     struct stat s;
     char path[SO_FILE_PATH_MAX];
     so_as_cstr(filename, path, SO_FILE_PATH_MAX);
@@ -148,7 +148,7 @@ So_File_Type_List so_file_get_type(So filename) {
     return SO_FILE_TYPE_ERROR;
 }
 
-ErrDecl so_file_exec(So file_or_dir, bool hidden, bool recursive, So_File_Exec_Callback cb_file, So_File_Exec_Callback cb_dir, void *user) {
+ErrImpl so_file_exec(So file_or_dir, bool hidden, bool recursive, So_File_Exec_Callback cb_file, So_File_Exec_Callback cb_dir, void *user) {
     int err = 0;
     DIR *dir = 0;
     int fails = 0;
