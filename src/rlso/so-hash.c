@@ -1,12 +1,16 @@
 #include "so-hash.h"
 #include <rlc/err.h>
+#include <rlc/platform-detect.h>
 
 size_t so_hash(const So str) { /*{{{*/
-    size_t hash = 5381;
+    /* FNV1-a */
+    /* TODO check if we are actually on 64 bit */
     size_t i = 0;
+    size_t hash = 0xcbf29ce484222325;
     while(i < so_len(str)) {
         unsigned char c = str.str[i++];
-        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+        hash *= 0x00000100000001b3;
+        hash ^= c;
     }
     return hash;
 } /*}}}*/
