@@ -12,10 +12,11 @@ inline void so_path_join(So *out, So a, So b) {
     So tmp = so_clone(b);
     bool non_root = (so_cmp(a, so(PLATFORM_S_SUBDIR)));
     so_clear(out);
-    so_extend(out, a);
+    so_extend(out, so_ensure_dir(a));
     if(non_root) so_push(out, PLATFORM_CH_SUBDIR);
-    so_extend(out, tmp);
+    so_extend(out, so_ensure_dir(tmp));
     so_free(&tmp);
+    *out = so_ensure_dir(*out);
 }
 
 
@@ -24,7 +25,7 @@ inline const So so_get_ext(So ref) { /*{{{*/
     So result = SO;
     size_t i = so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
     size_t j = so_rfind_ch(ref, '.');
-    if(j > i) {
+    if(j > i || i >= so_len(ref)) {
         result = so_i0(ref, j);
     }
     return result;
