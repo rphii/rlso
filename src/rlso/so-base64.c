@@ -1,6 +1,9 @@
 #include "so-base64.h"
 #include <rlc/err.h>
 
+char so_ch_as_base64(unsigned char c, char c62, char c63);
+char so_ch_un_base64(unsigned char c, char c62, char c63);
+
 inline char so_ch_as_base64(unsigned char c, char c62, char c63) {
     if(c <= 25) return c + 'A';
     if(c <= 51) return c - 26 + 'a';

@@ -16,7 +16,7 @@ inline So vso_pop(VSo *v) {
 inline void vso_free(VSo *v) {
     ASSERT_ARG(v);
     if(!*v) return;
-    array_free_set(*v, so_free);
+    array_free_ext(*v, so_free);
     array_free(*v);
 }
 
