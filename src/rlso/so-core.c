@@ -28,7 +28,9 @@ inline static char *so_grow_by_heap(So *so, size_t len_add) {
 inline static char *so_grow_by_ref(So *so, size_t len_add) {
     size_t len_was = so->len;
     So_Heap *heap = so_heap_grow(0, len_was + len_add);
-    memcpy(heap->str, so->str, len_was);
+    if(len_was) {
+        memcpy(heap->str, so->str, len_was);
+    }
     so->str = heap->str;
     so->len = (len_was + len_add);
     so->is_heap = true;
@@ -126,7 +128,6 @@ inline void so_extend(So *so, So b) {
 }
 
 inline void so_resize_known(So *s, size_t len_old, size_t len_new) {
-    bool is_heap = so_is_heap(*s);
     if(len_new > len_old) {
         //// TODO? if(len_new >= SO_HEAP_MAX) exit(1);
         so_grow_by(s, len_new - len_old);

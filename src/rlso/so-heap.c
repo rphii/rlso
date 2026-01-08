@@ -14,6 +14,7 @@ inline So_Heap *so_heap_grow(So_Heap *heap, size_t cap) {
     So_Heap *result = realloc(heap, sizeof(*result) + cap_new);
     ASSERT_ARG(result);
     result->str = (char *)result + sizeof(*result);
+    ASSERT_ARG(result->str);
     result->cap = cap_new;
     return result;
 }
