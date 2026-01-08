@@ -22,9 +22,9 @@ bool        so_is_empty(So so);
 bool        so_is_zero(So so);
 bool        so_is_heap(So so);
 
-#define     so(so)               (So){ .str = (so), .len = (so) ? sizeof((so)) - 1 : 0 }
-#define     so_l(so)             (So){ .str = (so), .len = (so) ? strlen((so)) : 0 }
-#define     so_ll(so, l)         (So){ .str = (so), .len = (l) }
+#define     so(so)               ((So){ .str = (so), .len = (so) ? sizeof((so)) - 1 : 0 })
+#define     so_l(so)             ((So){ .str = (so), .len = (so) ? strlen((so)) : 0 })
+#define     so_ll(so, l)         ((So){ .str = (so), .len = (l) })
 
 const char  so_at(So so, size_t i);
 const char  so_at0(So so);

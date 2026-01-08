@@ -34,6 +34,7 @@ examples = [
   'len-nfx.c',
   'fmt.c',
   'fmt-fgbgx.c',
+  'switch.c',
   ]
 
 tests = []

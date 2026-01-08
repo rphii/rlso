@@ -9,36 +9,36 @@ typedef int (*So_Cmp_Func_p)(So *, So *);
 
 /* suffix explanation:
  *   s = sortable
- *   c = case ignore/insensitive
+ *   i = case ignore/insensitive
  *   p = pointer
  */
 
 int so_cmp(So a, So b);
 int so_cmp_s(So a, So b);
-int so_cmp_c(So a, So b);
-int so_cmp_cs(So a, So b);
+int so_cmp_i(So a, So b);
+int so_cmp_is(So a, So b);
 int so_cmp_p(So *a, So *b);
 int so_cmp_sp(So *a, So *b);
-int so_cmp_cp(So *a, So *b);
-int so_cmp_csp(So *a, So *b);
+int so_cmp_ip(So *a, So *b);
+int so_cmp_isp(So *a, So *b);
 
 int so_cmp0(So a, So b);
 int so_cmp0_s(So a, So b);
-int so_cmp0_c(So a, So b);
-int so_cmp0_cs(So a, So b);
+int so_cmp0_i(So a, So b);
+int so_cmp0_is(So a, So b);
 int so_cmp0_p(So *a, So *b);
 int so_cmp0_sp(So *a, So *b);
-int so_cmp0_cp(So *a, So *b);
-int so_cmp0_csp(So *a, So *b);
+int so_cmp0_ip(So *a, So *b);
+int so_cmp0_isp(So *a, So *b);
 
 int so_cmpE(So a, So b);
 int so_cmpE_s(So a, So b);
-int so_cmpE_c(So a, So b);
-int so_cmpE_cs(So a, So b);
+int so_cmpE_i(So a, So b);
+int so_cmpE_is(So a, So b);
 int so_cmpE_p(So *a, So *b);
 int so_cmpE_sp(So *a, So *b);
-int so_cmpE_cp(So *a, So *b);
-int so_cmpE_csp(So *a, So *b);
+int so_cmpE_ip(So *a, So *b);
+int so_cmpE_isp(So *a, So *b);
 
 int so_cmpx(So a, So b, So_Cmp_Attr attr);
 int so_cmpx_p(So *a, So *b, So_Cmp_Attr attr);

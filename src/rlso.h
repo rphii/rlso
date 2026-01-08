@@ -20,6 +20,7 @@
 #include "rlso/so-print.h"
 #include "rlso/so-splice.h"
 #include "rlso/so-split.h"
+#include "rlso/so-switch.h"
 #include "rlso/so-trim.h"
 #include "rlso/so-uc.h"
 #include "rlso/vso.h"

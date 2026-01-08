@@ -132,21 +132,21 @@ ErrImpl so_as_bool_strict(So so, bool *out) {
 }
 
 ErrImpl so_as_yes_or_no(So so, bool *out) {
-    if(       !so_cmp_c(so, so("true"))
-            ||!so_cmp_c(so, so("1"))
-            ||!so_cmp_c(so, so("y"))
-            ||!so_cmp_c(so, so("on"))
-            ||!so_cmp_c(so, so("yes"))
-            ||!so_cmp_c(so, so("enable"))
-            ||!so_cmp_c(so, so("enabled"))) {
+    if(       !so_cmp_i(so, so("true"))
+            ||!so_cmp_i(so, so("1"))
+            ||!so_cmp_i(so, so("y"))
+            ||!so_cmp_i(so, so("on"))
+            ||!so_cmp_i(so, so("yes"))
+            ||!so_cmp_i(so, so("enable"))
+            ||!so_cmp_i(so, so("enabled"))) {
         *out = true;
-    } else if(!so_cmp_c(so, so("false"))
-            ||!so_cmp_c(so, so("0"))
-            ||!so_cmp_c(so, so("n"))
-            ||!so_cmp_c(so, so("no"))
-            ||!so_cmp_c(so, so("off"))
-            ||!so_cmp_c(so, so("disable"))
-            ||!so_cmp_c(so, so("disabled"))) {
+    } else if(!so_cmp_i(so, so("false"))
+            ||!so_cmp_i(so, so("0"))
+            ||!so_cmp_i(so, so("n"))
+            ||!so_cmp_i(so, so("no"))
+            ||!so_cmp_i(so, so("off"))
+            ||!so_cmp_i(so, so("disable"))
+            ||!so_cmp_i(so, so("disabled"))) {
         *out = false;
     } else {
         return -1;

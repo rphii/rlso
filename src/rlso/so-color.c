@@ -36,24 +36,24 @@ ErrImpl so_as_color(So so, Color *out) {
         int n_channels = 0;
         int ch[4] = { -1, -1, -1, -1 };
         for(int i = 0; i < 4; ++i) {
-            if (ch[0] < 0 && !so_cmp0_c(so, so("r"))) {
+            if (ch[0] < 0 && !so_cmp0_i(so, so("r"))) {
                 ch[0] = i;
                 n_channels += so_shift(&so, 1);
             } else
-            if (ch[1] < 0 && !so_cmp0_c(so, so("g"))) {
+            if (ch[1] < 0 && !so_cmp0_i(so, so("g"))) {
                 ch[1] = i;
                 n_channels += so_shift(&so, 1);
             } else
-            if (ch[2] < 0 && !so_cmp0_c(so, so("b"))) {
+            if (ch[2] < 0 && !so_cmp0_i(so, so("b"))) {
                 ch[2] = i;
                 n_channels += so_shift(&so, 1);
             } else
-            if (ch[3] < 0 && !so_cmp0_c(so, so("a"))) {
+            if (ch[3] < 0 && !so_cmp0_i(so, so("a"))) {
                 ch[3] = i;
                 n_channels += so_shift(&so, 1);
             } else
             if (ch[0] < 0 && ch[1] < 0 && ch[2] < 0 && 
-                    !so_cmp0_c(so, so("w"))) {
+                    !so_cmp0_i(so, so("w"))) {
                 ch[0] = i;
                 ch[1] = i;
                 ch[2] = i;
