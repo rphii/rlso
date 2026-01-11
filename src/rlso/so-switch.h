@@ -13,8 +13,8 @@ typedef struct So_Switches {
     size_t len; /* number of cases */
 } So_Switches;
 
-int so_switch(So input, So_Switches cases);
-int so_switch_i(So input, So_Switches cases);
+int so_switch(So input, int default_case, So_Switches cases);
+int so_switch_i(So input, int default_case, So_Switches cases);
 
 #define So_Switch_Pair(E, S) \
     (So_Switch){ \

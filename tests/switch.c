@@ -6,7 +6,7 @@ int main(void) {
 
     So input = so("asd");
 
-    int r = so_switch(input, So_Switches(
+    int r = so_switch(input, -1, So_Switches(
                 1, so("asd"),
                 2, so("xyz"),
                 ));
