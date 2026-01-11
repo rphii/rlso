@@ -8,18 +8,47 @@ typedef struct So_Switch {
     So s; /* string */
 } So_Switch;
 
-//#define So_Switches(...)  (So_Switch[]){ __VA_ARGS__ }
+typedef struct So_Switches {
+    So_Switch *sw; /* cases */
+    size_t len; /* number of cases */
+} So_Switches;
 
-#define So_Switch_End           0
-#define So_Switch_Pair(E, S)    (So_Switch){ .e = (E), .s = (S) }
+int so_switch(So input, So_Switches cases);
+int so_switch_i(So input, So_Switches cases);
 
-#define so_switch(input, cases)     _so_switch((input), (cases), sizeof((cases))/sizeof(*(cases)))
-#define so_switch_i(input, cases)   _so_switch_i((input), (cases), sizeof((cases))/sizeof(*(cases)))
+#define So_Switch_Pair(E, S) \
+    (So_Switch){ \
+        .e = (E), \
+        .s = (S) \
+    }
 
-int _so_switch(So input, So_Switch *cases, size_t len);
-int _so_switch_i(So input, So_Switch *cases, size_t len);
+#define So_Switches(...) \
+    (So_Switches){ \
+        .sw = SO_SWITCH_FACTORY(__VA_ARGS__), \
+        .len = sizeof(SO_SWITCH_FACTORY(__VA_ARGS__))/sizeof(So_Switch) \
+    }
 
+/* helper macros {{{ */
 
+#define SO_SWITCH_FACTORY(...) \
+    (So_Switch []){ \
+        __VA_OPT__(SO_SWITCH_EXPAND(SO_SWITCH_HELPER(__VA_ARGS__))) \
+    } 
+
+#define SO_SWITCH_HELPER(E, S, ...) \
+    So_Switch_Pair(E, S), \
+    __VA_OPT__(SO_SWITCH_AGAIN SO_SWITCH_PARENS (__VA_ARGS__))
+#define SO_SWITCH_AGAIN() SO_SWITCH_HELPER
+
+#define SO_SWITCH_PARENS ()
+
+#define SO_SWITCH_EXPAND(...)  SO_SWITCH_EXPAND4(SO_SWITCH_EXPAND4(SO_SWITCH_EXPAND4(SO_SWITCH_EXPAND4(__VA_ARGS__))))
+#define SO_SWITCH_EXPAND4(...) SO_SWITCH_EXPAND3(SO_SWITCH_EXPAND3(SO_SWITCH_EXPAND3(SO_SWITCH_EXPAND3(__VA_ARGS__))))
+#define SO_SWITCH_EXPAND3(...) SO_SWITCH_EXPAND2(SO_SWITCH_EXPAND2(SO_SWITCH_EXPAND2(SO_SWITCH_EXPAND2(__VA_ARGS__))))
+#define SO_SWITCH_EXPAND2(...) SO_SWITCH_EXPAND1(SO_SWITCH_EXPAND1(SO_SWITCH_EXPAND1(SO_SWITCH_EXPAND1(__VA_ARGS__))))
+#define SO_SWITCH_EXPAND1(...) __VA_ARGS__
+
+/* helper macros }}} */
 
 #define RLSO_SWITCH_H
 #endif /* RLSO_SWITCH_H */
