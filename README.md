@@ -45,19 +45,8 @@ See output of where the last command put the .html file.
 
 ## ✨ Features
 
-*\*Byte counts are assuming a 64 bit machine/architecture.*
-
-1. Any substring has a footprint of 16 bytes
-2. Any program-lifetime / data-segment string has a footprint of 16 bytes
-3. Operations on the stack, if length is <=15 bytes *(operations without dynamically allocating!)*
-4. Dynamically resizable to a heap string, with a maximum length of 2^56-1
-
-Notes:
-
-- Endian doesn't matter (we need to know it to compile / set up TWO structs, and after that it doesn't matter)
-- Doesn't matter if machine/architecture is 64 bits or not, it still works (it should! XD)
 - Strings are not 0-terminated. Appropriate functions/macros for printing and other opterations shall be provided
-- Automatically converts any (sub-) string into a dynamic one, if manipulated
+- Automatically converts any (sub-) string into a dynamic one, if manipulated (e.g. grown)
 
 ## 🔌 API
 
