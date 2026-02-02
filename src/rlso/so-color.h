@@ -10,8 +10,9 @@ typedef enum {
     SO_COLOR_RGB = SO_COLOR_R|SO_COLOR_G|SO_COLOR_B,
     SO_COLOR_RGBA = SO_COLOR_RGB|SO_COLOR_A,
     SO_COLOR_HEX = 0x10,
-    SO_COLOR_DEC = 0x20,
+    SO_COLOR_PAREN = 0x20,
     SO_COLOR_NOFX = 0x40,
+    SO_COLOR_DEC = SO_COLOR_PAREN,
 } So_Color_Attr;
 
 typedef struct So So;

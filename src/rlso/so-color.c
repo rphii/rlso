@@ -114,12 +114,26 @@ inline void so_fmt_color(So *so, Color in, So_Color_Attr attr) {
         fx.fg = COLOR_WHITE;
     }
     if(attr & SO_COLOR_HEX) {
-        so_fmt_fx(so, fx, 0, "#");
-        if(attr & SO_COLOR_R) so_fmt_fx(so, fx, 0, "%02x", in.r);
-        if(attr & SO_COLOR_G) so_fmt_fx(so, fx, 0, "%02x", in.g);
-        if(attr & SO_COLOR_B) so_fmt_fx(so, fx, 0, "%02x", in.b);
-        if(attr & SO_COLOR_A) so_fmt_fx(so, fx, 0, "%02x", in.a);
-    } else if(attr & SO_COLOR_DEC) {
+        if(attr & SO_COLOR_PAREN) {
+            if(attr & SO_COLOR_R) so_fmt_fx(so, fx, 0, "r");
+            if(attr & SO_COLOR_G) so_fmt_fx(so, fx, 0, "g");
+            if(attr & SO_COLOR_B) so_fmt_fx(so, fx, 0, "b");
+            if(attr & SO_COLOR_A) so_fmt_fx(so, fx, 0, "a");
+            so_fmt_fx(so, fx, 0, "(");
+            int n = 0;
+            if(attr & SO_COLOR_R) so_fmt_fx(so, fx, 0, "%02x", in.r);
+            if(attr & SO_COLOR_G) so_fmt_fx(so, fx, 0, "%02x", in.g);
+            if(attr & SO_COLOR_B) so_fmt_fx(so, fx, 0, "%02x", in.b);
+            if(attr & SO_COLOR_A) so_fmt_fx(so, fx, 0, "%02x", in.a);
+            so_fmt_fx(so, fx, 0, ")");
+        } else {
+            so_fmt_fx(so, fx, 0, "#");
+            if(attr & SO_COLOR_R) so_fmt_fx(so, fx, 0, "%02x", in.r);
+            if(attr & SO_COLOR_G) so_fmt_fx(so, fx, 0, "%02x", in.g);
+            if(attr & SO_COLOR_B) so_fmt_fx(so, fx, 0, "%02x", in.b);
+            if(attr & SO_COLOR_A) so_fmt_fx(so, fx, 0, "%02x", in.a);
+        }
+    } else if(attr & SO_COLOR_PAREN) {
         if(attr & SO_COLOR_R) so_fmt_fx(so, fx, 0, "r");
         if(attr & SO_COLOR_G) so_fmt_fx(so, fx, 0, "g");
         if(attr & SO_COLOR_B) so_fmt_fx(so, fx, 0, "b");
