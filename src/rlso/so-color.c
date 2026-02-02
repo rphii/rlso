@@ -99,7 +99,8 @@ ErrImpl so_as_color(So so, Color *out) {
 }
 
 inline void so_fmt_color(So *so, Color in, So_Color_Attr attr) {
-    So_Fx fx = {0};
+    bool nofx = attr & SO_COLOR_NOFX;
+    So_Fx fx = { .nocolor = &nofx };
     Color use = COLOR_NONE;
     if(attr & SO_COLOR_R) { use.r = in.r; }
     if(attr & SO_COLOR_G) { use.g = in.g; }
