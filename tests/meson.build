@@ -14,6 +14,7 @@ examples = [
   'uc7.c',
   'splice.c',
   'splice.2.c',
+  'splice.3.c',
   'env.c',
   'file.c',
   'path.c',
@@ -35,6 +36,7 @@ examples = [
   'fmt.c',
   'fmt-fgbgx.c',
   'switch.c',
+  'realpath.c',
   ]
 
 tests = []

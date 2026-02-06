@@ -2,7 +2,7 @@
 
 int main(void) {
     So so = so("abcdefghijklmnopqrstuvwxyz");
-    for(size_t i = 0; i < 0x10; ++i) {
+    for(size_t i = 0; i < 0x8; ++i) {
         so_extend(&so, so);
     }
     char c = 'a';

@@ -9,6 +9,7 @@
 #include "so-cmp.h"
 
 inline void so_path_join(So *out, So a, So b) {
+    ASSERT_ARG(out);
     So tmp = so_clone(b);
     bool non_root = (so_cmp(a, so(PLATFORM_S_SUBDIR)));
     so_clear(out);
@@ -19,6 +20,15 @@ inline void so_path_join(So *out, So a, So b) {
     *out = so_ensure_dir(*out);
 }
 
+void so_path_get_realpath(So *out, So a) {
+    ASSERT_ARG(out);
+    char *cstr = so_dup(a);
+    char *creal = realpath(cstr, 0);
+    free(cstr);
+    so_clear(out);
+    so_extend(out, so_l(creal));
+    free(creal);
+}
 
 inline const So so_get_ext(So ref) { /*{{{*/
     /* also handles: file.dir/filename -> / is after . */
