@@ -11,7 +11,9 @@ inline int so_cmp(So a, So b) {
     int result;
     //printf("CMP:%.*s:%zu\n    %.*s:%zu\n", a.len, a.str,a.len, b.len, b.str,b.len);
     if(a.len != b.len) result = a.len - b.len;
-    else result = memcmp(a.str, b.str, a.len);
+    else {
+        result = a.len ? memcmp(a.str, b.str, a.len) : 0;
+    }
     return result;
 }
 
@@ -19,12 +21,12 @@ inline int so_cmp_s(So a, So b) {
     int result;
     if(a.len != b.len) {
         size_t less = a.len < b.len ? a.len : b.len;
-        result = memcmp(a.str, b.str, less);
+        result = less ? memcmp(a.str, b.str, less) : 0;
         if(!result) {
             result = a.len - b.len;
         }
     } else {
-        result = memcmp(a.str, b.str, a.len);
+        result = a.len ? memcmp(a.str, b.str, a.len) : 0;
     }
     return result;
 }
