@@ -2,7 +2,7 @@
 
 int unescape(So buf, So cmp) {
     So unescaped = SO;
-    int result = so_fmt_unescape(&unescaped, buf, 0, 0);
+    int result = so_fmt_unescape(&unescaped, buf, 0);
     printff("COMPARE: (result %u)",result);
     so_printdbg(unescaped);
     so_printdbg(cmp);
@@ -15,7 +15,7 @@ int unescape(So buf, So cmp) {
 int unescape_fail(So buf, size_t i) {
     int result = 0;
     So unescaped = SO;
-    size_t i_err = so_fmt_unescape(&unescaped, buf, 0, 0);
+    size_t i_err = so_fmt_unescape(&unescaped, buf, 0);
     printff("ERR? %zu == %zu", i_err, i);
     so_printdbg(unescaped);
     if(!i_err) {
@@ -83,27 +83,27 @@ int main(void) {
 
     So tmp = SO;
     so_clear(&tmp);
-    result |= so_fmt_unescape(&tmp, so("''"), '\'', '\'');
+    result |= so_fmt_unescape(&tmp, so("'"), '\'');
     so_printdbg(tmp);
     EXPECT_CMP(tmp, so(""));
 
     so_clear(&tmp);
-    result |= so_fmt_unescape(&tmp, so("'a'"), '\'', '\'');
+    result |= so_fmt_unescape(&tmp, so("a'"), '\'');
     so_printdbg(tmp);
     EXPECT_CMP(tmp, so("a"));
 
     so_clear(&tmp);
-    result |= so_fmt_unescape(&tmp, so("[asdf]"), '[', ']');
+    result |= so_fmt_unescape(&tmp, so("asdf]lol"), ']');
     so_printdbg(tmp);
     EXPECT_CMP(tmp, so("asdf"));
 
     so_clear(&tmp);
-    result |= (so_fmt_unescape(&tmp, so("[asdf["), '[', ']') != -1);
+    result |= (so_fmt_unescape(&tmp, so("[asdf["), ']') != -1);
     so_printdbg(tmp);
     EXPECT_CMP(tmp, so(""));
 
     so_clear(&tmp);
-    result |= (so_fmt_unescape(&tmp, so("[asdf["), ']', ']') != -1);
+    result |= (so_fmt_unescape(&tmp, so("[asdf["), ']') != -1);
     so_printdbg(tmp);
     EXPECT_CMP(tmp, so(""));
     

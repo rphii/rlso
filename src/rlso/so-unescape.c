@@ -30,11 +30,11 @@ static bool static_parse_hex(size_t *number, char c) {
     return result;
 }
 
-ssize_t so_fmt_unescape(So *out, So so, char begin, char end) {
+ssize_t so_fmt_unescape(So *out, So so, char delimiter) {
 
     ASSERT_ARG(out);
     So tmp = SO;
-    bool found_end_local = false;
+    bool found_delimiter_local = false;
 
     char *esc_basic = 0;
     int status = 0;
@@ -46,22 +46,15 @@ ssize_t so_fmt_unescape(So *out, So so, char begin, char end) {
     size_t len = so.len;
     int n_escaped = 0;
 
-    if(begin) {
-        if(!(so_len(so) && so_at0(so) == begin)) {
-            status = -1;
-            goto defer;
-        }
-    }
-
-    for(size_t i = (begin ? 1 : 0); i < len; ++i) {
+    for(size_t i = 0; i < len; ++i) {
         bool have_next = (bool)(i + 1 < len);
         char c = so_at(so, i);
         printff("CHECK C: %c",c);
         switch(id) {
             case SO_UNESCAPE_NONE: {
 
-                if(end && c == end) {
-                    found_end_local = true;
+                if(delimiter && c == delimiter) {
+                    found_delimiter_local = true;
                     goto defer;
                 }
 
@@ -170,7 +163,7 @@ ssize_t so_fmt_unescape(So *out, So so, char begin, char end) {
     }
     
 defer:
-    if(end && !found_end_local) status = -1LL;
+    if(delimiter && !found_delimiter_local) status = -1LL;
     if(!status) so_extend(out, tmp);
     so_free(&tmp);
     return status;
