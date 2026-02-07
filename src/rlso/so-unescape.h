@@ -2,6 +2,7 @@
 
 #include "so-core.h"
 
+#include <unistd.h>
 
 /* unescape:
  * \a \b \e \f \n \r \t \v \\ \' \" \?
@@ -10,7 +11,7 @@
  * \uhhhh => h hex
  * \Uhhhhhhhh => h hex
  * */
-size_t so_fmt_unescape(So *out, So so);
+ssize_t so_fmt_unescape(So *out, So so, char begin, char end);
 
 #define SO_UNESCAPE_H
 #endif /* SO_UNESCAPE_H */

@@ -30,10 +30,11 @@ static bool static_parse_hex(size_t *number, char c) {
     return result;
 }
 
-size_t so_fmt_unescape(So *out, So so) {
+ssize_t so_fmt_unescape(So *out, So so, char begin, char end) {
 
     ASSERT_ARG(out);
     So tmp = SO;
+    bool found_end_local = false;
 
     char *esc_basic = 0;
     int status = 0;
@@ -45,11 +46,25 @@ size_t so_fmt_unescape(So *out, So so) {
     size_t len = so.len;
     int n_escaped = 0;
 
-    for(size_t i = 0; i < len; ++i) {
+    if(begin) {
+        if(!(so_len(so) && so_at0(so) == begin)) {
+            status = -1;
+            goto defer;
+        }
+    }
+
+    for(size_t i = (begin ? 1 : 0); i < len; ++i) {
         bool have_next = (bool)(i + 1 < len);
         char c = so_at(so, i);
+        printff("CHECK C: %c",c);
         switch(id) {
             case SO_UNESCAPE_NONE: {
+
+                if(end && c == end) {
+                    found_end_local = true;
+                    goto defer;
+                }
+
                 if(c == '\\') id = SO_UNESCAPE_NEXT;
                 else so_push(&tmp, c);
             } break;
@@ -155,7 +170,8 @@ size_t so_fmt_unescape(So *out, So so) {
     }
     
 defer:
-    so_extend(out, tmp);
+    if(end && !found_end_local) status = -1LL;
+    if(!status) so_extend(out, tmp);
     so_free(&tmp);
     return status;
 }

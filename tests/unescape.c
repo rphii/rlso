@@ -1,8 +1,8 @@
-#include "../src/rlso.h"
+#include "test.h"
 
 int unescape(So buf, So cmp) {
     So unescaped = SO;
-    int result = so_fmt_unescape(&unescaped, buf);
+    int result = so_fmt_unescape(&unescaped, buf, 0, 0);
     printff("COMPARE: (result %u)",result);
     so_printdbg(unescaped);
     so_printdbg(cmp);
@@ -15,7 +15,7 @@ int unescape(So buf, So cmp) {
 int unescape_fail(So buf, size_t i) {
     int result = 0;
     So unescaped = SO;
-    size_t i_err = so_fmt_unescape(&unescaped, buf);
+    size_t i_err = so_fmt_unescape(&unescaped, buf, 0, 0);
     printff("ERR? %zu == %zu", i_err, i);
     so_printdbg(unescaped);
     if(!i_err) {
@@ -80,6 +80,34 @@ int main(void) {
 
     result |= unescape_fail(so("\\D"), 1);
     result |= unescape_fail(so(" \\D"), 2);
+
+    So tmp = SO;
+    so_clear(&tmp);
+    result |= so_fmt_unescape(&tmp, so("''"), '\'', '\'');
+    so_printdbg(tmp);
+    EXPECT_CMP(tmp, so(""));
+
+    so_clear(&tmp);
+    result |= so_fmt_unescape(&tmp, so("'a'"), '\'', '\'');
+    so_printdbg(tmp);
+    EXPECT_CMP(tmp, so("a"));
+
+    so_clear(&tmp);
+    result |= so_fmt_unescape(&tmp, so("[asdf]"), '[', ']');
+    so_printdbg(tmp);
+    EXPECT_CMP(tmp, so("asdf"));
+
+    so_clear(&tmp);
+    result |= (so_fmt_unescape(&tmp, so("[asdf["), '[', ']') != -1);
+    so_printdbg(tmp);
+    EXPECT_CMP(tmp, so(""));
+
+    so_clear(&tmp);
+    result |= (so_fmt_unescape(&tmp, so("[asdf["), ']', ']') != -1);
+    so_printdbg(tmp);
+    EXPECT_CMP(tmp, so(""));
+    
+    so_free(&tmp);
 
     printff("FINAL RESULT %u", result);
     return result;
