@@ -23,6 +23,7 @@
 #include "rlso/so-switch.h"
 #include "rlso/so-trim.h"
 #include "rlso/so-uc.h"
+#include "rlso/so-unescape.h"
 #include "rlso/vso.h"
 
 #define SO_H

@@ -23,6 +23,7 @@ sources = [
   'rlso/so-switch.c',
   'rlso/so-trim.c',
   'rlso/so-uc.c',
+  'rlso/so-unescape.c',
   'rlso/vso.c',
   ]
 
@@ -50,6 +51,7 @@ headers = [
   'rlso/so-switch.h',
   'rlso/so-trim.h',
   'rlso/so-uc.h',
+  'rlso/so-unescape.h',
   'rlso/vso.h',
   ]
 

@@ -37,6 +37,7 @@ examples = [
   'fmt-fgbgx.c',
   'switch.c',
   'realpath.c',
+  'unescape.c',
   ]
 
 tests = []
