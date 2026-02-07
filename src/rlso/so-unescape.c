@@ -49,7 +49,7 @@ ssize_t so_fmt_unescape(So *out, So so, char delimiter) {
     for(size_t i = 0; i < len; ++i) {
         bool have_next = (bool)(i + 1 < len);
         char c = so_at(so, i);
-        printff("CHECK C: %c",c);
+        //printff("CHECK C: %c",c);
         switch(id) {
             case SO_UNESCAPE_NONE: {
 
