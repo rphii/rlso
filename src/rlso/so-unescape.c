@@ -44,6 +44,7 @@ size_t so_fmt_unescape(So *out, So so) {
     size_t parsed_number = 0;
     size_t len = so.len;
     int n_escaped = 0;
+
     for(size_t i = 0; i < len; ++i) {
         bool have_next = (bool)(i + 1 < len);
         char c = so_at(so, i);

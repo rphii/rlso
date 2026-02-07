@@ -11,7 +11,6 @@
  * \Uhhhhhhhh => h hex
  * */
 size_t so_fmt_unescape(So *out, So so);
-size_t so_unescape_pair(So so, char c);
 
 #define SO_UNESCAPE_H
 #endif /* SO_UNESCAPE_H */
