@@ -48,7 +48,6 @@ ssize_t so_fmt_unescape(So *out, So so, char delimiter, size_t *consumed) {
     int n_escaped = 0;
 
     for(size_t i = 0; i < len; ++i) {
-        ++n_consumed;
         bool have_next = (bool)(i + 1 < len);
         char c = so_at(so, i);
         //printff("CHECK C: %c",c);
@@ -162,6 +161,7 @@ ssize_t so_fmt_unescape(So *out, So so, char delimiter, size_t *consumed) {
             status = i;
             goto defer;
         }
+        ++n_consumed;
     }
     
 defer:
