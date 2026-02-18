@@ -11,7 +11,7 @@
  * \uhhhh => h hex
  * \Uhhhhhhhh => h hex
  * */
-ssize_t so_fmt_unescape(So *out, So so, char delimiter);
+ssize_t so_fmt_unescape(So *out, So so, char delimiter, size_t *consumed);
 
 #define SO_UNESCAPE_H
 #endif /* SO_UNESCAPE_H */
