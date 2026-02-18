@@ -12,6 +12,18 @@ int unescape(So buf, So cmp) {
     return result;
 }
 
+int unescape2(So buf, So cmp, char c) {
+    So unescaped = SO;
+    int result = so_fmt_unescape(&unescaped, buf, c);
+    printff("COMPARE: (result %u)",result);
+    so_printdbg(unescaped);
+    so_printdbg(cmp);
+    if(!result) result = so_cmp(unescaped, cmp);
+    so_free(&unescaped);
+    printff("  result: %u",result);
+    return result;
+}
+
 int unescape_fail(So buf, size_t i) {
     int result = 0;
     So unescaped = SO;
@@ -43,6 +55,7 @@ int main(void) {
     result |= unescape(so("\\\'"), so("\'"));
     result |= unescape(so("\\\""), so("\""));
     result |= unescape(so("\\e"), so("\033"));
+    result |= unescape2(so("\\e[31mred\\e[0m\""), so("\033[31mred\033[0m"), '"');
 
     result |= unescape(so("X\\aX\\bX\\fX\\nX\\rX\\tX\\vX\\\\X\\'X\\\"X\\?X"), so("X\aX\bX\fX\nX\rX\tX\vX\\X'X\"X?X"));
 
@@ -106,6 +119,16 @@ int main(void) {
     result |= (so_fmt_unescape(&tmp, so("[asdf["), ']') != -1);
     so_printdbg(tmp);
     EXPECT_CMP(tmp, so(""));
+
+#if 0
+    so_clear(&tmp);
+    result |= (so_fmt_unescape(&tmp, so("\\e"), '\"') != -1);
+    printff("OK");
+    so_printdbg(so("\033[31mred\033[0m"));
+    printff("TMP");
+    so_printdbg(tmp);
+    EXPECT_CMP(tmp, so("\033[31mred\033[0m"));
+#endif
     
     so_free(&tmp);
 
