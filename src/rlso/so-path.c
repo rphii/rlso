@@ -11,7 +11,7 @@
 inline void so_path_join(So *out, So a, So b) {
     ASSERT_ARG(out);
     So tmp = so_clone(b);
-    bool non_root = (so_cmp(a, so(PLATFORM_S_SUBDIR)));
+    bool non_root = (so_cmp(a, so(PLATFORM_S_SUBDIR))); // TODO.. use so_count_ch ?
     so_clear(out);
     so_extend(out, so_ensure_dir(a));
     if(non_root) so_push(out, PLATFORM_CH_SUBDIR);

@@ -258,25 +258,4 @@ inline size_t so_writefunc(void *ptr, size_t size, size_t nmemb, So *str) { /*{{
     return size * nmemb;
 } /*}}}*/
 
-#if 0 
-void so_1buf_old(So *so, size_t *index) {
-    ASSERT_ARG(so);
-    ASSERT_ARG(index);
-    *index = so->len;
-}
-
-void so_1buf_new(So *so, size_t *index) {
-    ASSERT_ARG(so);
-    ASSERT_ARG(index);
-    if(!*index) return;
-    size_t len_old = *index;
-    size_t len_new = so->len - len_old;
-    //printff("onebuf new %zu->%zu (%zu)",len_old,ref.len,len_new);
-    //printff("i0 %zu[%.*s] / iBUF %zu[%.*s]", len_old, ref.str, ref.str, len_new, ref.str + len_old, ref.str + len_old);
-    memmove(so->str, so->str + len_old, len_new);
-    //memmove(_so_it0(so), _so_it(so, len_old), len_new);
-    so_resize(so, len_new);
-    *index = 0;
-}
-#endif
 

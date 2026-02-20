@@ -50,8 +50,6 @@ void        so_free(So *so);
 void        so_free_v(So so);
 void        so_zero(So *so);
 size_t      so_writefunc(void *ptr, size_t size, size_t nmemb, So *str);
-void        so_1buf_old(So *so, size_t *index);
-void        so_1buf_new(So *so, size_t *index);
 
 #if 0
 #define     so_ref(so) _so_ref(&(so))
