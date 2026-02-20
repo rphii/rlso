@@ -10,14 +10,14 @@
 
 inline void so_path_join(So *out, So a, So b) {
     ASSERT_ARG(out);
-    So tmp = so_clone(b);
-    bool non_root = (so_cmp(a, so(PLATFORM_S_SUBDIR))); // TODO.. use so_count_ch ?
+    So bdir = so_clone(so_ensure_dir(b));
+    So adir = so_ensure_dir(a);
+    bool non_root = (so_cmp(adir, so(PLATFORM_S_SUBDIR)));
     so_clear(out);
-    so_extend(out, so_ensure_dir(a));
+    so_extend(out, adir);
     if(non_root) so_push(out, PLATFORM_CH_SUBDIR);
-    so_extend(out, so_ensure_dir(tmp));
-    so_free(&tmp);
-    *out = so_ensure_dir(*out);
+    so_extend(out, bdir);
+    so_free(&bdir);
 }
 
 void so_path_get_realpath(So *out, So a) {

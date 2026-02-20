@@ -36,7 +36,6 @@ inline static char *so_grow_by_ref(So *so, size_t len_add) {
     so->is_heap = true;
     return so->str + len_was;
 }
-#include "so-print.h"
 
 inline static char *so_grow_by(So *so, size_t len_add) {
     ASSERT_ARG(len_add);
