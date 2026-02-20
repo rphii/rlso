@@ -54,11 +54,11 @@ ssize_t so_fmt_unescape(So *out, So so, So end_delimiter, So break_delimiter, si
         switch(id) {
             case SO_UNESCAPE_NONE: {
 
-                if(so_len(break_delimiter) && !so_cmp(so_i0(so, i), break_delimiter)) {
+                if(so_len(break_delimiter) && !so_cmp0(so_i0(so, i), break_delimiter)) {
                     status = -1LL;
                     goto defer;
                 }
-                if(so_len(end_delimiter) && !so_cmp(so_i0(so, i), end_delimiter)) {
+                if(so_len(end_delimiter) && !so_cmp0(so_i0(so, i), end_delimiter)) {
                     status = 0;
                     goto defer;
                 }
