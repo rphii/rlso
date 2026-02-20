@@ -1,5 +1,6 @@
 #include "so-unescape.h"
 #include "so-trim.h"
+#include "so-cmp.h"
 #include "so-uc.h"
 #include <ctype.h>
 #include <rlc.h>
@@ -30,14 +31,13 @@ static bool static_parse_hex(size_t *number, char c) {
     return result;
 }
 
-ssize_t so_fmt_unescape(So *out, So so, char delimiter, size_t *consumed) {
+ssize_t so_fmt_unescape(So *out, So so, So end_delimiter, So break_delimiter, size_t *consumed) {
 
     ASSERT_ARG(out);
     So tmp = SO;
-    bool found_delimiter_local = false;
 
     char *esc_basic = 0;
-    int status = 0;
+    int status = so_len(end_delimiter) ? -1LL : 0;
 
     So_Unescape_List id = SO_UNESCAPE_NONE;
     So_Uc_Point ucp = {0};
@@ -54,8 +54,12 @@ ssize_t so_fmt_unescape(So *out, So so, char delimiter, size_t *consumed) {
         switch(id) {
             case SO_UNESCAPE_NONE: {
 
-                if(delimiter && c == delimiter) {
-                    found_delimiter_local = true;
+                if(so_len(break_delimiter) && !so_cmp(so_i0(so, i), break_delimiter)) {
+                    status = -1LL;
+                    goto defer;
+                }
+                if(so_len(end_delimiter) && !so_cmp(so_i0(so, i), end_delimiter)) {
+                    status = 0;
                     goto defer;
                 }
 
@@ -166,7 +170,6 @@ ssize_t so_fmt_unescape(So *out, So so, char delimiter, size_t *consumed) {
     
 defer:
     if(consumed) *consumed = n_consumed;
-    if(delimiter && !found_delimiter_local) status = -1LL;
     if(!status) so_extend(out, tmp);
     so_free(&tmp);
     return status;
