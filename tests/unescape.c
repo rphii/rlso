@@ -60,8 +60,9 @@ int main(void) {
     result |= unescape(so("X\\aX\\bX\\fX\\nX\\rX\\tX\\vX\\\\X\\'X\\\"X\\?X"), so("X\aX\bX\fX\nX\rX\tX\vX\\X'X\"X?X"));
 
     result |= unescape(so("\\o123"), so("83"));
-    result |= unescape(so("\\x42"), so("66"));
-    result |= unescape(so("\\x4242"), so("16962"));
+    result |= unescape(so("\\x42"), so("B"));
+    result |= unescape(so("\\x4242"), so("䉂"));
+    result |= unescape(so("john\\x22"), so("john\""));
     result |= unescape(so(" \\u03C6 "), so(" φ "));
     result |= unescape(so(" \\u03c6 "), so(" φ "));
     result |= unescape(so(" \\U00011D60 "), so(" 𑵠 "));

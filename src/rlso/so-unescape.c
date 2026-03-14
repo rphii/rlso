@@ -105,7 +105,11 @@ ssize_t so_fmt_unescape(So *out, So so, So end_delimiter, So break_delimiter, si
                     }
                 }
                 if(id == SO_UNESCAPE_NONE) {
-                    so_fmt(&tmp, "%zu", parsed_number);
+                    So_Uc_Point pt = { .val = parsed_number };
+                    if(so_uc_fmt_point(&tmp, &pt)) {
+                        status = i;
+                        goto defer;
+                    }
                 }
             } break;
             case SO_UNESCAPE_OCTAL: {
