@@ -99,6 +99,7 @@ ssize_t so_fmt_unescape(So *out, So so, So end_delimiter, So break_delimiter, si
                 } else {
                     if(!required) {
                         id = SO_UNESCAPE_NONE;
+                        --i;
                     } else {
                         status = i;
                         goto defer;

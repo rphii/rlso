@@ -63,6 +63,8 @@ int main(void) {
     result |= unescape(so("\\x42"), so("B"));
     result |= unescape(so("\\x4242"), so("䉂"));
     result |= unescape(so("john\\x22"), so("john\""));
+    result |= unescape(so("\\x22john\\x22"), so("\"john\""));
+    result |= unescape(so("\\x22john"), so("\"john"));
     result |= unescape(so(" \\u03C6 "), so(" φ "));
     result |= unescape(so(" \\u03c6 "), so(" φ "));
     result |= unescape(so(" \\U00011D60 "), so(" 𑵠 "));
