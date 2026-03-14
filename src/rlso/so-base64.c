@@ -82,7 +82,7 @@ inline int so_base64_fmt_decode_ext(So *out, So in_base64, char c62, char c63, c
         unsigned char c1 = so_ch_un_base64(b1, c62, c63);
         unsigned char c2 = b2 != pad ? so_ch_un_base64(b2, c62, c63) : 0;
         unsigned char c3 = b3 != pad ? so_ch_un_base64(b3, c62, c63) : 0;
-        printff("%u %u %u %u",c0,c1,c2,c3);
+        //printff("%u %u %u %u",c0,c1,c2,c3);
         unsigned char d0 = (c0 << 2) | (c1 >> 4);
         unsigned char d1 = (c1 << 4) | (c2 >> 2);
         unsigned char d2 = (c2 << 6) | (c3 >> 0);
