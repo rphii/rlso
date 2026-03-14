@@ -50,7 +50,6 @@ ssize_t so_fmt_unescape(So *out, So so, So end_delimiter, So break_delimiter, si
     for(size_t i = 0; i < len; ++i) {
         bool have_next = (bool)(i + 1 < len);
         char c = so_at(so, i);
-        //printff("CHECK C: %c",c);
         switch(id) {
             case SO_UNESCAPE_NONE: {
 
@@ -100,6 +99,7 @@ ssize_t so_fmt_unescape(So *out, So so, So end_delimiter, So break_delimiter, si
                     if(!required) {
                         id = SO_UNESCAPE_NONE;
                         --i;
+                        --n_consumed;
                     } else {
                         status = i;
                         goto defer;
