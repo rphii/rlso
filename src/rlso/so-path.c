@@ -22,12 +22,13 @@ inline void so_path_join(So *out, So a, So b) {
 
 void so_path_get_realpath(So *out, So a) {
     ASSERT_ARG(out);
-    char *cstr = so_dup(a);
+    So tmp = a;
+    char *cstr = so_ensure_cstr(&tmp);
     char *creal = realpath(cstr, 0);
-    free(cstr);
     so_clear(out);
     so_extend(out, so_l(creal));
     free(creal);
+    if(!a.is_cstr && tmp.is_cstr) so_free(&tmp);
 }
 
 inline const So so_get_ext(So ref) { /*{{{*/

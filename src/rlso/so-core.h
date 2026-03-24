@@ -11,8 +11,9 @@
 
 typedef struct So {
     char *str;
+    size_t len      : -2+8*sizeof(size_t);
     size_t is_heap  : +1;
-    size_t len      : -1+8*sizeof(size_t);
+    size_t is_cstr  : +1; /* if it ends with a \0 */
 } So;
 
 #define SO          (So){.str = 0, .len = 0}
@@ -22,8 +23,8 @@ bool        so_is_empty(So so);
 bool        so_is_zero(So so);
 bool        so_is_heap(So so);
 
-#define     so(so)               ((So){ .str = (so), .len = (so) ? sizeof((so)) - 1 : 0 })
-#define     so_l(so)             ((So){ .str = (so), .len = (so) ? strlen((so)) : 0 })
+#define     so(so)               ((So){ .str = (so), .len = (so) ? sizeof((so)) - 1 : 0, .is_cstr = true })
+#define     so_l(so)             ((So){ .str = (so), .len = (so) ? strlen((so)) : 0, .is_cstr = true })
 #define     so_ll(so, l)         ((So){ .str = (so), .len = (l) })
 
 const char  so_at(So so, size_t i);
@@ -44,7 +45,8 @@ void        so_fmt_va(So *so, const char *fmt, va_list va);
 size_t      so_len(So so);
 void        so_copy(So *so, So b);
 So          so_clone(So b);
-char *      so_dup(So so);
+[[deprecated("use so_ensure_cstr instead")]] char *      so_dup(So so);
+char *      so_ensure_cstr(So *so);
 void        so_clear(So *so);
 void        so_free(So *so);
 void        so_free_v(So so);

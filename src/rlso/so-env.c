@@ -15,9 +15,8 @@ inline int so_env_get(So *out, So so) {
         so_as_cstr(so, q, SO_ENV_STACK_MAX);
         env = getenv(q);
     } else {
-        char *q = so_dup(so);
+        char *q = so_ensure_cstr(&so);
         env = getenv(q);
-        free(q);
     }
     if(!env) return -1;
     *out = so_l(env);
@@ -25,7 +24,8 @@ inline int so_env_get(So *out, So so) {
 }
 
 inline void so_extend_wordexp(So *out, So path, bool only_if_exists) {
-    char *clean = so_dup(path); /* TODO create a str_copy_ro .. read-only copy, where it doesn't extend if end == len ... */
+    So tmp = path;
+    char *clean = so_ensure_cstr(&tmp); /* TODO create a str_copy_ro .. read-only copy, where it doesn't extend if end == len ... */
     wordexp_t word = {0};
     if(wordexp(clean, &word, 0)) {
         goto defer;
@@ -44,7 +44,7 @@ inline void so_extend_wordexp(So *out, So path, bool only_if_exists) {
     so_extend(out, so_l(result));
 #endif
 defer:
-    free(clean);
+    if(!path.is_cstr && tmp.is_cstr) so_free(&tmp);
     wordfree(&word);
 }
 
