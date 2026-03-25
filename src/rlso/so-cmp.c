@@ -104,7 +104,7 @@ inline int so_cmp0_i(So a, So b) {
 inline int so_cmp0_s(So a, So b) {
     if(a.len < b.len) return a.len - b.len;
     a.len = b.len;
-    return so_cmp_i(a, b);
+    return so_cmp_s(a, b);
 }
 
 inline int so_cmp0_is(So a, So b) {
