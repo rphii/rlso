@@ -253,7 +253,6 @@ inline size_t so_shift(So *so, size_t shift) {
 }
 
 inline void so_clear(So *so) {
-    so->is_heap = false;
     so->is_cstr = false;
     so->len = 0;
 }
