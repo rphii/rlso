@@ -102,6 +102,7 @@ inline char *so_dup(So so) {
 }
 #endif
 
+#if 0
 char *so_ensure_cstr(So *so) {
     if(!so) {
         return "";
@@ -114,6 +115,7 @@ char *so_ensure_cstr(So *so) {
     so->is_cstr = true;
     return so->str;
 }
+#endif
 
 inline void so_push(So *s, char c) {
     *so_grow_by(s, 1) = c;

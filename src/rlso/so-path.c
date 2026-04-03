@@ -23,8 +23,9 @@ inline void so_path_join(So *out, So a, So b) {
 void so_path_get_realpath(So *out, So a) {
     ASSERT_ARG(out);
     So tmp = a;
-    char *cstr = so_ensure_cstr(&tmp);
+    char *cstr = so_dup(tmp);
     char *creal = realpath(cstr, 0);
+    free(cstr);
     so_clear(out);
     so_extend(out, so_l(creal));
     free(creal);
