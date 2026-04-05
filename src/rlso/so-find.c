@@ -15,6 +15,7 @@
 
 inline size_t so_find_ch(So ref, char c) { /*{{{*/
 #if 1
+    if(!ref.str) return ref.len;
     char *s = memchr(ref.str, c, ref.len);
     if(!s) return ref.len;
     return s - ref.str;
