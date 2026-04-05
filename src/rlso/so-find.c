@@ -15,7 +15,7 @@
 
 inline size_t so_find_ch(So ref, char c) { /*{{{*/
 #if 1
-    if(!ref.str) return ref.len;
+    if(!ref.str) return 0;
     char *s = memchr(ref.str, c, ref.len);
     if(!s) return ref.len;
     return s - ref.str;
@@ -57,6 +57,7 @@ inline size_t so_find_nws(So ref) { /*{{{*/
 } /*}}}*/
 
 inline size_t so_find_any(So ref, So any) { /*{{{*/
+    if(!any.str) return ref.len;
     for(size_t i = 0; i < ref.len; ++i) {
         char c = ref.str[i];
         if(memchr(any.str, c, any.len)) {
@@ -67,6 +68,7 @@ inline size_t so_find_any(So ref, So any) { /*{{{*/
 } /*}}}*/
 
 inline size_t so_find_nany(So ref, So nany) { /*{{{*/
+    if(!nany.str) return 0;
     for(size_t i = 0; i < ref.len; ++i) {
         char c = ref.str[i];
         if(!memchr(nany.str, c, nany.len)) {
@@ -106,6 +108,7 @@ inline size_t so_find_sub(So ref, So sub, bool ignorecase) { /*{{{*/
 
 inline size_t so_rfind_ch(So ref, char c) { /*{{{*/
 #if 1
+    if(!ref.str) return 0;
     char *s = memrchr(ref.str, c, ref.len);
     if(!s) return ref.len;
     return s - ref.str;
@@ -147,6 +150,7 @@ inline size_t so_rfind_nws(So ref) { /*{{{*/
 } /*}}}*/
 
 inline size_t so_rfind_any(So ref, So any) { /*{{{*/
+    if(!any.str) return ref.len;
     for(size_t i = ref.len; i > 0; --i) {
         char c = ref.str[i - 1];
         if(memchr(any.str, c, any.len)) {
@@ -157,6 +161,7 @@ inline size_t so_rfind_any(So ref, So any) { /*{{{*/
 } /*}}}*/
 
 inline size_t so_rfind_nany(So ref, So nany) { /*{{{*/
+    if(!nany.str) return ref.len;
     for(size_t i = ref.len; i > 0; --i) {
         char c = ref.str[i - 1];
         if(!memchr(nany.str, c, nany.len)) {
