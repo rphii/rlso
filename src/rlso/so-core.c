@@ -16,7 +16,6 @@ static char *so_grow_by(So *so, size_t len_add);
 inline static char *so_grow_by_heap(So *so, size_t len_add) {
     size_t len_was = so->len;
     So_Heap *heap = so_heap_base(so);
-    if(so->is_cstr) --len_add;
     if(len_was + len_add >= heap->cap) {
         heap = so_heap_grow(heap, len_was + len_add);
         so->str = heap->str;
@@ -102,8 +101,7 @@ inline char *so_dup(So so) {
 }
 #endif
 
-#if 0
-char *so_ensure_cstr(So *so) {
+char *so_get_cstr(So *so) {
     if(!so) {
         return "";
     }
@@ -115,7 +113,6 @@ char *so_ensure_cstr(So *so) {
     so->is_cstr = true;
     return so->str;
 }
-#endif
 
 inline void so_push(So *s, char c) {
     *so_grow_by(s, 1) = c;
@@ -250,12 +247,11 @@ inline size_t so_shift(So *so, size_t shift) {
     so->str += shift;
     so->len = (so->len - shift);
     so->is_heap = false;
-    so->is_cstr = so->is_cstr;
     return shift;
 }
 
 inline void so_clear(So *so) {
-    so->is_cstr = false;
+    so->is_cstr = true;
     so->len = 0;
 }
 

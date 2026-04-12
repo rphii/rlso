@@ -46,6 +46,7 @@ size_t      so_len(So so);
 void        so_copy(So *so, So b);
 So          so_clone(So b);
 char *      so_dup(So so);
+char *      so_get_cstr(So *so);
 void        so_clear(So *so);
 void        so_free(So *so);
 void        so_free_v(So so);
