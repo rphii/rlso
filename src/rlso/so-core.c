@@ -91,7 +91,6 @@ inline So so_clone(So b) {
     return result;
 }
 
-#if 1
 inline char *so_dup(So so) {
     So ref = so;
     char *result = malloc(ref.len + 1);
@@ -99,7 +98,6 @@ inline char *so_dup(So so) {
     result[ref.len] = 0;
     return result;
 }
-#endif
 
 char *so_get_cstr(So *so) {
     if(!so) {
@@ -131,6 +129,7 @@ inline void so_extend(So *so, So b) {
             so->len += b.len;
             so->str = neo->str;
             so->is_heap = true; /* not needed */
+            so->is_cstr = false;
             free(heap);
         } else {
             /* memory does not overlap */
