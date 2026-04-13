@@ -103,6 +103,9 @@ char *so_get_cstr(So *so) {
     if(!so) {
         return "";
     }
+    if(!so->str || !so->len) {
+        return "";
+    }
     if(so->is_cstr) {
         return so->str;
     }
@@ -250,7 +253,7 @@ inline size_t so_shift(So *so, size_t shift) {
 }
 
 inline void so_clear(So *so) {
-    so->is_cstr = true;
+    so->is_cstr = false;
     so->len = 0;
 }
 

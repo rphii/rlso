@@ -26,6 +26,7 @@ bool        so_is_heap(So so);
 #define     so(so)               ((So){ .str = (so), .len = (so) ? sizeof((so)) - 1 : 0, .is_cstr = true })
 #define     so_l(so)             ((So){ .str = (so), .len = (so) ? strlen((so)) : 0, .is_cstr = true })
 #define     so_ll(so, l)         ((So){ .str = (so), .len = (l) })
+#define     so_ro(so)            ((So){ .str = (so).str, .len = (so).len, .is_cstr = (so).is_cstr })
 
 const char  so_at(So so, size_t i);
 const char  so_at0(So so);

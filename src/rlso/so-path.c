@@ -22,7 +22,7 @@ inline void so_path_join(So *out, So a, So b) {
 
 void so_path_get_realpath(So *out, So a) {
     ASSERT_ARG(out);
-    So tmp = so_ll(a.str, a.len);
+    So tmp = so_ro(a);
     char *cstr = so_get_cstr(&tmp);
     char *creal = realpath(cstr, 0);
     so_clear(out);
