@@ -16,6 +16,7 @@
 #include "rlso/so-hash.h"
 #include "rlso/so-heap.h"
 #include "rlso/so-input.h"
+#include "rlso/so-lz4.h"
 #include "rlso/so-path.h"
 #include "rlso/so-print.h"
 #include "rlso/so-splice.h"

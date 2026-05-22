@@ -1,0 +1,3 @@
+option('tests', type: 'feature', value: 'auto', description: 'Enable testing')
+option('use_lz4', type: 'boolean', value: 'true', description: 'Enable/disable LZ4 compression/decompression functions (depends on LZ4)')
+

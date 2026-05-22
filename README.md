@@ -48,7 +48,7 @@ See output of where the last command put the .html file.
 - Strings are not 0-terminated. Appropriate functions/macros for printing and other opterations shall be provided
 - Automatically converts any (sub-) string into a dynamic one, if manipulated (e.g. grown)
 
-## 🔌 API
+## 🔌 API - *NEEDS REVISITING*
 
 *Things that are not linked are planned but not yet implemented.*
 
@@ -69,4 +69,9 @@ See output of where the last command put the .html file.
 | `so-path.md` | handling as path | [so-path.h](src/so-path.h) | [so-path.c](src/so-path.c) |
 | [`so-print.md`](md/so-print.md) | printing | [so-print.h](src/so-print.h) | [so-print.c](src/so-print.c) |
 | [`so-input.md`](md/so-input.md) | user input | [so-input.h](src/so-input.h) | [so-input.c](src/so-input.c) |
+
+### todo so I don't forget
+
+- rename arguments, e.g. out -> out_ext if things _only_ get extended/appended, to distinguish things that really clear the string!
+- e.g. out -> out_clr!
 

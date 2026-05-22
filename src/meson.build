@@ -16,6 +16,7 @@ sources = [
   'rlso/so-hash.c',
   'rlso/so-heap.c',
   'rlso/so-input.c',
+  'rlso/so-lz4.c',
   'rlso/so-path.c',
   'rlso/so-print.c',
   'rlso/so-splice.c',
@@ -44,6 +45,7 @@ headers = [
   'rlso/so-hash.h',
   'rlso/so-heap.h',
   'rlso/so-input.h',
+  'rlso/so-lz4.h',
   'rlso/so-path.h',
   'rlso/so-print.h',
   'rlso/so-splice.h',
@@ -56,17 +58,20 @@ headers = [
   ]
 
 cc = meson.get_compiler('c')
-android_wordexp_dep = cc.find_library('android-wordexp', required : false)
 
-rlc_dep = dependency('rlc', fallback : ['rlc', 'rlc_dep'], default_options: ['default_library=static'])
+b_use_lz4 = get_option('use_lz4')
+
+add_project_arguments('-DRLSO_USE_LZ4=@0@'.format(b_use_lz4), language : 'c')
+
+deps = [
+  dependency('rlc', fallback : ['rlc', 'rlc_dep'], default_options: ['default_library=static']),
+  cc.find_library('android-wordexp', required: false),
+  dependency('lz4', 'liblz4', required: b_use_lz4),
+  ]
 
 install_headers(headers, subdir: 'rlso')
 install_headers('rlso.h')
-librlso = library('rlso',
-  sources,
-  dependencies: [rlc_dep, android_wordexp_dep],
-  install: true,
-  )
+librlso = library('rlso', sources, dependencies: deps, install: true)
 
 pkg = import('pkgconfig')
 pkg.generate(

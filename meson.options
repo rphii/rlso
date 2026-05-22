@@ -1,2 +1,0 @@
-option('tests', type: 'feature', value: 'auto', description: 'Enable testing')
-

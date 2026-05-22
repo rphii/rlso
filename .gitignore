@@ -2,6 +2,7 @@
 *.o
 *.d
 *.txt
+!meson_options.txt
 *.vim
 *.swp
 *.tmp
