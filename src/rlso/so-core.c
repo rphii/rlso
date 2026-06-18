@@ -190,7 +190,7 @@ inline void so_fmt_va(So *s, const char *fmt, va_list va) {
         ASSERT_ARG(s);
         //ASSERT_ARG(_so_it(s, old.len));
         //printf("IS_STACK %u, IS_HEAP %u\n", _so_is_stack(s), _so_is_heap(s));
-        int len_chng = vsnprintf(new.str + old.len, len_app + 1, fmt, va);
+        vsnprintf(new.str + old.len, len_app + 1, fmt, va);
     }
 
 #if 0
