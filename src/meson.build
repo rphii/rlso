@@ -76,7 +76,7 @@ librlso = library('rlso', sources, dependencies: deps, install: true)
 pkg = import('pkgconfig')
 pkg.generate(
   libraries: librlso,
-  version: '9999',
+  version: meson.project_version(),
   name: 'rlso',
   description: 'Small String Optimized and Dynamically Allocatable String',
   )
