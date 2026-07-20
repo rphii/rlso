@@ -6,7 +6,8 @@
 int main(void) {
 
     char ccwd[SO_FILE_PATH_MAX] = {0};
-    getcwd(ccwd, SO_FILE_PATH_MAX);
+    char *p = getcwd(ccwd, SO_FILE_PATH_MAX);
+    (void)p;
 
     So cwd = so_l(ccwd);
     so_path_get_realpath(&cwd, cwd);

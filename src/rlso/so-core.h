@@ -23,9 +23,10 @@ bool        so_is_empty(So so);
 bool        so_is_zero(So so);
 bool        so_is_heap(So so);
 
-#define     so(so)               ((So){ .str = (so), .len = (so) ? sizeof((so)) - 1 : 0, .is_cstr = true })
-#define     so_l(so)             ((So){ .str = (so), .len = (so) ? strlen((so)) : 0, .is_cstr = true })
+#define     so(so)               ((So){ .str = (so), .len = (so != 0) ? sizeof((so)) - 1 : 0, .is_cstr = true })
+#define     so_l(so)             ((So){ .str = (so), .len = (so != 0) ? strlen((so)) : 0, .is_cstr = true })
 #define     so_ll(so, l)         ((So){ .str = (so), .len = (l) })
+#define     so_ro(so)            ((So){ .str = (so).str, .len = (so).len, .is_cstr = (so).is_cstr })
 
 const char  so_at(So so, size_t i);
 const char  so_at0(So so);
@@ -46,6 +47,7 @@ size_t      so_len(So so);
 void        so_copy(So *so, So b);
 So          so_clone(So b);
 char *      so_dup(So so);
+char *      so_get_cstr(So *so);
 void        so_clear(So *so);
 void        so_free(So *so);
 void        so_free_v(So so);

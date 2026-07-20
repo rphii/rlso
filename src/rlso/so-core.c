@@ -16,7 +16,6 @@ static char *so_grow_by(So *so, size_t len_add);
 inline static char *so_grow_by_heap(So *so, size_t len_add) {
     size_t len_was = so->len;
     So_Heap *heap = so_heap_base(so);
-    if(so->is_cstr) --len_add;
     if(len_was + len_add >= heap->cap) {
         heap = so_heap_grow(heap, len_was + len_add);
         so->str = heap->str;
@@ -92,7 +91,6 @@ inline So so_clone(So b) {
     return result;
 }
 
-#if 1
 inline char *so_dup(So so) {
     So ref = so;
     char *result = malloc(ref.len + 1);
@@ -100,11 +98,12 @@ inline char *so_dup(So so) {
     result[ref.len] = 0;
     return result;
 }
-#endif
 
-#if 0
-char *so_ensure_cstr(So *so) {
+char *so_get_cstr(So *so) {
     if(!so) {
+        return "";
+    }
+    if(!so->str || !so->len) {
         return "";
     }
     if(so->is_cstr) {
@@ -115,7 +114,6 @@ char *so_ensure_cstr(So *so) {
     so->is_cstr = true;
     return so->str;
 }
-#endif
 
 inline void so_push(So *s, char c) {
     *so_grow_by(s, 1) = c;
@@ -134,6 +132,7 @@ inline void so_extend(So *so, So b) {
             so->len += b.len;
             so->str = neo->str;
             so->is_heap = true; /* not needed */
+            so->is_cstr = false;
             free(heap);
         } else {
             /* memory does not overlap */
@@ -191,7 +190,7 @@ inline void so_fmt_va(So *s, const char *fmt, va_list va) {
         ASSERT_ARG(s);
         //ASSERT_ARG(_so_it(s, old.len));
         //printf("IS_STACK %u, IS_HEAP %u\n", _so_is_stack(s), _so_is_heap(s));
-        int len_chng = vsnprintf(new.str + old.len, len_app + 1, fmt, va);
+        vsnprintf(new.str + old.len, len_app + 1, fmt, va);
     }
 
 #if 0
@@ -250,7 +249,6 @@ inline size_t so_shift(So *so, size_t shift) {
     so->str += shift;
     so->len = (so->len - shift);
     so->is_heap = false;
-    so->is_cstr = so->is_cstr;
     return shift;
 }
 

@@ -447,7 +447,8 @@ ErrImpl so_filesig_fp(FILE *file, So extension, bool *uncertain, So_Filesig_List
     So content = SO;
     err = so_file_get_size_fp(file, &file_len);
     if(err) ERR(err);
-    so_file_read_fp_ext(file, &content, 276, file_len, 0);
+    err = so_file_read_fp_ext(file, &content, 276, file_len, 0);
+    if(err) ERR(err);
 
     for(size_t i = SO_FILESIG_NONE + 1; i < SO_FILESIG__COUNT; ++i) {
         So_Filesig_Callback cb = so_filesig_callbacks[i];
@@ -469,9 +470,9 @@ clean:
 ErrImpl so_filesig(So path, bool *uncertain, So_Filesig_List *sig) {
     FILE *fp = so_file_fp(path, "r");
     if(!fp) return SO_FILE_ERR_INVALID;
-    so_filesig_fp(fp, so_get_ext(path), uncertain, sig);
+    int err = so_filesig_fp(fp, so_get_ext(path), uncertain, sig);
     fclose(fp);
-    return 0;
+    return err;
 }
 
 inline void so_filesig_fmt(So *out, So_Filesig_List sig) {
