@@ -1,17 +1,11 @@
 set -e
 
-cleanup() {
-    if [ -n "$dir" ]; then
-        popd || true
-    fi
-}
-trap cleanup EXIT
+HERE="$(dirname "$(realpath "$0")")"
+pushd $HERE
 
-dir=$(dirname $0)
-pushd $dir
-
-meson setup build -Db_coverage=true -Dtests=enabled --reconfigure
-meson compile -C build --clean
-meson test -C build || true #--wrapper 'valgrind --leak-check=full'
-ninja coverage -C build
+DIR=".testdir"
+meson setup "$DIR" -Db_coverage=true -Dtests=enabled --reconfigure
+meson compile -C "$DIR" --clean
+meson test -C "$DIR" || true #--wrapper 'valgrind --leak-check=full'
+ninja coverage -C "$DIR"
 

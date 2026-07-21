@@ -5,10 +5,11 @@ Dynamically Allocatable String in C.
 ## 🛠️ Installation
 
 - Depends on [rphii/rlc](https://github.com/rphii/rlc)
+- Uses meson as the build system
 
 ```sh
 git clone https://github.com/rphii/so && cd so
-setup build && meson install -C build
+meson setup build && meson install -C build
 ```
 
 Installation features:
@@ -37,7 +38,7 @@ pacman -S gcovr lcov valgrind
 
 ### Run
 
-See the provided [run-tests.sh](run-tests.sh) script.
+See the provided [run-tests.sh](run-tests.sh) script. It runs the tests in an own `.testdir` directory.
 
 ### Results
 
