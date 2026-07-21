@@ -10,7 +10,10 @@
 #define SO_STACK_HEAP_BIT   (((size_t)1) << ((sizeof(unsigned char)) * 8 - 1))
 
 typedef struct So {
-    char *str;
+    union {
+        char *str;
+        unsigned char *ustr;
+    };
     size_t len      : -2+8*sizeof(size_t);
     size_t is_heap  : +1;
     size_t is_cstr  : +1; /* if it ends with a \0 */
