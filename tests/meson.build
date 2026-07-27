@@ -17,6 +17,7 @@ examples = [
   'splice.3.c',
   'env.c',
   'file.c',
+  'noext.c',
   'path.c',
   'path.2.c',
   'path.3.c',

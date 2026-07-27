@@ -47,7 +47,7 @@ inline const So so_get_noext(So ref) { /*{{{*/
     /* also handles: file.dir/filename -> / is after . */
     size_t i = so_rfind_ch(ref, PLATFORM_CH_SUBDIR);
     size_t j = so_rfind_ch(ref, '.');
-    size_t sp = (j < i || j == ref.len) ? ref.len : j;
+    size_t sp = ((i < ref.len && j < i) || j == ref.len) ? ref.len : j;
     So result = so_iE(ref, sp);
 #else
     So ref = so_ref(str);

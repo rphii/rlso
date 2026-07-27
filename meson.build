@@ -1,4 +1,4 @@
-project('rlso', 'c', version: '0.2.4')
+project('rlso', 'c', version: '0.2.5')
 subdir('src')
 subdir('man')
 subdir('tests')
